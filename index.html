@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Trend Studio - Discover trending AI photo prompts, creative styles and viral image ideas.">
+<meta name="keywords" content="AI photo prompts, AI image prompts, viral AI trends, AI photo ideas">
+<meta name="author" content="AI Trend Studio">
+<title>AI Trend Studio — Viral AI Photo Prompts</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#080914;
+ --card:#111322;
+ --card2:#171a2c;
+ --text:#fff;
+ --muted:#9da3bb;
+ --primary:#7c5cff;
+ --secondary:#00d4ff;
+ --border:rgba(255,255,255,.09);
+ --shadow:0 15px 45px rgba(0,0,0,.35);
+}
+body{
+ font-family:Inter,Arial,sans-serif;
+ background:
+ radial-gradient(circle at 10% 0%,rgba(124,92,255,.20),transparent 30%),
+ radial-gradient(circle at 90% 10%,rgba(0,212,255,.12),transparent 25%),
+ var(--bg);
+ color:var(--text);
+ min-height:100vh;
+ transition:.3s;
+}
+body.light{
+ --bg:#f5f7ff;
+ --card:#fff;
+ --card2:#f0f2fa;
+ --text:#171827;
+ --muted:#656b80;
+ --border:rgba(20,25,50,.1);
+}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+
+header{
+ position:sticky;top:0;z-index:100;
+ background:rgba(8,9,20,.78);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--border);
+}
+.light header{background:rgba(245,247,255,.8)}
+.nav{
+ max-width:1200px;margin:auto;padding:15px 20px;
+ display:flex;align-items:center;justify-content:space-between;gap:15px;
+}
+.logo{
+ font-size:21px;font-weight:900;letter-spacing:-.5px;
+ display:flex;align-items:center;gap:9px;
+}
+.logo span{
+ width:36px;height:36px;border-radius:11px;
+ display:grid;place-items:center;
+ background:linear-gradient(135deg,var(--primary),var(--secondary));
+ box-shadow:0 8px 25px rgba(124,92,255,.3);
+}
+.navlinks{display:flex;gap:24px;color:var(--muted);font-size:14px;font-weight:600}
+.navlinks a:hover{color:var(--text)}
+.navbtn{
+ width:40px;height:40px;border-radius:12px;
+ background:var(--card);color:var(--text);
+ border:1px solid var(--border);
+}
+.menu{display:none}
+
+.hero{
+ max-width:1100px;margin:auto;padding:75px 20px 45px;text-align:center;
+}
+.badge{
+ display:inline-flex;align-items:center;gap:7px;
+ padding:8px 14px;border:1px solid rgba(124,92,255,.3);
+ background:rgba(124,92,255,.1);border-radius:30px;
+ color:#bbaeff;font-size:13px;font-weight:700;margin-bottom:20px;
+}
+.hero h1{
+ font-size:clamp(42px,7vw,76px);
+ line-height:.98;letter-spacing:-4px;font-weight:950;
+ max-width:850px;margin:auto;
+}
+.gradient{
+ background:linear-gradient(90deg,#fff,#a98cff,#50e6ff);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{
+ max-width:650px;margin:22px auto 28px;
+ color:var(--muted);font-size:17px;line-height:1.7;
+}
+.search{
+ max-width:680px;margin:auto;position:relative;
+}
+.search input{
+ width:100%;padding:18px 55px 18px 20px;
+ border-radius:17px;border:1px solid var(--border);
+ outline:none;background:var(--card);color:var(--text);
+ box-shadow:var(--shadow);
+}
+.search button{
+ position:absolute;right:7px;top:7px;
+ width:43px;height:43px;border-radius:12px;
+ color:white;background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+
+.container{max-width:1200px;margin:auto;padding:20px}
+.sectionhead{
+ display:flex;align-items:center;justify-content:space-between;
+ margin:25px 0 18px;gap:10px;
+}
+.sectionhead h2{font-size:27px;letter-spacing:-1px}
+.sectionhead p{color:var(--muted);font-size:13px}
+
+.categories{
+ display:flex;gap:10px;overflow-x:auto;padding-bottom:7px;
+ scrollbar-width:none;
+}
+.categories::-webkit-scrollbar{display:none}
+.cat{
+ white-space:nowrap;padding:10px 16px;border-radius:30px;
+ background:var(--card);color:var(--muted);
+ border:1px solid var(--border);font-size:13px;font-weight:700;
+}
+.cat.active,.cat:hover{
+ background:linear-gradient(135deg,var(--primary),#6040d9);
+ color:white;border-color:transparent;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:18px;
+}
+.card{
+ background:linear-gradient(180deg,var(--card),var(--card2));
+ border:1px solid var(--border);
+ border-radius:22px;
+ overflow:hidden;
+ box-shadow:0 12px 35px rgba(0,0,0,.16);
+ transition:.25s;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.28)}
+.visual{
+ height:180px;
+ position:relative;
+ display:flex;align-items:center;justify-content:center;
+ font-size:64px;
+ overflow:hidden;
+}
+.visual:before{
+ content:"";position:absolute;inset:0;
+ background:
+ radial-gradient(circle at 25% 30%,rgba(255,255,255,.2),transparent 22%),
+ radial-gradient(circle at 80% 70%,rgba(255,255,255,.12),transparent 30%);
+}
+.v1{background:linear-gradient(135deg,#261846,#d66d8d)}
+.v2{background:linear-gradient(135deg,#17233e,#b18a58)}
+.v3{background:linear-gradient(135deg,#101827,#196c89)}
+.v4{background:linear-gradient(135deg,#33122f,#d94d82)}
+.v5{background:linear-gradient(135deg,#151515,#7a5b2c)}
+.v6{background:linear-gradient(135deg,#102f35,#3c8f87)}
+.v7{background:linear-gradient(135deg,#20123d,#7047bd)}
+.v8{background:linear-gradient(135deg,#321313,#bd4747)}
+.v9{background:linear-gradient(135deg,#101c36,#4075d1)}
+
+.visual .trend{
+ position:absolute;top:12px;left:12px;
+ padding:6px 9px;border-radius:8px;
+ background:rgba(0,0,0,.35);backdrop-filter:blur(5px);
+ font-size:11px;font-weight:800;
+}
+.visual .heart{
+ position:absolute;right:12px;top:12px;
+ width:34px;height:34px;border-radius:10px;
+ background:rgba(0,0,0,.3);color:white;
+}
+.visual .heart.saved{color:#ff4d88}
+
+.cardbody{padding:18px}
+.cardbody h3{font-size:18px;margin-bottom:7px}
+.cardbody p{
+ color:var(--muted);font-size:13px;line-height:1.6;
+ height:42px;overflow:hidden;
+}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0}
+.tag{
+ font-size:10px;color:var(--muted);
+ background:rgba(255,255,255,.05);
+ padding:5px 8px;border-radius:6px;
+}
+.actions{display:flex;gap:8px}
+.copy{
+ flex:1;padding:11px;border-radius:11px;
+ color:white;font-weight:800;font-size:12px;
+ background:linear-gradient(135deg,var(--primary),#5e45d5);
+}
+.view{
+ width:43px;border-radius:11px;
+ color:var(--text);background:var(--card);
+ border:1px solid var(--border);
+}
+
+.about{
+ margin:70px auto 30px;
+ max-width:850px;
+ padding:35px;
+ border:1px solid var(--border);
+ background:var(--card);
+ border-radius:25px;
+ text-align:center;
+}
+.about h2{font-size:30px;margin-bottom:13px}
+.about p{color:var(--muted);line-height:1.8;font-size:14px}
+
+footer{
+ border-top:1px solid var(--border);
+ margin-top:60px;padding:30px 20px;
+ color:var(--muted);text-align:center;font-size:13px;
+}
+.footerlinks{display:flex;justify-content:center;gap:20px;margin-bottom:13px}
+.footerlinks a:hover{color:var(--text)}
+
+.modal{
+ display:none;position:fixed;inset:0;z-index:500;
+ background:rgba(0,0,0,.72);backdrop-filter:blur(8px);
+ padding:20px;align-items:center;justify-content:center;
+}
+.modal.show{display:flex}
+.modalbox{
+ max-width:650px;width:100%;
+ background:var(--card);border:1px solid var(--border);
+ border-radius:25px;padding:25px;
+ max-height:90vh;overflow:auto;
+}
+.modalhead{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.close{
+ width:38px;height:38px;border-radius:10px;
+ background:var(--card2);color:var(--text);font-size:20px;
+}
+.modalbox h2{margin-bottom:15px}
+.prompt{
+ background:var(--card2);padding:18px;border-radius:15px;
+ color:var(--muted);line-height:1.7;font-size:14px;
+ margin:15px 0;
+}
+.bigcopy{
+ width:100%;padding:13px;border-radius:12px;
+ background:linear-gradient(135deg,var(--primary),var(--secondary));
+ color:white;font-weight:800;
+}
+
+.toast{
+ position:fixed;right:20px;bottom:20px;z-index:1000;
+ background:#151827;color:white;
+ border:1px solid rgba(255,255,255,.12);
+ padding:13px 17px;border-radius:13px;
+ transform:translateY(100px);opacity:0;transition:.3s;
+ box-shadow:var(--shadow);font-size:13px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+.empty{
+ grid-column:1/-1;text-align:center;padding:60px 20px;
+ color:var(--muted);
+}
+.empty strong{display:block;font-size:25px;color:var(--text);margin-bottom:8px}
+
+@media(max-width:800px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .navlinks{display:none}
+ .menu{display:block}
+ .hero{padding-top:55px}
+ .hero h1{letter-spacing:-2px}
+}
+@media(max-width:560px){
+ .grid{grid-template-columns:1fr}
+ .hero h1{font-size:43px}
+ .hero p{font-size:15px}
+ .visual{height:200px}
+ .sectionhead{align-items:flex-start;flex-direction:column}
+ .about{padding:25px 18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <nav class="nav">
+  <a href="#" class="logo">
+   <span>✦</span> AI Trend Studio
+  </a>
+
+  <div class="navlinks">
+   <a href="#home">Home</a>
+   <a href="#trends">Trends</a>
+   <a href="#about">About</a>
+  </div>
+
+  <button class="navbtn" id="themeBtn" title="Change theme">☾</button>
+  <button class="navbtn menu" id="menuBtn">☰</button>
+ </nav>
+</header>
+
+<main id="home">
+
+<section class="hero">
+ <div class="badge">🔥 TRENDING AI PHOTO IDEAS</div>
+
+ <h1>
+  Turn your ideas into
+  <span class="gradient">viral AI photo prompts.</span>
+ </h1>
+
+ <p>
+  Discover creative photo styles, trending AI concepts and ready-to-use
+  prompts for your next amazing image.
+ </p>
+
+ <div class="search">
+  <input id="searchInput" type="search" placeholder="Search AI photo styles...">
+  <button id="searchBtn">⌕</button>
+ </div>
+</section>
+
+<div class="container" id="trends">
+
+ <div class="sectionhead">
+  <div>
+   <h2>Explore Trends</h2>
+   <p>Choose a category and discover creative ideas.</p>
+  </div>
+ </div>
+
+ <div class="categories">
+  <button class="cat active" data-cat="all">🔥 All</button>
+  <button class="cat" data-cat="viral">🚀 Viral</button>
+  <button class="cat" data-cat="cinematic">🎬 Cinematic</button>
+  <button class="cat" data-cat="luxury">💎 Luxury</button>
+  <button class="cat" data-cat="retro">📼 Retro</button>
+  <button class="cat" data-cat="portrait">📸 Portrait</button>
+  <button class="cat" data-cat="creative">🎨 Creative</button>
+ </div>
+
+ <div class="grid" id="grid"></div>
+
+</div>
+
+<section class="about" id="about">
+ <h2>What is AI Trend Studio?</h2>
+ <p>
+  AI Trend Studio is a creative discovery platform for AI photo ideas and
+  ready-to-use prompts. Find popular styles, copy a prompt and use it with
+  your favorite AI image generator.
+ </p>
+</section>
+
+</main>
+
+<footer>
+ <div class="footerlinks">
+  <a href="#home">Home</a>
+  <a href="#trends">Trends</a>
+  <a href="#about">About</a>
+  <a href="#" id="privacyLink">Privacy</a>
+  <a href="#" id="contactLink">Contact</a>
+ </div>
+ © 2026 AI Trend Studio. All rights reserved.
+</footer>
+
+<div class="modal" id="modal">
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2 id="modalTitle">AI Prompt</h2>
+   <button class="close" id="closeModal">×</button>
+  </div>
+
+  <div class="prompt" id="modalPrompt"></div>
+
+  <button class="bigcopy" id="modalCopy">📋 Copy Prompt</button>
+ </div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const trends = [
+ {
+  id:1,
+  title:"1980s Retro Portrait",
+  desc:"Give your photo a nostalgic vintage 1980s cinematic look.",
+  category:"retro",
+  emoji:"📼",
+  visual:"v1",
+  tags:["1980s","Retro","Viral"],
+  prompt:"Transform this portrait into an authentic 1980s cinematic photograph. Keep the person's face and identity recognizable. Add vintage film grain, warm analog colors, soft flash photography, period-accurate clothing, retro hairstyle, subtle film imperfections and nostalgic studio lighting. Highly realistic, detailed skin texture, professional photography."
+ },
+ {
+  id:2,
+  title:"Old Money Luxury",
+  desc:"A classy editorial look inspired by timeless luxury fashion.",
+  category:"luxury",
+  emoji:"💎",
+  visual:"v2",
+  tags:["Luxury","Fashion","Editorial"],
+  prompt:"Create a sophisticated old-money luxury portrait. Keep the person's face and identity unchanged. Elegant tailored outfit, premium classic fashion, subtle luxury accessories, beautiful architectural background, soft natural light, cinematic depth of field, muted elegant tones, realistic skin texture, high-end editorial photography."
+ },
+ {
+  id:3,
+  title:"Cinematic Movie Scene",
+  desc:"Turn an ordinary portrait into a dramatic movie frame.",
+  category:"cinematic",
+  emoji:"🎬",
+  visual:"v3",
+  tags:["Movie","Cinematic","4K"],
+  prompt:"Transform this photo into a dramatic cinematic movie scene. Preserve the person's exact facial identity. Add realistic cinematic lighting, atmospheric depth, beautiful background, subtle film grain, professional color grading, natural skin texture, shallow depth of field and dramatic composition. Ultra realistic, high detail, movie still photography."
+ },
+ {
+  id:4,
+  title:"Luxury Wedding",
+  desc:"Create an elegant premium wedding photography style.",
+  category:"luxury",
+  emoji:"💍",
+  visual:"v4",
+  tags:["Wedding","Luxury","Romantic"],
+  prompt:"Create a luxurious cinematic wedding portrait while preserving the person's identity and facial features. Elegant wedding clothing, premium venue, soft romantic lighting, beautiful decorations, realistic skin texture, natural pose, shallow depth of field, professional wedding photography, sophisticated composition, ultra detailed."
+ },
+ {
+  id:5,
+  title:"Royal Portrait",
+  desc:"Transform your portrait into a powerful royal editorial.",
+  category:"portrait",
+  emoji:"👑",
+  visual:"v5",
+  tags:["Royal","Portrait","Premium"],
+  prompt:"Create a majestic royal portrait while keeping the person's face and identity unchanged. Elegant royal clothing, luxurious palace interior, subtle gold details, dramatic soft lighting, cinematic composition, realistic skin texture, premium editorial photography, highly detailed, sophisticated and powerful atmosphere."
+ },
+ {
+  id:6,
+  title:"Travel Explorer",
+  desc:"Make your photo look like a premium travel magazine cover.",
+  category:"creative",
+  emoji:"🌍",
+  visual:"v6",
+  tags:["Travel","Adventure","Magazine"],
+  prompt:"Transform this portrait into a premium travel editorial photograph. Preserve the person's face and identity. Place them in a breathtaking travel environment with natural cinematic lighting, realistic atmosphere, detailed surroundings, professional composition, subtle depth of field, authentic colors and high-end travel magazine photography."
+ },
+ {
+  id:7,
+  title:"Anime World",
+  desc:"Create a beautiful cinematic anime-inspired version.",
+  category:"creative",
+  emoji:"✨",
+  visual:"v7",
+  tags:["Anime","Creative","Art"],
+  prompt:"Transform this portrait into a beautiful cinematic anime-inspired artwork while maintaining recognizable facial identity and pose. Detailed expressive eyes, polished character design, atmospheric background, dramatic lighting, rich visual depth, beautiful colors, high-quality animation film aesthetic."
+ },
+ {
+  id:8,
+  title:"Street Photography",
+  desc:"A raw cinematic street-style portrait with attitude.",
+  category:"viral",
+  emoji:"🏙️",
+  visual:"v8",
+  tags:["Street","Urban","Viral"],
+  prompt:"Create a realistic high-end street photography portrait. Preserve the person's exact identity and facial features. Urban city environment, fashionable modern outfit, natural candid pose, cinematic evening light, realistic shadows, shallow depth of field, authentic street atmosphere, professional photography, highly detailed."
+ },
+ {
+  id:9,
+  title:"Professional Profile",
+  desc:"Create a polished professional profile portrait.",
+  category:"portrait",
+  emoji:"📸",
+  visual:"v9",
+  tags:["Profile","Business","Professional"],
+  prompt:"Create a premium professional profile portrait while keeping the person's exact face and identity unchanged. Clean elegant outfit, studio-quality lighting, subtle professional background, natural skin texture, realistic facial details, shallow depth of field, confident expression, high-end corporate photography."
+ }
+];
+
+const grid = document.getElementById("grid");
+const searchInput = document.getElementById("searchInput");
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const modalPrompt = document.getElementById("modalPrompt");
+const toast = document.getElementById("toast");
+
+let currentPrompt = "";
+let currentCategory = "all";
+
+function getFavorites(){
+ try{
+  return JSON.parse(localStorage.getItem("aiFavorites") || "[]");
+ }catch(e){return []}
+}
+
+function isFavorite(id){
+ return getFavorites().includes(id);
+}
+
+function toggleFavorite(id){
+ let fav = getFavorites();
+
+ if(fav.includes(id)){
+  fav = fav.filter(x => x !== id);
+  showToast("Removed from favorites");
+ }else{
+  fav.push(id);
+  showToast("❤️ Added to favorites");
+ }
+
+ localStorage.setItem("aiFavorites",JSON.stringify(fav));
+ render();
+}
+
+function render(){
+ const query = searchInput.value.toLowerCase().trim();
+
+ let list = trends.filter(item=>{
+  const matchesCategory =
+   currentCategory === "all" || item.category === currentCategory;
+
+  const text =
+   (item.title+" "+item.desc+" "+item.tags.join(" ")).toLowerCase();
+
+  const matchesSearch = text.includes(query);
+
+  return matchesCategory && matchesSearch;
+ });
+
+ if(!list.length){
+  grid.innerHTML = `
+   <div class="empty">
+    <strong>😕 No results found</strong>
+    Try another search or category.
+   </div>`;
+  return;
+ }
+
+ grid.innerHTML = list.map(item=>`
+  <article class="card">
+   <div class="visual ${item.visual}">
+    <span class="trend">🔥 TRENDING</span>
+    <button class="heart ${isFavorite(item.id) ? "saved":""}"
+      onclick="toggleFavorite(${item.id})">
+      ${isFavorite(item.id) ? "♥" : "♡"}
+    </button>
+    <span>${item.emoji}</span>
+   </div>
+
+   <div class="cardbody">
+    <h3>${item.title}</h3>
+    <p>${item.desc}</p>
+
+    <div class="tags">
+     ${item.tags.map(tag=>`<span class="tag">#${tag}</span>`).join("")}
+    </div>
+
+    <div class="actions">
+     <button class="copy" onclick="copyPrompt(${item.id})">
+      📋 Copy Prompt
+     </button>
+     <button class="view" onclick="openPrompt(${item.id})">
+      ↗
+     </button>
+    </div>
+   </div>
+  </article>
+ `).join("");
+}
+
+function copyPrompt(id){
+ const item = trends.find(x=>x.id===id);
+ if(!item)return;
+
+ navigator.clipboard.writeText(item.prompt)
+ .then(()=>showToast("✅ Prompt copied!"))
+ .catch(()=>{
+  const area=document.createElement("textarea");
+  area.value=item.prompt;
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  showToast("✅ Prompt copied!");
+ });
+}
+
+function openPrompt(id){
+ const item = trends.find(x=>x.id===id);
+ if(!item)return;
+
+ currentPrompt=item.prompt;
+ modalTitle.textContent=item.title;
+ modalPrompt.textContent=item.prompt;
+ modal.classList.add("show");
+}
+
+document.getElementById("closeModal").onclick=()=>{
+ modal.classList.remove("show");
+};
+
+modal.addEventListener("click",e=>{
+ if(e.target===modal)modal.classList.remove("show");
+});
+
+document.getElementById("modalCopy").onclick=()=>{
+ navigator.clipboard.writeText(currentPrompt)
+ .then(()=>showToast("✅ Prompt copied!"))
+ .catch(()=>{
+  const area=document.createElement("textarea");
+  area.value=currentPrompt;
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  showToast("✅ Prompt copied!");
+ });
+};
+
+document.querySelectorAll(".cat").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  currentCategory=btn.dataset.cat;
+  render();
+ });
+});
+
+searchInput.addEventListener("input",render);
+
+document.getElementById("searchBtn").onclick=()=>{
+ render();
+ document.getElementById("trends").scrollIntoView({behavior:"smooth"});
+};
+
+function showToast(message){
+ toast.textContent=message;
+ toast.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>{
+  toast.classList.remove("show");
+ },2200);
+}
+
+const savedTheme=localStorage.getItem("theme");
+
+if(savedTheme==="light"){
+ document.body.classList.add("light");
+ document.getElementById("themeBtn").textContent="☀";
+}
+
+document.getElementById("themeBtn").onclick=()=>{
+ document.body.classList.toggle("light");
+
+ const light=document.body.classList.contains("light");
+
+ localStorage.setItem("theme",light?"light":"dark");
+ document.getElementById("themeBtn").textContent=light?"☀":"☾";
+ showToast(light ? "☀ Light mode" : "🌙 Dark mode");
+};
+
+document.getElementById("menuBtn").onclick=()=>{
+ document.querySelector(".navlinks").style.display =
+ document.querySelector(".navlinks").style.display==="flex"
+ ? "none" : "flex";
+};
+
+document.getElementById("privacyLink").onclick=e=>{
+ e.preventDefault();
+ openInfo(
+  "Privacy Policy",
+  "AI Trend Studio does not require an account to browse the website. Search preferences and favorites may be stored locally in your browser. We do not intentionally collect personal information through this demo website."
+ );
+};
+
+document.getElementById("contactLink").onclick=e=>{
+ e.preventDefault();
+ openInfo(
+  "Contact",
+  "For questions, suggestions or corrections, please add your real contact email here before publishing the website."
+ );
+};
+
+function openInfo(title,text){
+ modalTitle.textContent=title;
+ modalPrompt.textContent=text;
+ currentPrompt=text;
+ modal.classList.add("show");
+}
+
+render();
+</script>
+
+</body>
+</html>
