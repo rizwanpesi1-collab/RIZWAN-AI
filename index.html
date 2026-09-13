@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Premium Photo Gallery</title>
+<title>Live Cricket Scores</title>
 
 <style>
 *{
@@ -15,930 +15,993 @@
 
 body{
     font-family:Arial,sans-serif;
-    min-height:100vh;
+    background:#07111f;
     color:#fff;
-    background:
-    radial-gradient(circle at 20% 20%,#2563eb55,transparent 30%),
-    radial-gradient(circle at 80% 80%,#9333ea44,transparent 30%),
-    linear-gradient(135deg,#020617,#0f172a,#020617);
+    min-height:100vh;
 }
 
-/* HEADER */
 header{
+    background:linear-gradient(135deg,#008f63,#004c38);
+    padding:22px 15px;
     text-align:center;
-    padding:55px 15px;
-    background:rgba(15,23,42,.75);
-    border-bottom:1px solid #ffffff18;
-    box-shadow:0 15px 50px #0008;
 }
 
-.logo{
-    width:75px;
-    height:75px;
-    margin:0 auto 18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:22px;
-    font-size:35px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    box-shadow:0 15px 40px #2563eb55;
-}
-
-h1{
-    font-size:clamp(28px,6vw,48px);
+header h1{
+    font-size:28px;
 }
 
 header p{
-    margin-top:10px;
-    color:#94a3b8;
+    margin-top:7px;
+    color:#d5fff0;
 }
 
-/* LOGIN AREA */
-.login-area{
-    text-align:center;
-    padding:30px 15px 10px;
+.container{
+    width:94%;
+    max-width:900px;
+    margin:20px auto;
 }
 
-.admin-login-btn{
-    padding:14px 28px;
-    border:0;
-    border-radius:13px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    color:#fff;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 10px 30px #2563eb44;
-    -webkit-tap-highlight-color:transparent;
-    touch-action:manipulation;
-}
-
-.admin-login-btn:active{
-    transform:scale(.96);
-}
-
-/* ADMIN PANEL */
-#adminPanel{
-    display:none;
-    text-align:center;
-    padding:20px 15px;
-}
-
-/* UPLOAD BUTTON */
-.upload-btn{
-    display:inline-flex;
+.top{
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-    justify-content:center;
     gap:10px;
-    width:230px;
-    padding:17px 25px;
-    border:0;
-    border-radius:14px;
-    background:linear-gradient(135deg,#16a34a,#059669);
-    color:#fff;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 12px 30px #16a34a44;
-    transition:.2s;
-    -webkit-tap-highlight-color:transparent;
-    user-select:none;
-    touch-action:manipulation;
+    margin-bottom:18px;
 }
 
-.upload-btn:active{
-    transform:scale(.96);
-}
-
-/* HIDDEN FILE INPUT */
-#photoUpload{
-    display:none;
-}
-
-.counter{
-    margin-top:12px;
-    color:#94a3b8;
+.live{
+    color:#48ff9c;
     font-size:14px;
 }
 
-/* LOGOUT */
-.logout-btn{
-    margin-top:12px;
-    padding:10px 20px;
-    border:1px solid #ffffff20;
-    border-radius:10px;
-    background:#ffffff10;
-    color:#cbd5e1;
-    cursor:pointer;
-    touch-action:manipulation;
-}
-
-/* GALLERY */
-.gallery{
-    max-width:1200px;
-    margin:auto;
-    padding:30px 20px 70px;
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
-    gap:20px;
-}
-
-.photo{
-    position:relative;
-    overflow:hidden;
-    border-radius:18px;
-    background:#111827;
-    border:1px solid #ffffff12;
-    box-shadow:0 15px 35px #0007;
-}
-
-.photo img{
-    width:100%;
-    height:270px;
-    object-fit:cover;
-    display:block;
-    cursor:pointer;
-    transition:.35s;
-}
-
-.photo:hover img{
-    transform:scale(1.06);
-}
-
-/* DELETE BUTTON */
-.delete-btn{
-    position:absolute;
-    top:10px;
-    right:10px;
-    width:42px;
-    height:42px;
+.refresh{
     border:0;
-    border-radius:50%;
-    background:#dc2626;
-    color:#fff;
-    font-size:18px;
+    background:#00a86b;
+    color:white;
+    padding:11px 17px;
+    border-radius:9px;
+    font-weight:bold;
     cursor:pointer;
-    z-index:5;
-    display:none;
 }
 
-/* EMPTY */
+.loading,
+.error,
 .empty{
-    grid-column:1/-1;
+    background:#101d2d;
+    border-radius:15px;
+    padding:25px;
     text-align:center;
-    padding:70px 20px;
-    color:#64748b;
 }
 
-.empty span{
+.error{
+    color:#ff8d8d;
+}
+
+.match{
+    background:#101d2d;
+    border:1px solid #24384f;
+    border-radius:16px;
+    margin-bottom:18px;
+    overflow:hidden;
+}
+
+.match-head{
+    background:#17283c;
+    padding:15px;
+}
+
+.match-title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.match-meta{
+    color:#9fb0c2;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.live-badge{
+    display:inline-block;
+    background:#d71920;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.scores{
+    padding:17px;
+}
+
+.team{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid #27394e;
+}
+
+.team:last-child{
+    border-bottom:0;
+}
+
+.team-name{
+    font-size:16px;
+    font-weight:bold;
+}
+
+.team-score{
+    font-size:21px;
+    font-weight:bold;
+    color:#5dffad;
+}
+
+.details{
+    background:#0b1725;
+    padding:15px;
+}
+
+.status{
+    color:#ffd166;
+    line-height:1.5;
+}
+
+.venue{
+    color:#aab7c5;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.open-match{
+    width:100%;
+    margin-top:12px;
+    border:0;
+    background:#008f63;
+    color:white;
+    padding:12px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.scorecard{
+    display:none;
+    border-top:1px solid #27394e;
+    padding:15px;
+    background:#091522;
+}
+
+.scorecard.active{
     display:block;
-    font-size:55px;
+}
+
+.score-title{
+    font-size:18px;
+    font-weight:bold;
     margin-bottom:15px;
 }
 
-/* LOGIN POPUP */
-.login-overlay{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:#000b;
-    backdrop-filter:blur(10px);
-    z-index:9999;
-    padding:20px;
-}
-
-.login-box{
-    width:100%;
-    max-width:380px;
-    padding:35px 25px;
-    text-align:center;
-    border-radius:24px;
-    background:#111827;
-    border:1px solid #ffffff18;
-    box-shadow:0 30px 80px #000;
-}
-
-.login-box h2{
+.info-box{
+    background:#111f30;
+    padding:13px;
+    border-radius:10px;
     margin-bottom:10px;
 }
 
-.login-box p{
-    color:#94a3b8;
-    margin-bottom:20px;
+.info-label{
+    color:#8999aa;
+    font-size:12px;
 }
 
-#password{
-    width:100%;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid #334155;
-    background:#020617;
-    color:#fff;
-    outline:none;
-    font-size:16px;
-    text-align:center;
-}
-
-.login-submit{
-    width:100%;
-    margin-top:14px;
-    padding:15px;
-    border:0;
-    border-radius:12px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-    color:#fff;
+.info-value{
+    margin-top:4px;
+    font-size:17px;
     font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
 }
 
-.cancel{
-    margin-top:15px;
-    color:#94a3b8;
-    cursor:pointer;
+.balls{
+    margin-top:10px;
 }
 
-/* FULL IMAGE VIEWER */
-.viewer{
-    position:fixed;
-    inset:0;
-    display:none;
+.ball{
+    display:inline-flex;
     align-items:center;
     justify-content:center;
-    background:#000f;
-    z-index:10000;
-    padding:20px;
-}
-
-.viewer img{
-    max-width:95%;
-    max-height:90vh;
-    object-fit:contain;
-    border-radius:12px;
-}
-
-.close{
-    position:absolute;
-    top:15px;
-    right:20px;
-    width:50px;
-    height:50px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    width:36px;
+    height:36px;
     border-radius:50%;
-    background:#ffffff18;
-    font-size:35px;
-    cursor:pointer;
+    background:#17283c;
+    margin:3px;
+    font-size:12px;
 }
 
-/* FOOTER */
-footer{
-    padding:30px;
+.updated{
     text-align:center;
-    color:#64748b;
-    background:#020617;
+    color:#718196;
+    font-size:12px;
+    margin:18px 0;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-
-    header{
-        padding:45px 15px;
-    }
-
-    .gallery{
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-        padding:20px 10px 50px;
-    }
-
-    .photo img{
-        height:190px;
-    }
-
-    .upload-btn,
-    .admin-login-btn{
-        width:90%;
-    }
+footer{
+    text-align:center;
+    padding:25px;
+    color:#66768a;
+    font-size:12px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
-
-    <div class="logo">
-        📸
-    </div>
-
-    <h1>Premium Photo Gallery</h1>
-
-    <p>Explore our latest photos</p>
-
+    <h1>🏏 Live Cricket</h1>
+    <p>Live Scores • Overs • Wickets • Ball by Ball</p>
 </header>
 
+<div class="container">
 
-<!-- LOGIN BUTTON -->
-<div class="login-area" id="loginArea">
-
-    <button
-        type="button"
-        class="admin-login-btn"
-        onclick="openLogin()">
-
-        🔐 Admin Login
-
-    </button>
-
-</div>
-
-
-<!-- ADMIN PANEL -->
-<div id="adminPanel">
-
-    <!-- DIRECT JAVASCRIPT BUTTON -->
-    <button
-        type="button"
-        class="upload-btn"
-        id="uploadButton"
-        onclick="openGallery()">
-
-        📤 Upload Photos
-
-    </button>
-
-    <!-- MOBILE FILE PICKER -->
-    <input
-        type="file"
-        id="photoUpload"
-        accept="image/*"
-        multiple>
-
-    <div
-        class="counter"
-        id="counter">
-
-        0 / 10 Photos
-
-    </div>
-
-    <button
-        type="button"
-        class="logout-btn"
-        onclick="logout()">
-
-        🔒 Logout
-
-    </button>
-
-</div>
-
-
-<!-- GALLERY -->
-<div
-    class="gallery"
-    id="gallery">
-
-    <div
-        class="empty"
-        id="empty">
-
-        <span>🖼️</span>
-
-        No photos available yet
-
-    </div>
-
-</div>
-
-
-<!-- LOGIN POPUP -->
-<div
-    class="login-overlay"
-    id="loginOverlay">
-
-    <div class="login-box">
-
-        <div style="font-size:45px;margin-bottom:15px;">
-            🔐
+    <div class="top">
+        <div class="live" id="connection">
+            ● Connecting...
         </div>
 
-        <h2>Admin Login</h2>
-
-        <p>
-            Only administrator can upload photos
-        </p>
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter Admin Password"
-            autocomplete="off">
-
-        <button
-            type="button"
-            class="login-submit"
-            onclick="login()">
-
-            🔓 Login
-
+        <button class="refresh" onclick="loadMatches()">
+            🔄 Refresh
         </button>
+    </div>
 
-        <div
-            class="cancel"
-            onclick="closeLogin()">
-
-            Cancel
-
+    <div id="matches">
+        <div class="loading">
+            🏏 Loading live matches...
         </div>
-
     </div>
+
+    <div class="updated" id="updated"></div>
 
 </div>
 
-
-<!-- FULL IMAGE VIEWER -->
-<div
-    class="viewer"
-    id="viewer"
-    onclick="closeViewer(event)">
-
-    <div
-        class="close"
-        onclick="closeImage()">
-
-        ×
-
-    </div>
-
-    <img
-        id="bigImage"
-        alt="Full Image">
-
-</div>
-
-
-<!-- FOOTER -->
 <footer>
-
-    © 2026 Premium Photo Gallery
-
+    Live Cricket Score
 </footer>
 
 
 <script>
 
-/* SETTINGS */
+/* =================================================
+   PASTE YOUR NEW CRICWIX API KEY BELOW
+   ================================================= */
 
-const ADMIN_PASSWORD = "PESI2026";
-
-const MAX_PHOTOS = 10;
-
-let adminLoggedIn = false;
-
-let photoCount = 0;
+const API_KEY = "ecab8eb641b0b0912f816b7d4dd7656b2d8031e3b174300f333c7d540dc8f60a";
 
 
-/* =========================================
-   OPEN LOGIN
-========================================= */
+/* =================================================
+   API
+   ================================================= */
 
-function openLogin(){
-
-    document.getElementById("loginOverlay").style.display = "flex";
-
-    setTimeout(function(){
-
-        document.getElementById("password").focus();
-
-    },100);
-}
+const BASE_URL = "https://api.cricwix.com/ext/v1";
 
 
-/* =========================================
-   CLOSE LOGIN
-========================================= */
+/* =================================================
+   LOAD LIVE MATCHES
+   ================================================= */
 
-function closeLogin(){
+async function loadMatches(){
 
-    document.getElementById("loginOverlay").style.display = "none";
+    const box = document.getElementById("matches");
+    const connection = document.getElementById("connection");
 
-    document.getElementById("password").value = "";
+    if(
+        API_KEY === "YOUR_NEW_API_KEY_HERE" ||
+        API_KEY.trim() === ""
+    ){
 
-}
+        connection.textContent = "● API Key Required";
+        connection.style.color = "#ff7777";
 
-
-/* =========================================
-   LOGIN
-========================================= */
-
-function login(){
-
-    const password =
-        document.getElementById("password").value.trim();
-
-    if(password === ADMIN_PASSWORD){
-
-        adminLoggedIn = true;
-
-        document.getElementById("loginOverlay").style.display = "none";
-
-        document.getElementById("loginArea").style.display = "none";
-
-        document.getElementById("adminPanel").style.display = "block";
-
-        document.querySelectorAll(".delete-btn").forEach(function(btn){
-
-            btn.style.display = "block";
-
-        });
-
-        alert("✅ Admin Login Successful!");
-
-    }else{
-
-        alert("❌ Wrong Password!");
-
-        document.getElementById("password").value = "";
-
-        document.getElementById("password").focus();
-
-    }
-}
-
-
-/* =========================================
-   ENTER KEY LOGIN
-========================================= */
-
-document.getElementById("password").addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
-            login();
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   OPEN MOBILE GALLERY
-========================================= */
-
-function openGallery(){
-
-    if(!adminLoggedIn){
-
-        alert("🔐 Please login as Admin first.");
+        box.innerHTML = `
+            <div class="error">
+                <h3>⚠️ API Key نہیں لگی</h3>
+                <p style="margin-top:10px">
+                    JavaScript میں اپنی Cricwix API Key ڈالیں۔
+                </p>
+            </div>
+        `;
 
         return;
-
     }
 
-    const input =
-        document.getElementById("photoUpload");
 
-    if(photoCount >= MAX_PHOTOS){
-
-        alert("⚠️ Maximum 10 photos allowed.");
-
-        return;
-
-    }
-
-    /* DIRECTLY OPEN PHONE FILE PICKER */
-    input.click();
-
-}
+    connection.textContent = "● Loading...";
+    connection.style.color = "#ffd166";
 
 
-/* =========================================
-   FILE INPUT
-========================================= */
+    try{
 
-document.getElementById("photoUpload").addEventListener(
-    "change",
-    function(){
+        const response = await fetch(
+            BASE_URL + "/fixtures?status=live",
+            {
+                method:"GET",
+                headers:{
+                    "X-Api-Key":API_KEY,
+                    "Accept":"application/json"
+                }
+            }
+        );
 
-        const files =
-            Array.from(this.files);
 
-        if(files.length === 0){
+        if(!response.ok){
 
-            return;
+            if(response.status === 401){
+                throw new Error(
+                    "API Key غلط ہے یا invalid ہو چکی ہے۔"
+                );
+            }
 
-        }
+            if(response.status === 429){
+                throw new Error(
+                    "Daily API limit ختم ہو گئی ہے۔"
+                );
+            }
 
-        const remaining =
-            MAX_PHOTOS - photoCount;
-
-        if(remaining <= 0){
-
-            alert("⚠️ Maximum 10 photos allowed.");
-
-            this.value = "";
-
-            return;
-
-        }
-
-        const selectedFiles =
-            files.slice(0, remaining);
-
-        if(files.length > remaining){
-
-            alert(
-                "⚠️ Only " +
-                remaining +
-                " more photo(s) can be added."
+            throw new Error(
+                "API Error: HTTP " + response.status
             );
+        }
+
+
+        const result = await response.json();
+
+        console.log("Cricwix Response:",result);
+
+
+        const matches = getMatches(result);
+
+
+        if(!matches.length){
+
+            box.innerHTML = `
+                <div class="empty">
+                    <h3>🏏 ابھی کوئی Live Match نہیں</h3>
+                    <p style="margin-top:8px">
+                        اس وقت API نے کوئی live match واپس نہیں کیا۔
+                    </p>
+                </div>
+            `;
+
+        }else{
+
+            box.innerHTML = "";
+
+            matches.forEach((match,index)=>{
+
+                box.innerHTML += createMatch(
+                    match,
+                    index
+                );
+
+            });
 
         }
 
-        selectedFiles.forEach(function(file){
 
-            if(!file.type.startsWith("image/")){
+        connection.textContent =
+            "● Live API Connected";
 
-                alert(
-                    "❌ " +
-                    file.name +
-                    " is not a valid image."
-                );
+        connection.style.color =
+            "#48ff9c";
 
-                return;
 
-            }
+        document.getElementById("updated").textContent =
+            "Updated: " +
+            new Date().toLocaleTimeString();
 
-            const reader =
-                new FileReader();
 
-            reader.onload = function(event){
+    }catch(error){
 
-                addPhoto(event.target.result);
+        console.error(error);
 
-            };
+        connection.textContent =
+            "● API Error";
 
-            reader.onerror = function(){
+        connection.style.color =
+            "#ff7777";
 
-                alert(
-                    "❌ Could not read " +
-                    file.name
-                );
 
-            };
+        box.innerHTML = `
+            <div class="error">
 
-            reader.readAsDataURL(file);
+                <h3>❌ Live Score Load نہیں ہو سکا</h3>
 
-        });
+                <p style="margin-top:10px">
+                    ${escapeHTML(error.message)}
+                </p>
 
-        /* Reset so same image can be selected again */
-        this.value = "";
+                <button
+                    class="refresh"
+                    style="margin-top:15px"
+                    onclick="loadMatches()">
+                    Try Again
+                </button>
 
+            </div>
+        `;
     }
-);
+}
 
 
-/* =========================================
-   ADD PHOTO
-========================================= */
+/* =================================================
+   GET MATCH ARRAY
+   ================================================= */
 
-function addPhoto(src){
+function getMatches(result){
 
-    if(photoCount >= MAX_PHOTOS){
+    if(!result) return [];
+
+    if(Array.isArray(result.data)){
+        return result.data;
+    }
+
+    if(result.data && Array.isArray(result.data.fixtures)){
+        return result.data.fixtures;
+    }
+
+    if(Array.isArray(result.fixtures)){
+        return result.fixtures;
+    }
+
+    return [];
+}
+
+
+/* =================================================
+   CREATE MATCH
+   ================================================= */
+
+function createMatch(match,index){
+
+    const id =
+        match.match_id ||
+        match.id ||
+        match.fixture_id ||
+        index;
+
+
+    const home =
+        match.localteam ||
+        match.home_team ||
+        match.home ||
+        match.teams?.home ||
+        "Home Team";
+
+
+    const away =
+        match.visitorteam ||
+        match.away_team ||
+        match.away ||
+        match.teams?.away ||
+        "Away Team";
+
+
+    const homeScore =
+        match.localteam_score ||
+        match.home_score ||
+        match.score?.home ||
+        "-";
+
+
+    const awayScore =
+        match.visitorteam_score ||
+        match.away_score ||
+        match.score?.away ||
+        "-";
+
+
+    const format =
+        match.format ||
+        match.type ||
+        match.match_type ||
+        "Cricket";
+
+
+    const venue =
+        match.venue ||
+        match.venue_name ||
+        "Venue unavailable";
+
+
+    const status =
+        match.status ||
+        "LIVE";
+
+
+    return `
+
+        <div class="match">
+
+            <div class="match-head">
+
+                <div class="match-title">
+
+                    ${escapeHTML(home)}
+                    vs
+                    ${escapeHTML(away)}
+
+                </div>
+
+                <div class="match-meta">
+
+                    ${escapeHTML(format)}
+
+                </div>
+
+                <span class="live-badge">
+                    🔴 LIVE
+                </span>
+
+            </div>
+
+
+            <div class="scores">
+
+                <div class="team">
+
+                    <div class="team-name">
+                        ${escapeHTML(home)}
+                    </div>
+
+                    <div class="team-score">
+                        ${escapeHTML(homeScore)}
+                    </div>
+
+                </div>
+
+
+                <div class="team">
+
+                    <div class="team-name">
+                        ${escapeHTML(away)}
+                    </div>
+
+                    <div class="team-score">
+                        ${escapeHTML(awayScore)}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="status">
+                    ${escapeHTML(status)}
+                </div>
+
+                <div class="venue">
+                    📍 ${escapeHTML(venue)}
+                </div>
+
+
+                <button
+                    class="open-match"
+                    onclick="loadLiveMatch('${escapeHTML(String(id))}',this)">
+
+                    📊 Full Live Score & Ball-by-Ball
+
+                </button>
+
+            </div>
+
+
+            <div class="scorecard"></div>
+
+        </div>
+
+    `;
+}
+
+
+/* =================================================
+   LIVE MATCH DETAILS
+   ================================================= */
+
+async function loadLiveMatch(id,button){
+
+    const match =
+        button.closest(".match");
+
+    const scorecard =
+        match.querySelector(".scorecard");
+
+
+    if(scorecard.classList.contains("active")){
+
+        scorecard.classList.remove("active");
+
+        button.textContent =
+            "📊 Full Live Score & Ball-by-Ball";
 
         return;
-
-    }
-
-    const gallery =
-        document.getElementById("gallery");
-
-    const empty =
-        document.getElementById("empty");
-
-    if(empty){
-
-        empty.remove();
-
-    }
-
-    const photo =
-        document.createElement("div");
-
-    photo.className = "photo";
-
-
-    /* IMAGE */
-
-    const img =
-        document.createElement("img");
-
-    img.src = src;
-
-    img.alt = "Uploaded Photo";
-
-    img.loading = "lazy";
-
-    img.onclick = function(){
-
-        openImage(src);
-
-    };
-
-
-    /* DELETE BUTTON */
-
-    const deleteBtn =
-        document.createElement("button");
-
-    deleteBtn.type = "button";
-
-    deleteBtn.className = "delete-btn";
-
-    deleteBtn.innerHTML = "🗑️";
-
-    deleteBtn.title = "Delete Photo";
-
-
-    if(adminLoggedIn){
-
-        deleteBtn.style.display = "block";
-
     }
 
 
-    deleteBtn.onclick = function(event){
+    button.textContent =
+        "⏳ Loading...";
 
-        event.stopPropagation();
 
-        if(confirm("Delete this photo?")){
+    try{
 
-            photo.remove();
-
-            photoCount--;
-
-            updateCounter();
-
-            if(photoCount === 0){
-
-                showEmpty();
-
+        const response = await fetch(
+            BASE_URL + "/live/" +
+            encodeURIComponent(id),
+            {
+                method:"GET",
+                headers:{
+                    "X-Api-Key":API_KEY,
+                    "Accept":"application/json"
+                }
             }
+        );
 
+
+        if(!response.ok){
+
+            throw new Error(
+                "Live match API error: HTTP " +
+                response.status
+            );
         }
 
-    };
+
+        const result =
+            await response.json();
 
 
-    photo.appendChild(img);
-
-    photo.appendChild(deleteBtn);
-
-    gallery.appendChild(photo);
-
-    photoCount++;
-
-    updateCounter();
-
-}
+        console.log(
+            "Live Match:",
+            result
+        );
 
 
-/* =========================================
-   UPDATE COUNTER
-========================================= */
-
-function updateCounter(){
-
-    document.getElementById("counter").innerText =
-        photoCount +
-        " / " +
-        MAX_PHOTOS +
-        " Photos";
-
-}
+        scorecard.innerHTML =
+            createScorecard(result);
 
 
-/* =========================================
-   EMPTY GALLERY
-========================================= */
+        scorecard.classList.add("active");
 
-function showEmpty(){
 
-    const gallery =
-        document.getElementById("gallery");
+        button.textContent =
+            "▲ Hide Live Details";
 
-    if(document.getElementById("empty")){
 
-        return;
+    }catch(error){
 
+        scorecard.innerHTML = `
+
+            <div class="error">
+
+                ❌ ${escapeHTML(error.message)}
+
+            </div>
+
+        `;
+
+        scorecard.classList.add("active");
+
+        button.textContent =
+            "📊 Full Live Score & Ball-by-Ball";
     }
+}
 
-    const empty =
-        document.createElement("div");
 
-    empty.className = "empty";
+/* =================================================
+   SCORECARD
+   ================================================= */
 
-    empty.id = "empty";
+function createScorecard(result){
 
-    empty.innerHTML = `
-        <span>🖼️</span>
-        No photos available yet
+    const data =
+        result?.data || result;
+
+
+    const match =
+        data?.match ||
+        data;
+
+
+    const score =
+        data?.score ||
+        match?.score ||
+        {};
+
+
+    const current =
+        data?.current ||
+        {};
+
+
+    let html = `
+
+        <div class="score-title">
+            🏏 Live Scorecard
+        </div>
+
     `;
 
-    gallery.appendChild(empty);
 
-}
+    /* SCORE SUMMARY */
 
+    html += `
 
-/* =========================================
-   OPEN FULL IMAGE
-========================================= */
+        <div class="info-box">
 
-function openImage(src){
+            <div class="info-label">
+                SCORE
+            </div>
 
-    document.getElementById("viewer").style.display = "flex";
+            <div class="info-value">
 
-    document.getElementById("bigImage").src = src;
+                ${escapeHTML(
+                    score.summary ||
+                    score.display ||
+                    current.score ||
+                    "Live score available"
+                )}
 
-}
+            </div>
 
+        </div>
 
-/* =========================================
-   CLOSE FULL IMAGE
-========================================= */
-
-function closeImage(){
-
-    document.getElementById("viewer").style.display = "none";
-
-    document.getElementById("bigImage").src = "";
-
-}
+    `;
 
 
-/* =========================================
-   CLOSE VIEWER
-========================================= */
+    /* OVERS */
 
-function closeViewer(event){
+    html += `
 
-    if(event.target.id === "viewer"){
+        <div class="info-box">
 
-        closeImage();
+            <div class="info-label">
+                OVERS
+            </div>
 
+            <div class="info-value">
+
+                ${escapeHTML(
+                    score.overs ||
+                    current.overs ||
+                    "-"
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* CRR */
+
+    html += `
+
+        <div class="info-box">
+
+            <div class="info-label">
+                CRR
+            </div>
+
+            <div class="info-value">
+
+                ${escapeHTML(
+                    score.crr ||
+                    current.crr ||
+                    "-"
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* BATSMEN */
+
+    const batsmen =
+        data?.batsmen ||
+        current?.batsmen ||
+        [];
+
+
+    if(Array.isArray(batsmen) && batsmen.length){
+
+        html += `
+            <div class="info-box">
+                <div class="info-label">
+                    BATSMEN
+                </div>
+        `;
+
+
+        batsmen.forEach(player=>{
+
+            html += `
+
+                <div style="
+                    margin-top:9px;
+                    padding-top:9px;
+                    border-top:1px solid #26384d;
+                ">
+
+                    <b>
+                        ${escapeHTML(
+                            player.name ||
+                            player.player ||
+                            "Batter"
+                        )}
+                    </b>
+
+                    <br>
+
+                    ${escapeHTML(
+                        player.runs ??
+                        player.r ??
+                        "-"
+                    )}
+                    runs
+
+                    ·
+
+                    ${escapeHTML(
+                        player.balls ??
+                        player.b ??
+                        "-"
+                    )}
+                    balls
+
+                </div>
+
+            `;
+
+        });
+
+
+        html += `</div>`;
     }
 
-}
+
+    /* BOWLER */
+
+    const bowler =
+        data?.bowler ||
+        current?.bowler;
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+    if(bowler){
 
-function logout(){
+        html += `
 
-    adminLoggedIn = false;
+            <div class="info-box">
 
-    document.getElementById("adminPanel").style.display = "none";
+                <div class="info-label">
+                    BOWLER
+                </div>
 
-    document.getElementById("loginArea").style.display = "block";
+                <div class="info-value">
 
-    document.querySelectorAll(".delete-btn").forEach(function(btn){
+                    ${escapeHTML(
+                        bowler.name ||
+                        bowler.player ||
+                        "Bowler"
+                    )}
 
-        btn.style.display = "none";
+                </div>
 
-    });
+            </div>
 
-}
-
-
-/* =========================================
-   ESC KEY
-========================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Escape"){
-
-            closeImage();
-
-            closeLogin();
-
-        }
-
+        `;
     }
+
+
+    /* BALLS */
+
+    const balls =
+        data?.balls ||
+        data?.deliveries ||
+        current?.balls ||
+        [];
+
+
+    if(Array.isArray(balls) && balls.length){
+
+        html += `
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    BALL-BY-BALL
+                </div>
+
+                <div class="balls">
+
+        `;
+
+
+        balls.slice(-12).forEach(ball=>{
+
+            const value =
+                ball.runs ??
+                ball.score ??
+                ball.result ??
+                ball.total ??
+                "•";
+
+
+            html += `
+
+                <span class="ball">
+                    ${escapeHTML(value)}
+                </span>
+
+            `;
+
+        });
+
+
+        html += `
+
+                </div>
+
+            </div>
+
+        `;
+    }
+
+
+    return html;
+}
+
+
+/* =================================================
+   SECURITY
+   ================================================= */
+
+function escapeHTML(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* =================================================
+   START
+   ================================================= */
+
+loadMatches();
+
+
+/*
+   Refresh every 60 seconds.
+
+   Free API has a daily request limit,
+   so do NOT use very short intervals.
+*/
+
+setInterval(
+    loadMatches,
+    60000
 );
 
 </script>
