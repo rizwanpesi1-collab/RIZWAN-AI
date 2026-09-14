@@ -1,2223 +1,1034 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>PRO CRICKET LIVE SCOREBOARD</title>
 
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ -webkit-tap-highlight-color:transparent
+}
 
 html,body{
  width:100%;
  min-height:100%;
-}
-
-body{
- background:#000;
+ background:#05070b;
  color:#fff;
- font-family:Arial,sans-serif;
+ font-family:Arial,Helvetica,sans-serif
 }
 
-button,input,select{font-family:Arial,sans-serif}
-button{cursor:pointer}
+body{overflow-x:hidden}
+button,input,select{font-family:inherit}
+button{cursor:pointer;border:0}
 
 .app{
  width:100%;
- display:flex;
- flex-direction:column;
- align-items:center;
+ max-width:1500px;
+ margin:auto
 }
+
+/* ================= SCOREBOARD ================= */
 
 .broadcast{
- width:100%;
- max-width:1500px;
- aspect-ratio:16/9;
  position:relative;
+ width:100%;
+ aspect-ratio:16/9;
  overflow:hidden;
  background:
- radial-gradient(ellipse at 50% 75%,#278e40 0%,#0c632d 42%,#06151b 100%);
- border:2px solid #222;
+ radial-gradient(circle at 50% 20%,rgba(0,255,170,.12),transparent 35%),
+ linear-gradient(135deg,#071b18,#02060b 50%,#07121c);
+ border:2px solid #26343d
 }
 
-.broadcast:before{
- content:"";
+.stadium{
  position:absolute;
  inset:0;
  background:
- radial-gradient(circle at 10% 15%,rgba(255,255,255,.22),transparent 12%),
- radial-gradient(circle at 90% 15%,rgba(255,255,255,.22),transparent 12%),
- linear-gradient(to bottom,rgba(0,0,0,.05),rgba(0,0,0,.45));
- pointer-events:none;
+ radial-gradient(ellipse at 50% 65%,rgba(35,180,90,.22),transparent 38%),
+ linear-gradient(to bottom,rgba(10,20,30,.75),rgba(1,5,9,.92)),
+ repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 2px,transparent 2px 35px)
 }
 
-.field{
+.stadium:before{
+ content:"";
  position:absolute;
- left:-10%;
- right:-10%;
- bottom:-48%;
- height:95%;
- border-radius:50% 50% 0 0;
- background:
- repeating-linear-gradient(
+ left:5%;
+ right:5%;
+ top:48%;
+ height:28%;
+ border-radius:50%;
+ border:2px solid rgba(255,255,255,.10);
+ background:rgba(30,110,55,.12)
+}
+
+.stadium:after{
+ content:"";
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:27%;
+ background:repeating-linear-gradient(
   90deg,
-  rgba(255,255,255,.035) 0 35px,
-  rgba(0,0,0,.035) 35px 70px
- ),
- linear-gradient(#1b9646,#075f2c);
- border:3px solid rgba(255,255,255,.15);
+  rgba(255,255,255,.035) 0 3px,
+  transparent 3px 55px
+ );
+ opacity:.7
 }
-
-.pitch{
- position:absolute;
- width:18%;
- height:65%;
- left:41%;
- bottom:-4%;
- background:linear-gradient(90deg,#987342,#d3ac72,#987342);
- transform:perspective(300px) rotateX(7deg);
- opacity:.7;
-}
-
-/* ================= TOP ================= */
 
 .topArea{
  position:absolute;
- top:2%;
- left:1.5%;
- right:1.5%;
+ left:2%;
+ right:2%;
+ top:3%;
  height:25%;
  display:grid;
- grid-template-columns:31% 38% 31%;
+ grid-template-columns:27% 46% 27%;
  gap:1%;
- z-index:10;
+ z-index:5
 }
 
 .teamBox{
- height:100%;
- border:3px solid #777;
- border-radius:11px;
- overflow:hidden;
- display:grid;
- grid-template-columns:25% 75%;
- box-shadow:0 5px 15px rgba(0,0,0,.7);
- animation:teamGlow 4s ease infinite;
-}
-
-.pk{
- background:linear-gradient(135deg,#fff2a2,#dfae1b 45%,#806000);
- border-color:#ffe77b;
- color:#080d08;
-}
-
-.eng{
- background:linear-gradient(135deg,#ff596b,#d01a32 45%,#720b19);
- border-color:#ffabb4;
-}
-
-.flagArea{
+ position:relative;
+ min-width:0;
+ border:1px solid rgba(255,255,255,.22);
+ border-radius:16px;
+ padding:3%;
  display:flex;
- flex-direction:column;
- justify-content:center;
  align-items:center;
- gap:5px;
- border-right:2px solid rgba(255,255,255,.45);
- position:relative;
+ gap:5%;
+ background:rgba(5,10,15,.70);
+ backdrop-filter:blur(8px);
+ box-shadow:0 8px 25px rgba(0,0,0,.25)
 }
 
-.flagRing{
- position:relative;
- width:72%;
+.teamBox.batting{
+ border-color:#00f5a0;
+ box-shadow:
+ 0 0 18px rgba(0,255,160,.25),
+ inset 0 0 25px rgba(0,255,160,.06)
+}
+
+.teamFlag{
+ width:24%;
  aspect-ratio:1;
- border-radius:50%;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:3px;
-}
-
-.flagRing:before{
- content:"";
- position:absolute;
- inset:-4px;
- border-radius:50%;
- background:conic-gradient(
-  #ff004c,#ff8c00,#fff000,#00ff66,
-  #00d9ff,#8a00ff,#ff00b7,#ff004c
- );
- animation:flagSpin 1.8s linear infinite;
- filter:
-  drop-shadow(0 0 5px #ff004c)
-  drop-shadow(0 0 10px #00d9ff);
-}
-
-.flagRing:after{
- content:"";
- position:absolute;
- inset:2px;
- border-radius:50%;
- background:#111;
-}
-
-.flag{
- position:relative;
- z-index:2;
- width:100%;
- height:100%;
- border-radius:50%;
  object-fit:cover;
- border:2px solid #fff;
- background:#fff;
- box-shadow:0 0 8px #00d9ff;
+ border-radius:50%;
+ border:3px solid #00f5a0;
+ background:#111
 }
 
-.liveBadge{
- font-size:clamp(7px,1vw,15px);
- font-weight:1000;
- background:#08dc50;
- color:#001d09;
- padding:3px 9px;
- border-radius:5px;
- box-shadow:0 0 12px rgba(0,255,80,.8);
-}
-
-.teamInfo{
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- text-align:center;
-}
+.teamInfo{min-width:0}
 
 .teamName{
- font-size:clamp(14px,2.4vw,34px);
- font-weight:1000;
+ font-size:clamp(12px,2vw,28px);
+ font-weight:900;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis
 }
 
-.teamScoreSmall{
- font-size:clamp(17px,3vw,43px);
- font-weight:1000;
- line-height:1;
- background:
- linear-gradient(
-  to bottom,
-  #fff,#00eaff,#00ff55,#ffe600,#ff3b5c,#fff
- );
- background-size:100% 400%;
- animation:verticalShine 2.5s linear infinite;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- filter:drop-shadow(0 0 6px rgba(255,255,255,.5));
+.teamScore{
+ font-size:clamp(20px,4vw,55px);
+ font-weight:900
 }
 
-.teamSub{
- font-size:clamp(7px,1vw,14px);
- font-weight:bold;
+.teamOvers{
+ font-size:clamp(9px,1.2vw,18px);
+ color:#a8b7c2
 }
 
-.status{
- margin-top:5px;
- padding:3px 9px;
- border-radius:5px;
- font-size:clamp(7px,1vw,14px);
- font-weight:1000;
- background:#111;
- color:#fff;
+.teamStatus{
+ font-size:clamp(8px,1vw,15px);
+ color:#00f5a0;
+ font-weight:bold
 }
 
-.battingStatus{
- background:#ffe000;
- color:#111;
- box-shadow:0 0 8px rgba(255,224,0,.7);
-}
-
-.bowlingStatus{
- background:#101820;
- color:#fff;
- border:1px solid #fff;
-}
-
-/* ================= CENTER SCORE ================= */
-
-.centerTop{
+.centerScore{
  display:flex;
  flex-direction:column;
  justify-content:center;
  align-items:center;
- text-align:center;
+ text-align:center
 }
 
 .matchTitle{
- font-size:clamp(9px,1.5vw,23px);
- font-weight:900;
- letter-spacing:1px;
- background:rgba(0,0,0,.6);
- padding:4px 15px;
- border-radius:20px;
+ font-size:clamp(10px,1.4vw,20px);
+ color:#b9c7d0;
+ font-weight:bold
 }
 
 .mainScore{
- font-size:clamp(38px,8vw,112px);
+ font-size:clamp(30px,6vw,90px);
  font-weight:1000;
- line-height:.9;
- margin-top:7px;
- background:
- linear-gradient(
-  to bottom,
-  #ff004c,#ff7b00,#ffe600,#00ff66,
-  #00d9ff,#8a2cff,#ff004c
- );
- background-size:100% 400%;
- animation:verticalShine 3s linear infinite;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- filter:drop-shadow(0 0 10px rgba(255,255,255,.35));
+ line-height:1
 }
 
-.overs{
- font-size:clamp(10px,1.5vw,21px);
- font-weight:900;
- margin-top:6px;
- padding:4px 12px;
- border-radius:20px;
- border:2px solid transparent;
- background:
- linear-gradient(#000,#000) padding-box,
- linear-gradient(
-  270deg,
-  #ff0055,#ff8c00,#fff000,#00ff66,
-  #00d9ff,#8a00ff,#ff0055
- ) border-box;
- background-size:100% 100%,500% 500%;
- animation:rgbMove 4s linear infinite;
+.mainOvers{
+ font-size:clamp(10px,1.5vw,20px)
 }
 
 .crr{
- font-size:clamp(8px,1.2vw,17px);
- font-weight:bold;
- margin-top:4px;
- animation:colorText 3s linear infinite;
+ color:#00f5a0;
+ font-size:clamp(9px,1.2vw,18px);
+ font-weight:bold
 }
-
-/* ================= EVENT ================= */
 
 .eventArea{
  position:absolute;
- top:32.5%;
- left:7%;
- right:7%;
- height:11.5%;
- display:flex;
- align-items:center;
- justify-content:center;
- z-index:20;
+ top:31%;
+ left:10%;
+ right:10%;
+ text-align:center;
+ z-index:5
 }
 
-.eventBox{
- width:100%;
- height:78%;
- display:flex;
- justify-content:center;
- align-items:center;
- background:
- linear-gradient(
-  90deg,
-  rgba(0,0,0,.05),
-  rgba(0,0,0,.82),
-  rgba(0,0,0,.05)
- );
- border-top:2px solid rgba(255,255,255,.3);
- border-bottom:2px solid rgba(255,255,255,.3);
+.eventBadge{
+ display:inline-block;
+ padding:8px 18px;
+ border-radius:30px;
+ background:rgba(0,0,0,.65);
+ border:1px solid rgba(255,255,255,.2);
+ font-size:clamp(10px,1.5vw,22px);
+ font-weight:900
 }
-
-.eventText{
- font-size:clamp(25px,5vw,72px);
- font-weight:1000;
- letter-spacing:3px;
- background:
- linear-gradient(
-  to bottom,
-  #ff0055,#ff8c00,#fff000,#00ff66,
-  #00d9ff,#a000ff,#ff0055
- );
- background-size:100% 450%;
- animation:verticalShine 2s linear infinite;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- filter:drop-shadow(0 0 10px rgba(255,255,255,.4));
-}
-
-.event-six .eventText{
- filter:
-  drop-shadow(0 0 8px #00ff66)
-  drop-shadow(0 0 18px #00d9ff);
-}
-
-.event-four .eventText{
- filter:
-  drop-shadow(0 0 10px #fff)
-  drop-shadow(0 0 18px #ffe600);
-}
-
-.event-wicket .eventText{
- background:
- linear-gradient(
-  to bottom,
-  #fff,#ff0000,#8b0000,#ff3030,#fff
- );
- background-size:100% 400%;
- animation:
-  verticalShine 1.1s linear infinite,
-  wicketPulse .7s ease-in-out infinite;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- filter:
-  drop-shadow(0 0 8px #ff0000)
-  drop-shadow(0 0 18px #ff0000);
-}
-
-.event-dot .eventText{
- filter:drop-shadow(0 0 8px #ffe400);
-}
-
-/* ================= INFO ================= */
 
 .infoBar{
  position:absolute;
- left:0;
- right:0;
- top:45%;
- height:7%;
- background:
- linear-gradient(
-  90deg,#050505,#1c1c1c 50%,#050505
- );
- border-top:2px solid #e0b900;
- border-bottom:2px solid #e0b900;
+ top:39%;
+ left:8%;
+ right:8%;
  display:grid;
- grid-template-columns:25% 50% 25%;
- align-items:center;
- z-index:15;
- font-weight:900;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px;
+ z-index:5
 }
 
-.infoItem{
+.infoBox{
+ background:rgba(0,0,0,.55);
+ border:1px solid rgba(255,255,255,.15);
+ padding:7px;
  text-align:center;
- font-size:clamp(8px,1.3vw,19px);
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+ border-radius:8px;
+ font-size:clamp(8px,1.1vw,16px)
 }
-
-.infoItem:nth-child(2){
- color:#ffe600;
- border-left:1px solid #777;
- border-right:1px solid #777;
-}
-
-#infoCrr{
- animation:colorText 3s linear infinite;
-}
-
-/* ================= RECENT ================= */
 
 .recent{
  position:absolute;
- top:53%;
- left:1%;
- right:1%;
- height:7%;
+ left:7%;
+ right:7%;
+ top:47%;
  display:flex;
- align-items:center;
+ justify-content:center;
  gap:6px;
- background:rgba(0,0,0,.75);
- border:1px solid #777;
- z-index:14;
- padding:4px 10px;
- overflow:hidden;
-}
-
-.recentTitle{
- font-size:clamp(8px,1.1vw,16px);
- font-weight:1000;
-}
-
-#balls{
- display:flex;
- gap:5px;
+ z-index:5
 }
 
 .ball{
- min-width:clamp(19px,2.3vw,35px);
- height:clamp(19px,2.3vw,35px);
+ width:clamp(25px,3vw,45px);
+ height:clamp(25px,3vw,45px);
  border-radius:50%;
+ background:#111a20;
+ border:1px solid #3c4c55;
  display:flex;
- justify-content:center;
  align-items:center;
- font-size:clamp(7px,1vw,14px);
- font-weight:1000;
- border:1px solid rgba(255,255,255,.5);
- background:#111;
- position:relative;
- overflow:hidden;
+ justify-content:center;
+ font-size:clamp(9px,1.1vw,16px);
+ font-weight:bold
 }
-
-.ball:before{
- content:"";
- position:absolute;
- inset:-30%;
- background:
- linear-gradient(
-  45deg,transparent,
-  rgba(255,255,255,.4),
-  transparent
- );
- animation:ballShine 2s linear infinite;
-}
-
-.ball.four{
- background:#08b63c;
- box-shadow:0 0 8px #00ff66;
-}
-
-.ball.six{
- background:#00dfff;
- color:#001016;
- box-shadow:0 0 10px #00dfff;
-}
-
-.ball.wicket{
- background:
- linear-gradient(
-  270deg,#ff0000,#ff5050,#8b0000,#ff0000
- );
- background-size:300% 300%;
- animation:rgbMove 1.5s linear infinite;
- box-shadow:
-  0 0 7px #ff0000,
-  0 0 14px rgba(255,0,0,.6);
-}
-
-.ball.extra{
- background:#e2b500;
- color:#111;
-}
-
-/* ================= PLAYERS ================= */
 
 .players{
  position:absolute;
- top:61%;
- left:1%;
- right:1%;
- height:30%;
+ left:5%;
+ right:5%;
+ bottom:10%;
  display:grid;
- grid-template-columns:1fr 1fr 1fr;
- gap:5px;
- z-index:12;
+ grid-template-columns:repeat(3,1fr);
+ gap:1.5%;
+ z-index:5
 }
 
 .playerCard{
- position:relative;
- overflow:hidden;
- min-width:0;
- border:2px solid transparent !important;
- background:
- linear-gradient(135deg,#9f121d,#40060a) padding-box,
- linear-gradient(
-  270deg,
-  #ff004c,#ff8c00,#ffe600,#00ff66,
-  #00d9ff,#8a2cff,#ff004c
- ) border-box !important;
- background-size:100% 100%,500% 500%;
- animation:
-  rgbMove 5s ease infinite,
-  playerPulse 3s ease-in-out infinite;
- box-shadow:
-  0 0 10px rgba(0,217,255,.25),
-  0 0 18px rgba(255,0,76,.2);
-}
-
-.playerCard.striker{
- box-shadow:
-  0 0 8px #ffe000,
-  0 0 20px rgba(0,255,120,.5),
-  0 0 30px rgba(0,180,255,.35);
-}
-
-.strikerBadge{
- position:absolute;
- top:3px;
- left:4px;
- z-index:5;
- background:
- linear-gradient(
-  270deg,
-  #ff004c,#ffae00,#fff000,#00ff66,
-  #00d9ff,#ff004c
- );
- background-size:400% 400%;
- animation:rgbMove 3s ease infinite;
- color:#000;
- font-size:clamp(6px,1vw,13px);
- font-weight:1000;
- padding:3px 7px;
- border-radius:4px;
+ display:flex;
+ align-items:center;
+ gap:8px;
+ padding:8px;
+ background:rgba(0,0,0,.65);
+ border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;
+ min-width:0
 }
 
 .playerPhoto{
- position:absolute;
- left:3%;
- bottom:0;
- width:30%;
- height:92%;
- object-fit:contain;
- filter:drop-shadow(3px 3px 3px rgba(0,0,0,.6));
+ width:clamp(40px,6vw,90px);
+ height:clamp(40px,6vw,90px);
+ border-radius:50%;
+ object-fit:cover;
+ border:2px solid #00f5a0;
+ background:#111;
+ flex-shrink:0
 }
 
-.playerDetails{
- position:absolute;
- left:33%;
- right:2%;
- top:12%;
- bottom:2%;
- display:flex;
- flex-direction:column;
- justify-content:center;
- min-width:0;
+.playerData{min-width:0}
+
+.playerRole{
+ color:#00f5a0;
+ font-size:clamp(7px,1vw,14px);
+ font-weight:bold
 }
 
 .playerName{
- font-size:clamp(10px,1.7vw,27px);
- font-weight:1000;
+ font-size:clamp(9px,1.5vw,22px);
+ font-weight:900;
  white-space:nowrap;
  overflow:hidden;
- text-overflow:ellipsis;
+ text-overflow:ellipsis
 }
 
-.playerRuns{
- font-size:clamp(18px,3vw,44px);
- font-weight:1000;
- line-height:1;
- margin:3px 0;
- background:
- linear-gradient(
-  to bottom,
-  #ff004c,#ff9d00,#fff700,#00ff66,
-  #00cfff,#b100ff,#ff004c
- );
- background-size:100% 450%;
- animation:verticalShine 2.8s linear infinite;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- filter:drop-shadow(0 0 7px rgba(255,255,255,.25));
+.playerScore{
+ font-size:clamp(13px,2vw,30px);
+ font-weight:900
 }
 
-.playerStats{
- display:flex;
- gap:6px;
- font-size:clamp(6px,.9vw,13px);
- font-weight:bold;
- flex-wrap:wrap;
+.playerExtra{
+ color:#aab7bd;
+ font-size:clamp(7px,1vw,14px)
 }
-
-#p1SR,#p2SR{
- padding:3px 6px;
- border-radius:5px;
- background:
- linear-gradient(
-  270deg,
-  #ff0055,#ff8c00,#fff000,#00ff6a,
-  #00d9ff,#8a00ff,#ff0055
- );
- background-size:500% 500%;
- animation:rgbMove 4s ease infinite;
- color:#050505;
- font-weight:1000;
- box-shadow:
-  0 0 7px rgba(255,255,255,.4),
-  inset 0 0 5px rgba(255,255,255,.5);
-}
-
-.bowler{
- background:
- linear-gradient(135deg,#096a3c,#032c1a) padding-box,
- linear-gradient(
-  270deg,
-  #00ff6a,#00d9ff,#fff000,
-  #ff004c,#8a00ff,#00ff6a
- ) border-box !important;
- background-size:100% 100%,500% 500%;
-}
-
-.bowlerType{
- position:absolute;
- left:2%;
- right:2%;
- bottom:3%;
- background:#ffd900;
- color:#111;
- font-size:clamp(6px,.9vw,13px);
- font-weight:1000;
- padding:3px;
- text-align:center;
-}
-
-/* ================= BOTTOM ================= */
 
 .bottomBar{
  position:absolute;
- left:0;
- right:0;
- bottom:0;
- height:8%;
- background:
- linear-gradient(
-  90deg,#d2b119,#fff4a0 50%,#d2b119
- );
- color:#111;
+ bottom:1.5%;
+ left:3%;
+ right:3%;
  display:grid;
- grid-template-columns:30% 45% 25%;
+ grid-template-columns:20% 60% 20%;
  align-items:center;
- z-index:30;
- border-top:2px solid #fff;
+ z-index:5;
+ font-size:clamp(8px,1.1vw,16px)
 }
 
-.channel{
- font-size:clamp(8px,1.3vw,18px);
- font-weight:1000;
- text-align:center;
+.live{
+ color:#ff3333;
+ font-weight:bold
 }
 
-.subTarget{
- text-align:center;
- font-size:clamp(8px,1.4vw,20px);
- font-weight:1000;
-}
-
-.progress{
- height:7px;
- background:#555;
- margin:2px 8%;
- border-radius:10px;
- overflow:hidden;
-}
-
-.progressFill{
- height:100%;
- width:0%;
- background:#111;
-}
-
-.review{
- text-align:center;
- font-size:clamp(7px,1.1vw,16px);
- font-weight:1000;
-}
+.channel{text-align:center;font-weight:bold}
+.subs{text-align:right}
 
 /* ================= CONTROLS ================= */
 
 .controls{
- width:100%;
- max-width:1500px;
- background:#090c10;
- padding:14px;
+ padding:15px;
+ background:#080d12
 }
 
-.controlTitle{
- color:#ffd900;
- font-size:20px;
- font-weight:1000;
- margin-bottom:10px;
+.panel{
+ background:#101820;
+ border:1px solid #26343d;
+ border-radius:14px;
+ padding:15px;
+ margin-bottom:15px
 }
 
-.controlGrid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:8px;
+.panelTitle{
+ font-size:18px;
+ font-weight:900;
+ color:#00f5a0;
+ margin-bottom:12px
 }
 
-.controlSection{
- background:#11171e;
- border:1px solid #29323c;
- border-radius:8px;
- padding:10px;
-}
-
-.controlSection h3{
- color:#fff;
- font-size:14px;
- margin-bottom:8px;
-}
-
-.btnGrid{
+.formGrid{
  display:grid;
  grid-template-columns:repeat(3,1fr);
- gap:5px;
+ gap:10px
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px
+}
+
+.field label,
+.photoTool label{
+ display:block;
+ font-size:12px;
+ margin-bottom:5px
+}
+
+input,select{
+ width:100%;
+ padding:11px;
+ background:#080d12;
+ color:#fff;
+ border:1px solid #33434d;
+ border-radius:8px;
+ outline:none
 }
 
 .btn{
- border:0;
- border-radius:5px;
- padding:9px 5px;
- background:#252e38;
+ padding:12px 10px;
+ border-radius:9px;
+ background:#26343d;
  color:#fff;
  font-weight:bold;
- font-size:12px;
+ margin-top:7px
 }
 
-.btn.green{background:#087d3d}
-.btn.red{background:#c51c31}
-.btn.gold{background:#c79c00;color:#111}
-.btn.blue{background:#086ca7}
-.btn.dark{background:#080a0d;border:1px solid #3c444e}
+.btn.green{background:#087f5b}
+.btn.blue{background:#1265a0}
+.btn.red{background:#a32121}
+.btn.purple{background:#653ca8}
+.btn.orange{background:#a75a12}
 
-.fieldInput{
- width:100%;
- background:#070a0d;
- color:#fff;
- border:1px solid #414a55;
- border-radius:5px;
- padding:8px;
- margin-bottom:6px;
- outline:none;
+.roleActive{
+ outline:3px solid #00f5a0
 }
 
-label{
- display:block;
- color:#aaa;
- font-size:11px;
- margin-bottom:3px;
+.syncStatus{
+ padding:9px;
+ margin-bottom:10px;
+ border-radius:8px;
+ background:#083d2d;
+ color:#00f5a0;
+ text-align:center;
+ font-weight:bold
 }
 
-/* ================= SETTINGS ================= */
-
-.settings{
- margin-top:12px;
- background:#0d1218;
- border:2px solid #2b3540;
- border-radius:10px;
- overflow:hidden;
+.syncStatus.off{
+ background:#421919;
+ color:#ff7777
 }
 
-.settingsHeader{
- padding:13px;
- background:
- linear-gradient(
-  90deg,#151d25,#252e38,#151d25
- );
- color:#ffd900;
- font-size:18px;
- font-weight:1000;
- cursor:pointer;
-}
+/* ================= PHOTOS ================= */
 
-.settingsBody{
- padding:12px;
- display:none;
-}
-
-.settingsBody.open{
- display:block;
-}
-
-.settingsGrid{
+.photoTools{
  display:grid;
  grid-template-columns:repeat(3,1fr);
  gap:10px;
+ margin-top:12px
 }
 
-.settingBox{
- background:#121820;
- border:1px solid #303b47;
- padding:10px;
- border-radius:7px;
+.photoTool{
+ background:#0b1117;
+ border:1px solid #26343d;
+ border-radius:12px;
+ padding:10px
 }
 
-.settingBox h4{
- color:#ffe000;
- margin-bottom:8px;
- font-size:14px;
-}
-
-.designGrid{
- display:grid;
- grid-template-columns:repeat(6,1fr);
- gap:7px;
-}
-
-.designBtn{
- min-height:55px;
- border:1px solid #555;
- border-radius:6px;
- background:#222;
- color:#fff;
- font-weight:bold;
- font-size:11px;
-}
-
-.designBtn.active{
- border:2px solid #ffe000;
- box-shadow:0 0 10px rgba(255,220,0,.5);
-}
-
-.uploadLabel{
+.photoPreview{
+ width:65px;
+ height:65px;
+ border-radius:50%;
+ object-fit:cover;
+ border:2px solid #00f5a0;
  display:block;
- background:#252e38;
- color:#fff;
- text-align:center;
- padding:8px;
- border-radius:5px;
- cursor:pointer;
- font-size:12px;
- margin-bottom:6px;
+ margin-bottom:8px
 }
 
-.uploadLabel input{
- display:none;
-}
-
-/* ================= VOLUME / SPEED ================= */
-
-.volumeBox{
- background:#080c11;
- border:1px solid #39434e;
- padding:8px;
- border-radius:6px;
- margin-top:8px;
-}
-
-.volumeTop{
- display:flex;
- justify-content:space-between;
- align-items:center;
- color:#ffe000;
- font-size:12px;
- font-weight:bold;
- margin-bottom:5px;
-}
-
-#volumeSlider{
- width:100%;
- accent-color:#ffd900;
- cursor:pointer;
-}
-
-#volumeValue{
- color:#fff;
-}
-
-.speedBox{
- margin-top:8px;
- background:#0b1016;
- border:1px solid #39434e;
- border-radius:6px;
- padding:8px;
-}
-
-.speedTitle{
- display:flex;
- justify-content:space-between;
- color:#ffe000;
- font-size:12px;
- font-weight:bold;
- margin-bottom:6px;
-}
-
-.speedButtons{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:5px;
-}
-
-.speedBtn{
- border:1px solid #555;
- background:#202831;
- color:#fff;
- border-radius:5px;
- padding:7px 3px;
+.photoTool input{
  font-size:11px;
- font-weight:bold;
+ padding:7px
 }
 
-.speedBtn.active{
- background:#ffd900;
- color:#111;
- border-color:#fff;
- box-shadow:0 0 8px rgba(255,220,0,.6);
+/* ================= SOUND ================= */
+
+.soundGrid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px
+}
+
+.soundValue{
+ text-align:center;
+ padding:11px;
+ background:#0b1117;
+ border-radius:8px;
+ font-weight:bold;
+ border:1px solid #26343d
 }
 
 /* ================= DESIGNS ================= */
 
-.design2 .eventBox{
- background:
- linear-gradient(
-  90deg,#005c35,#00a851,#005c35
- );
+.design2 .broadcast{
+ background:linear-gradient(135deg,#111827,#020617)
 }
 
-.design3 .mainScore{
- background:
- linear-gradient(
-  to bottom,#fff,#ffe000,#ff9d00,#ffe000,#fff
- );
- background-size:100% 400%;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- animation:verticalShine 2.2s linear infinite;
- filter:
-  drop-shadow(0 3px 0 #111)
-  drop-shadow(0 0 20px #ffe000);
+.design3 .broadcast{
+ background:linear-gradient(135deg,#291b05,#050505)
 }
 
-.design3 .eventBox{
- border:3px solid #ffe000;
- background:rgba(0,0,0,.85);
+.design4 .broadcast{
+ background:linear-gradient(135deg,#061a2c,#020508)
 }
 
-.design3 .playerCard{
- border-radius:18px;
+.design5 .broadcast{
+ background:linear-gradient(135deg,#25070b,#050505)
 }
 
-.design4 .teamBox{
- border-radius:3px;
+.design6 .broadcast{
+ background:linear-gradient(135deg,#101010,#020202)
 }
 
-.design4 .eventText{
- font-family:Impact,Arial Black,sans-serif;
- letter-spacing:6px;
+.design7 .broadcast{
+ background:linear-gradient(135deg,#17052d,#020106)
 }
 
-.design5{
- background:
- radial-gradient(
-  circle at 50% 60%,#174b80,transparent 38%
- ),
- linear-gradient(
-  #07101b,#0a2440 45%,#123e28
- );
+.design8 .broadcast{
+ background:linear-gradient(135deg,#351700,#050505)
 }
 
-.design5 .eventBox{
- background:rgba(0,45,85,.78);
+.design9 .broadcast{
+ background:linear-gradient(135deg,#202020,#050505)
 }
 
-.design5 .playerCard{
- background:
- linear-gradient(
-  135deg,#064d88,#031c32
- ) padding-box,
- linear-gradient(
-  270deg,#00d9ff,#fff000,#ff004c,
-  #00ff66,#00d9ff
- ) border-box !important;
- background-size:100% 100%,500% 500%;
+.design10 .broadcast{
+ background:linear-gradient(135deg,#31051e,#050505)
 }
 
-.design6{
- background:
- radial-gradient(
-  circle at 50% 60%,#532f09,transparent 40%
- ),
- linear-gradient(
-  #111,#30200e 45%,#16351e
- );
+.broadcastOnly .controls{
+ display:none
 }
 
-.design6 .mainScore{
- background:
- linear-gradient(
-  to bottom,#fff,#ffdf47,#ff8c00,#ffe66b,#fff
- );
- background-size:100% 400%;
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- -webkit-text-fill-color:transparent;
- animation:verticalShine 2.2s linear infinite;
-}
-
-.design6 .eventBox{
- background:
- linear-gradient(
-  90deg,#542b00,#b56a00,#542b00
- );
-}
-
-.design6 .playerCard{
- background:
- linear-gradient(
-  135deg,#7d4c08,#241605
- ) padding-box,
- linear-gradient(
-  270deg,#ffc62c,#ff4b00,#fff000,#ffc62c
- ) border-box !important;
- background-size:100% 100%,500% 500%;
-}
-
-/* ================= SHORT ================= */
-
-.shortMode{
- max-width:500px;
- aspect-ratio:9/16;
-}
-
-.shortMode .topArea{
- top:1%;
- height:18%;
- grid-template-columns:1fr;
-}
-
-.shortMode .teamBox{
- display:none;
-}
-
-.shortMode .mainScore{
- font-size:70px;
-}
-
-.shortMode .eventArea{
- top:20%;
- height:17%;
-}
-
-.shortMode .infoBar{
- top:38%;
-}
-
-.shortMode .recent{
- top:46%;
-}
-
-.shortMode .players{
- top:54%;
- height:34%;
- grid-template-columns:1fr;
-}
-
-.shortMode .playerCard{
- height:33%;
-}
-
-.shortMode .bottomBar{
- height:7%;
-}
-
-body.broadcastOnly .controls{
- display:none;
-}
-
-body.broadcastOnly .broadcast{
- max-width:none;
+.broadcastOnly .broadcast{
  width:100vw;
+ max-width:none;
  height:100vh;
  aspect-ratio:auto;
+ border:0
 }
 
-/* ================= LONG FULLSCREEN ================= */
-
-body.longFullscreen{
- overflow:hidden;
+.shortMode .broadcast{
+ aspect-ratio:16/6
 }
 
-body.longFullscreen .app{
- width:100vw;
- height:100dvh;
- min-height:100dvh;
-}
+@media(max-width:700px){
 
-body.longFullscreen .broadcast{
- width:100vw;
- height:100dvh;
- min-height:100dvh;
- max-width:none;
- aspect-ratio:auto;
- border:0;
- overflow:hidden;
-}
-
-body.longFullscreen .controls{
- display:none;
-}
-
-/* =========================================================
-   MOBILE LANDSCAPE / 16:9 FULLSCREEN FIX
-   ========================================================= */
-
-@media (orientation:landscape){
-
- body.longFullscreen{
-  width:100vw;
-  height:100dvh;
-  overflow:hidden;
+ .formGrid,
+ .grid{
+  grid-template-columns:1fr
  }
 
- body.longFullscreen .app{
-  width:100vw;
-  height:100dvh;
-  min-height:100dvh;
+ .photoTools{
+  grid-template-columns:1fr
  }
 
- body.longFullscreen .broadcast{
-  width:100vw;
-  height:100dvh;
-  min-height:100dvh;
-  max-width:none;
-  aspect-ratio:auto;
-  border:0;
- }
-
- body.longFullscreen .topArea{
-  top:1%;
-  left:1%;
-  right:1%;
-  height:25%;
- }
-
- body.longFullscreen .eventArea{
-  top:29%;
-  left:5%;
-  right:5%;
-  height:11%;
- }
-
- body.longFullscreen .eventBox{
-  height:85%;
- }
-
- body.longFullscreen .infoBar{
-  top:41%;
-  height:7%;
- }
-
- body.longFullscreen .recent{
-  top:49%;
-  height:7%;
- }
-
- body.longFullscreen .players{
-  top:57%;
-  left:1%;
-  right:1%;
-  height:35%;
-  gap:5px;
- }
-
- body.longFullscreen .playerCard{
-  height:100%;
-  min-height:0;
- }
-
- body.longFullscreen .bottomBar{
-  bottom:0;
-  height:8%;
- }
-
- body.longFullscreen .playerPhoto{
-  width:28%;
-  height:90%;
- }
-
- body.longFullscreen .playerDetails{
-  left:31%;
-  right:2%;
-  top:9%;
-  bottom:2%;
- }
-
- body.longFullscreen .playerName{
-  font-size:clamp(8px,1.5vw,23px);
- }
-
- body.longFullscreen .playerRuns{
-  font-size:clamp(15px,2.7vw,38px);
- }
-
- body.longFullscreen .playerStats{
-  gap:4px;
-  font-size:clamp(5px,.8vw,11px);
- }
-
- body.longFullscreen .mainScore{
-  font-size:clamp(35px,7vw,90px);
- }
-
- body.longFullscreen .teamName{
-  font-size:clamp(11px,2.2vw,30px);
- }
-
- body.longFullscreen .teamScoreSmall{
-  font-size:clamp(15px,2.8vw,38px);
- }
-
- body.longFullscreen .status{
-  margin-top:3px;
-  padding:2px 7px;
- }
-
- body.longFullscreen .overs{
-  font-size:clamp(8px,1.4vw,18px);
-  margin-top:3px;
- }
-
- body.longFullscreen .crr{
-  font-size:clamp(7px,1vw,15px);
-  margin-top:2px;
- }
-
- body.longFullscreen .eventText{
-  font-size:clamp(22px,4.5vw,65px);
- }
-
-}
-
-/* VERY SHORT LANDSCAPE MOBILE */
-
-@media (orientation:landscape) and (max-height:500px){
-
- body.longFullscreen .topArea{
-  top:.7%;
-  height:24%;
- }
-
- body.longFullscreen .eventArea{
-  top:27%;
-  height:11%;
- }
-
- body.longFullscreen .infoBar{
-  top:39%;
-  height:7%;
- }
-
- body.longFullscreen .recent{
-  top:47%;
-  height:7%;
- }
-
- body.longFullscreen .players{
-  top:55%;
-  height:37%;
- }
-
- body.longFullscreen .bottomBar{
-  height:8%;
- }
-
- body.longFullscreen .mainScore{
-  font-size:clamp(28px,6.5vw,70px);
- }
-
- body.longFullscreen .teamName{
-  font-size:clamp(9px,2vw,24px);
- }
-
- body.longFullscreen .teamScoreSmall{
-  font-size:clamp(12px,2.5vw,30px);
- }
-
- body.longFullscreen .eventText{
-  font-size:clamp(19px,4vw,55px);
- }
-
- body.longFullscreen .playerName{
-  font-size:clamp(7px,1.3vw,18px);
- }
-
- body.longFullscreen .playerRuns{
-  font-size:clamp(13px,2.3vw,30px);
- }
-
-}
-
-/* ================= ANIMATIONS ================= */
-
-@keyframes rgbMove{
- 0%{background-position:0% 50%}
- 50%{background-position:100% 50%}
- 100%{background-position:0% 50%}
-}
-
-@keyframes verticalShine{
- 0%{background-position:50% -200%}
- 100%{background-position:50% 200%}
-}
-
-@keyframes flagSpin{
- to{transform:rotate(360deg)}
-}
-
-@keyframes ballShine{
- 0%{transform:translateX(-120%)}
- 100%{transform:translateX(120%)}
-}
-
-@keyframes colorText{
- 0%{color:#ff004c}
- 20%{color:#ff8c00}
- 40%{color:#fff000}
- 60%{color:#00ff66}
- 80%{color:#00d9ff}
- 100%{color:#ff004c}
-}
-
-@keyframes teamGlow{
- 0%{
-  box-shadow:
-   0 0 8px rgba(255,0,80,.5),
-   0 5px 15px rgba(0,0,0,.7)
- }
- 50%{
-  box-shadow:
-   0 0 20px rgba(0,220,255,.8),
-   0 0 35px rgba(0,255,100,.3),
-   0 5px 15px rgba(0,0,0,.7)
- }
- 100%{
-  box-shadow:
-   0 0 8px rgba(255,0,80,.5),
-   0 5px 15px rgba(0,0,0,.7)
- }
-}
-
-@keyframes wicketPulse{
- 0%,100%{transform:scale(1)}
- 50%{transform:scale(1.06)}
-}
-
-@keyframes playerPulse{
- 0%,100%{filter:brightness(1)}
- 50%{filter:brightness(1.12)}
-}
-
-/* ================= RESPONSIVE CONTROLS ================= */
-
-@media(max-width:800px){
-
- .controlGrid{
-  grid-template-columns:repeat(2,1fr);
- }
-
- .settingsGrid{
-  grid-template-columns:1fr;
- }
-
- .designGrid{
-  grid-template-columns:repeat(3,1fr);
- }
-
-}
-
-@media(max-width:500px){
-
- .controlGrid{
-  grid-template-columns:1fr;
+ .soundGrid{
+  grid-template-columns:repeat(2,1fr)
  }
 
  .controls{
-  padding:8px;
+  padding:8px
  }
 
- .speedButtons{
-  grid-template-columns:repeat(3,1fr);
+ .panel{
+  padding:10px
  }
 
+ .players{
+  bottom:9%;
+  gap:4px
+ }
+
+ .playerCard{
+  padding:3px;
+  gap:3px
+ }
+
+ .playerPhoto{
+  width:32px;
+  height:32px
+ }
+
+ .playerExtra{
+  display:none
+ }
+
+ .playerRole{
+  font-size:6px
+ }
+
+ .playerName{
+  font-size:8px
+ }
+
+ .playerScore{
+  font-size:10px
+ }
 }
 </style>
 </head>
 
-<body>
+<body class="design1">
 
 <div class="app">
 
 <div id="broadcast" class="broadcast">
 
-<div class="field"></div>
-<div class="pitch"></div>
-
-<!-- ================= TOP ================= -->
+<div class="stadium"></div>
 
 <div class="topArea">
 
-<div class="teamBox pk">
-
-<div class="flagArea">
-
-<div class="flagRing">
-<img
- id="pkFlag"
- class="flag"
- src="https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg"
->
-</div>
-
-</div>
+<div id="pakBox" class="teamBox batting">
+<img id="pakFlag" class="teamFlag"
+src="https://flagcdn.com/w320/pk.png">
 
 <div class="teamInfo">
-
-<div id="pkName" class="teamName">PAKISTAN</div>
-
-<div id="pkStatus" class="status battingStatus">
-🏏 BATTING
+<div id="pakName" class="teamName">PAKISTAN</div>
+<div id="pakScore" class="teamScore">0/0</div>
+<div id="pakOvers" class="teamOvers">0.0 OVERS</div>
+<div id="pakStatus" class="teamStatus">BATTING</div>
+</div>
 </div>
 
-<div id="pkSmallScore" class="teamScoreSmall">0/0</div>
-
-<div id="pkSmallOvers" class="teamSub">
-0.0 OVERS
-</div>
-
-</div>
-
-</div>
-
-<div class="centerTop">
-
-<div id="matchTitle" class="matchTitle">
-3RD TEST • DAY 1
-</div>
-
+<div class="centerScore">
+<div id="matchTitle" class="matchTitle">3RD TEST • DAY 1</div>
 <div id="mainScore" class="mainScore">0/0</div>
-
-<div id="mainOvers" class="overs">0.0 OVERS</div>
-
+<div id="mainOvers" class="mainOvers">0.0 OVERS</div>
 <div id="crr" class="crr">CRR 0.00</div>
-
 </div>
 
-<div class="teamBox eng">
-
-<div class="flagArea">
-
-<div class="flagRing">
-<img
- id="engFlag"
- class="flag"
- src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg"
->
-</div>
-
-<div class="liveBadge">● LIVE</div>
-
-</div>
+<div id="engBox" class="teamBox bowling">
+<img id="engFlag" class="teamFlag"
+src="https://flagcdn.com/w320/gb.png">
 
 <div class="teamInfo">
-
 <div id="engName" class="teamName">ENGLAND</div>
-
-<div id="engStatus" class="status bowlingStatus">
-⚾ BOWLING
+<div id="engScore" class="teamScore">0/0</div>
+<div id="engOvers" class="teamOvers">0.0 OVERS</div>
+<div id="engStatus" class="teamStatus">BOWLING</div>
 </div>
-
-<div id="engSmallScore" class="teamScoreSmall">0/0</div>
-
-<div id="engSmallOvers" class="teamSub">
-0.0 OVERS
 </div>
 
 </div>
 
+<div class="eventArea">
+<div id="eventBadge" class="eventBadge">READY • 0/0</div>
 </div>
-
-</div>
-
-<!-- ================= EVENT ================= -->
-
-<div id="eventArea" class="eventArea">
-
-<div class="eventBox">
-<div id="eventText" class="eventText"></div>
-</div>
-
-</div>
-
-<!-- ================= INFO ================= -->
 
 <div class="infoBar">
-
-<div class="infoItem">
-CRR <span id="infoCrr">0.00</span>
+<div class="infoBox"><span id="infoCRR">CRR 0.00</span></div>
+<div class="infoBox"><span id="infoMatch">MATCH READY</span></div>
+<div class="infoBox"><span id="infoReviews">ENG 0 | PAK 0</span></div>
 </div>
 
-<div class="infoItem">
-<span id="needText">MATCH STARTING</span>
-</div>
-
-<div class="infoItem">
-REVIEWS: <span id="reviews">ENG 0 | PAK 0</span>
-</div>
-
-</div>
-
-<!-- ================= RECENT ================= -->
-
-<div class="recent">
-
-<div class="recentTitle">RECENT</div>
-
-<div id="balls"></div>
-
-</div>
-
-<!-- ================= PLAYERS ================= -->
+<div id="recent" class="recent"></div>
 
 <div class="players">
 
 <div class="playerCard striker">
+<img id="strikerPhoto" class="playerPhoto"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
-<div class="strikerBadge">★ STRIKER</div>
-
-<img
- id="p1Photo"
- class="playerPhoto"
- src="https://ui-avatars.com/api/?name=BATSMAN+1&background=ffffff&color=111111&bold=true"
->
-
-<div class="playerDetails">
-
-<div id="p1Name" class="playerName">
-BATSMAN 1
+<div class="playerData">
+<div class="playerRole">STRIKER</div>
+<div id="strikerName" class="playerName">BATSMAN 1</div>
+<div id="strikerScore" class="playerScore">0 (0)</div>
+<div id="strikerExtra" class="playerExtra">0x4 • 0x6 • SR 0.00</div>
 </div>
-
-<div id="p1Score" class="playerRuns">
-0 (0)
-</div>
-
-<div class="playerStats">
-
-<span id="p1Fours">4s: 0</span>
-<span id="p1Sixes">6s: 0</span>
-<span id="p1SR">SR: 0.00</span>
-
-</div>
-
-</div>
-
 </div>
 
 <div class="playerCard">
+<img id="nonPhoto" class="playerPhoto"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
-<img
- id="p2Photo"
- class="playerPhoto"
- src="https://ui-avatars.com/api/?name=BATSMAN+2&background=ffffff&color=111111&bold=true"
->
-
-<div class="playerDetails">
-
-<div id="p2Name" class="playerName">
-BATSMAN 2
+<div class="playerData">
+<div class="playerRole">NON-STRIKER</div>
+<div id="nonName" class="playerName">BATSMAN 2</div>
+<div id="nonScore" class="playerScore">0 (0)</div>
+<div id="nonExtra" class="playerExtra">0x4 • 0x6 • SR 0.00</div>
+</div>
 </div>
 
-<div id="p2Score" class="playerRuns">
-0 (0)
+<div class="playerCard">
+<img id="bowlerPhoto" class="playerPhoto"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<div class="playerData">
+<div class="playerRole">BOWLER</div>
+<div id="bowlerName" class="playerName">BOWLER</div>
+<div id="bowlerScore" class="playerScore">0-0</div>
+<div id="bowlerExtra" class="playerExtra">0.0 OV • ECO 0.00</div>
 </div>
-
-<div class="playerStats">
-
-<span id="p2Fours">4s: 0</span>
-<span id="p2Sixes">6s: 0</span>
-<span id="p2SR">SR: 0.00</span>
-
-</div>
-
 </div>
 
 </div>
-
-<div class="playerCard bowler">
-
-<img
- id="bowlerPhoto"
- class="playerPhoto"
- src="https://ui-avatars.com/api/?name=BOWLER&background=ffffff&color=111111&bold=true"
->
-
-<div class="playerDetails">
-
-<div id="bowlerName" class="playerName">
-BOWLER
-</div>
-
-<div id="bowlerScore" class="playerRuns">
-0-0 <small>(0.0)</small>
-</div>
-
-</div>
-
-<div class="bowlerType">
-RIGHT ARM MEDIUM FAST
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= BOTTOM ================= -->
 
 <div class="bottomBar">
-
-<div id="channel" class="channel">
-RIZWAN CRICKET LIVE
-</div>
-
-<div class="subTarget">
-
-SUBSCRIBERS TARGET
-<span id="subText">0 / 100,000</span>
-
-<div class="progress">
-<div id="progressFill" class="progressFill"></div>
+<div class="live">● LIVE</div>
+<div id="channel" class="channel">RIZWAN CRICKET LIVE</div>
+<div id="subs" class="subs">SUBS 0 / 100000</div>
 </div>
 
 </div>
 
-<div class="review">● LIVE</div>
 
-</div>
-
-</div>
-
-<!-- ================= CONTROL PANEL ================= -->
+<!-- ================= FIREBASE ================= -->
 
 <div class="controls">
 
-<div class="controlTitle">
-🎙️ CRICKET LIVE SCOREBOARD CONTROL PANEL
+<div class="panel">
+
+<div class="panelTitle">☁️ TWO-MOBILE LIVE SYNC</div>
+
+<div id="syncStatus" class="syncStatus off">
+Firebase connecting...
 </div>
 
-<div class="controlGrid">
+<div class="formGrid">
 
-<!-- BROADCAST -->
+<div class="field">
+<label>ROOM ID — دونوں موبائل پر ایک ہی رکھیں</label>
+<input id="roomInput" value="PAK2026">
+</div>
 
-<div class="controlSection">
+</div>
 
-<h3>📺 Broadcast</h3>
+<div class="grid">
 
-<div class="btnGrid">
-
-<button class="btn green" onclick="broadcastMode()">
-BROADCAST
+<button id="controlRoleBtn"
+class="btn green"
+onclick="setRole('control')">
+🎛 CONTROL MOBILE
 </button>
 
-<button class="btn blue" onclick="longMode()">
-LONG 16:9
+<button id="broadcastRoleBtn"
+class="btn blue"
+onclick="setRole('broadcast')">
+📺 BROADCAST MOBILE
 </button>
 
-<button class="btn gold" onclick="shortMode()">
-SHORT 9:16
-</button>
-
-<button class="btn dark" onclick="normalMode()">
-CONTROL
-</button>
-
-<button class="btn red" onclick="resetAll()">
-RESET 0/0
-</button>
-
-<button class="btn dark" onclick="undo()">
-↩ UNDO
-</button>
-
-</div>
-
-</div>
-
-<!-- SCORE -->
-
-<div class="controlSection">
-
-<h3>🏏 Score</h3>
-
-<div class="btnGrid">
-
-<button class="btn" onclick="addRuns(0)">DOT</button>
-<button class="btn" onclick="addRuns(1)">+1</button>
-<button class="btn" onclick="addRuns(2)">+2</button>
-<button class="btn green" onclick="addRuns(3)">+3</button>
-<button class="btn blue" onclick="addRuns(4)">FOUR</button>
-<button class="btn gold" onclick="addRuns(6)">SIX</button>
-<button class="btn red" onclick="wicket()">WICKET</button>
-<button class="btn gold" onclick="wide()">WIDE</button>
-<button class="btn gold" onclick="noBall()">NO BALL</button>
-<button class="btn" onclick="bye()">BYE</button>
-<button class="btn" onclick="legBye()">LEG BYE</button>
-<button class="btn dark" onclick="newOver()">NEW OVER</button>
-
-</div>
-
-</div>
-
-<!-- MATCH EVENT -->
-
-<div class="controlSection">
-
-<h3>⚡ Match Event</h3>
-
-<input
- id="eventInput"
- class="fieldInput"
- placeholder="SIX / FOUR / WICKET"
->
-
-<div class="btnGrid">
-
-<button class="btn green" onclick="eventSix()">SIX</button>
-<button class="btn blue" onclick="eventFour()">FOUR</button>
-<button class="btn red" onclick="wicket()">WICKET</button>
-<button class="btn gold" onclick="setEvent('DOT BALL')">DOT</button>
-<button class="btn dark" onclick="customEvent()">APPLY</button>
-<button class="btn dark" onclick="setEvent('')">CLEAR</button>
-
-</div>
-
-</div>
-
-<!-- PLAYERS -->
-
-<div class="controlSection">
-
-<h3>👤 Players</h3>
-
-<input
- id="p1NameInput"
- class="fieldInput"
- placeholder="Striker Name"
->
-
-<input
- id="p2NameInput"
- class="fieldInput"
- placeholder="Non-Striker Name"
->
-
-<input
- id="bowlerNameInput"
- class="fieldInput"
- placeholder="Bowler Name"
->
-
-<button
- class="btn green"
- style="width:100%"
- onclick="applyPlayers()"
->
-APPLY PLAYERS
+<button class="btn purple"
+onclick="connectRoom()">
+🔗 CONNECT ROOM
 </button>
 
 </div>
 
 </div>
 
-<!-- ================= SETTINGS ================= -->
 
-<div class="settings">
+<!-- ================= SCORE CONTROLS ================= -->
 
-<div
- class="settingsHeader"
- onclick="toggleSettings()"
->
-⚙️ SETTINGS — TEAM / FLAG / BATTING / SCORE / SOUND / DESIGN
-<span style="float:right">▼</span>
+<div class="panel">
+
+<div class="panelTitle">🏏 SCORE CONTROL</div>
+
+<div class="grid">
+
+<button class="btn green" onclick="addRuns(1)">+1 RUN</button>
+<button class="btn green" onclick="addRuns(2)">+2 RUNS</button>
+<button class="btn green" onclick="addRuns(3)">+3 RUNS</button>
+
+<button class="btn orange" onclick="eventFour()">FOUR</button>
+<button class="btn orange" onclick="eventSix()">SIX</button>
+<button class="btn red" onclick="eventWicket()">WICKET</button>
+
+<button class="btn blue" onclick="wide()">WIDE</button>
+<button class="btn blue" onclick="noBall()">NO BALL</button>
+<button class="btn" onclick="dotBall()">DOT BALL</button>
+
+<button class="btn purple" onclick="swapStrike()">SWAP STRIKE</button>
+<button class="btn purple" onclick="newOver()">NEW OVER</button>
+<button class="btn red" onclick="undo()">UNDO</button>
+
 </div>
 
-<div id="settingsBody" class="settingsBody">
+</div>
 
-<div class="settingsGrid">
 
-<!-- TEAMS -->
+<!-- ================= PLAYERS ================= -->
 
-<div class="settingBox">
+<div class="panel">
 
-<h4>🇵🇰🇬🇧 Teams</h4>
+<div class="panelTitle">👤 PLAYERS + PHOTOS</div>
 
-<label>Pakistan Team</label>
+<div class="formGrid">
 
-<input
- id="pkNameInput"
- class="fieldInput"
- value="PAKISTAN"
->
+<div class="field">
+<label>STRIKER NAME</label>
+<input id="strikerInput" value="BATSMAN 1">
+</div>
 
-<label>England Team</label>
+<div class="field">
+<label>NON-STRIKER NAME</label>
+<input id="nonInput" value="BATSMAN 2">
+</div>
 
-<input
- id="engNameInput"
- class="fieldInput"
- value="ENGLAND"
->
+<div class="field">
+<label>BOWLER NAME</label>
+<input id="bowlerInput" value="BOWLER">
+</div>
 
-<label>Match Title</label>
+</div>
 
-<input
- id="matchTitleInput"
- class="fieldInput"
- value="3RD TEST • DAY 1"
->
 
-<button
- class="btn gold"
- style="width:100%"
- onclick="applyTeams()"
->
-APPLY TEAMS
+<div class="photoTools">
+
+<div class="photoTool">
+<label>STRIKER PHOTO</label>
+
+<img id="strikerPreview"
+class="photoPreview"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<input id="strikerPhotoInput"
+type="file"
+accept="image/*"
+onchange="uploadPlayerPhoto('striker',this)">
+</div>
+
+
+<div class="photoTool">
+<label>NON-STRIKER PHOTO</label>
+
+<img id="nonPreview"
+class="photoPreview"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<input id="nonPhotoInput"
+type="file"
+accept="image/*"
+onchange="uploadPlayerPhoto('non',this)">
+</div>
+
+
+<div class="photoTool">
+<label>BOWLER PHOTO</label>
+
+<img id="bowlerPreview"
+class="photoPreview"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<input id="bowlerPhotoInput"
+type="file"
+accept="image/*"
+onchange="uploadPlayerPhoto('bowler',this)">
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<button class="btn green"
+onclick="applyPlayers()">
+APPLY PLAYERS + PHOTOS
+</button>
+
+<button class="btn purple"
+onclick="swapStrike()">
+SWAP STRIKE
 </button>
 
 </div>
 
-<!-- BATTING -->
+</div>
 
-<div class="settingBox">
 
-<h4>🏏 Batting / Bowling Team</h4>
+<!-- ================= SOUND ================= -->
 
-<label>Batting Team</label>
+<div class="panel">
 
-<select id="battingSelect" class="fieldInput">
+<div class="panelTitle">🔊 SOUND CONTROL</div>
 
+<div class="soundGrid">
+
+<button class="btn green"
+onclick="enableSound()">
+🔊 ENABLE SOUND
+</button>
+
+<button class="btn"
+onclick="toggleSound()">
+SOUND ON/OFF
+</button>
+
+<button class="btn blue"
+onclick="changeVolume(-10)">
+🔉 VOLUME −
+</button>
+
+<button class="btn blue"
+onclick="changeVolume(10)">
+🔊 VOLUME +
+</button>
+
+<button class="btn purple"
+onclick="changeSpeed(-0.1)">
+🐢 SLOW
+</button>
+
+<button class="btn purple"
+onclick="changeSpeed(0.1)">
+⚡ FAST
+</button>
+
+<div class="soundValue" id="volumeValue">
+VOL 80%
+</div>
+
+<div class="soundValue" id="speedValue">
+SPEED 1.0x
+</div>
+
+<button class="btn orange"
+onclick="testSound()">
+TEST SOUND
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= GENERAL SETTINGS ================= -->
+
+<div class="panel">
+
+<div class="panelTitle">⚙️ GENERAL SETTINGS</div>
+
+<div class="formGrid">
+
+<div class="field">
+<label>PAKISTAN NAME</label>
+<input id="pkNameInput" value="PAKISTAN">
+</div>
+
+<div class="field">
+<label>ENGLAND NAME</label>
+<input id="engNameInput" value="ENGLAND">
+</div>
+
+<div class="field">
+<label>BATTING TEAM</label>
+<select id="battingInput">
 <option value="PAK">PAKISTAN</option>
 <option value="ENG">ENGLAND</option>
-
 </select>
+</div>
 
-<button
- class="btn green"
- style="width:100%;margin-bottom:8px"
- onclick="applyBatting()"
->
-APPLY BATTING TEAM
-</button>
+<div class="field">
+<label>MATCH TITLE</label>
+<input id="titleInput" value="3RD TEST • DAY 1">
+</div>
 
-<div style="font-size:11px;color:#aaa;line-height:1.5">
+<div class="field">
+<label>REVIEWS</label>
+<input id="reviewsInput" value="ENG 0 | PAK 0">
+</div>
 
-Batting ٹیم کے اوپر 🏏 BATTING<br>
-دوسری ٹیم کے اوپر ⚾ BOWLING آئے گا۔
+<div class="field">
+<label>CHANNEL</label>
+<input id="channelInput" value="RIZWAN CRICKET LIVE">
+</div>
 
+<div class="field">
+<label>CURRENT SUBSCRIBERS</label>
+<input id="subCurrentInput" type="number" value="0">
+</div>
+
+<div class="field">
+<label>SUBSCRIBER TARGET</label>
+<input id="subTargetInput" type="number" value="100000">
 </div>
 
 </div>
 
-<!-- SCORE SETTINGS -->
-
-<div class="settingBox">
-
-<h4>🏏 Score Settings</h4>
-
-<label>Current Score</label>
-
-<input
- id="scoreInput"
- class="fieldInput"
- placeholder="0/0"
->
-
-<label>Overs</label>
-
-<input
- id="oversInput"
- class="fieldInput"
- placeholder="0.0"
->
-
-<label>Reviews</label>
-
-<input
- id="reviewsInput"
- class="fieldInput"
- value="ENG 0 | PAK 0"
->
-
-<button
- class="btn gold"
- style="width:100%"
- onclick="applyScoreSettings()"
->
-APPLY SCORE
+<button class="btn green"
+onclick="applyGeneralSettings()">
+APPLY SETTINGS
 </button>
 
 </div>
 
-<!-- CHANNEL -->
 
-<div class="settingBox">
+<!-- ================= DESIGNS ================= -->
 
-<h4>📺 Channel / Subscribers</h4>
+<div class="panel">
 
-<label>Channel Name</label>
+<div class="panelTitle">🎨 SCOREBOARD DESIGNS</div>
 
-<input
- id="channelInput"
- class="fieldInput"
- value="RIZWAN CRICKET LIVE"
->
+<div class="grid">
 
-<label>Subscribers Current</label>
+<button class="btn green" onclick="design(1)">DESIGN 1</button>
+<button class="btn blue" onclick="design(2)">DESIGN 2</button>
+<button class="btn purple" onclick="design(3)">DESIGN 3</button>
+<button class="btn orange" onclick="design(4)">DESIGN 4</button>
+<button class="btn red" onclick="design(5)">DESIGN 5</button>
+<button class="btn" onclick="design(6)">DESIGN 6</button>
+<button class="btn purple" onclick="design(7)">DESIGN 7</button>
+<button class="btn orange" onclick="design(8)">DESIGN 8</button>
+<button class="btn blue" onclick="design(9)">DESIGN 9</button>
+<button class="btn red" onclick="design(10)">DESIGN 10</button>
 
-<input
- id="subCurrentInput"
- class="fieldInput"
- value="0"
->
+</div>
 
-<label>Subscriber Target</label>
+</div>
 
-<input
- id="subTargetInput"
- class="fieldInput"
- value="100000"
->
 
-<button
- class="btn gold"
- style="width:100%"
- onclick="applyChannel()"
->
-APPLY CHANNEL
+<!-- ================= FULLSCREEN ================= -->
+
+<div class="panel">
+
+<div class="panelTitle">📺 BROADCAST MODE</div>
+
+<div class="grid">
+
+<button class="btn green"
+onclick="broadcastMode()">
+FULL BROADCAST
 </button>
 
-</div>
-
-<!-- FLAGS -->
-
-<div class="settingBox">
-
-<h4>🏳️ Team Flags</h4>
-
-<label class="uploadLabel">
-
-Upload Pakistan Flag
-
-<input
- type="file"
- accept="image/*"
- onchange="uploadImage(event,'pkFlag')"
->
-
-</label>
-
-<label class="uploadLabel">
-
-Upload England Flag
-
-<input
- type="file"
- accept="image/*"
- onchange="uploadImage(event,'engFlag')"
->
-
-</label>
-
-<button
- class="btn dark"
- style="width:100%"
- onclick="restoreFlags()"
->
-RESTORE FLAGS
+<button class="btn blue"
+onclick="longMode()">
+LONG MODE
 </button>
 
-</div>
-
-<!-- PHOTOS -->
-
-<div class="settingBox">
-
-<h4>👤 Player Photos</h4>
-
-<label class="uploadLabel">
-
-Striker Photo
-
-<input
- type="file"
- accept="image/*"
- onchange="uploadImage(event,'p1Photo')"
->
-
-</label>
-
-<label class="uploadLabel">
-
-Non-Striker Photo
-
-<input
- type="file"
- accept="image/*"
- onchange="uploadImage(event,'p2Photo')"
->
-
-</label>
-
-<label class="uploadLabel">
-
-Bowler Photo
-
-<input
- type="file"
- accept="image/*"
- onchange="uploadImage(event,'bowlerPhoto')"
->
-
-</label>
-
-</div>
-
-<!-- SOUND -->
-
-<div class="settingBox">
-
-<h4>🔊 Sound / Music</h4>
-
-<label class="uploadLabel">
-
-Upload Sound / Music
-
-<input
- id="musicFile"
- type="file"
- accept="audio/*"
- onchange="loadMusic(event)"
->
-
-</label>
-
-<div class="btnGrid">
-
-<button class="btn green" onclick="playMusic()">▶ PLAY</button>
-<button class="btn gold" onclick="pauseMusic()">⏸ PAUSE</button>
-<button class="btn red" onclick="stopMusic()">■ STOP</button>
-
-</div>
-
-<div class="volumeBox">
-
-<div class="volumeTop">
-
-<span>🔊 MUSIC VOLUME</span>
-
-<span id="volumeValue">100%</span>
-
-</div>
-
-<input
- id="volumeSlider"
- type="range"
- min="0"
- max="100"
- value="100"
- oninput="changeVolume(this.value)"
->
-
-</div>
-
-<div class="speedBox">
-
-<div class="speedTitle">
-
-<span>🎵 MUSIC SPEED</span>
-<span id="speedValue">1x</span>
-
-</div>
-
-<div class="speedButtons">
-
-<button id="speed05" class="speedBtn" onclick="changeSpeed(.5)">0.5x</button>
-<button id="speed075" class="speedBtn" onclick="changeSpeed(.75)">0.75x</button>
-<button id="speed1" class="speedBtn active" onclick="changeSpeed(1)">1x</button>
-<button id="speed125" class="speedBtn" onclick="changeSpeed(1.25)">1.25x</button>
-<button id="speed15" class="speedBtn" onclick="changeSpeed(1.5)">1.5x</button>
-<button id="speed2" class="speedBtn" onclick="changeSpeed(2)">2x</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- DESIGNS -->
-
-<div
- class="settingBox"
- style="margin-top:10px"
->
-
-<h4>🎨 6 Professional Designs</h4>
-
-<div class="designGrid">
-
-<button id="design1" class="designBtn active" onclick="changeDesign(1)">
-DESIGN 1<br>BROADCAST
+<button class="btn purple"
+onclick="shortMode()">
+SHORT MODE
 </button>
 
-<button id="design2" class="designBtn" onclick="changeDesign(2)">
-DESIGN 2<br>GREEN
-</button>
-
-<button id="design3" class="designBtn" onclick="changeDesign(3)">
-DESIGN 3<br>GOLD
-</button>
-
-<button id="design4" class="designBtn" onclick="changeDesign(4)">
-DESIGN 4<br>CLASSIC
-</button>
-
-<button id="design5" class="designBtn" onclick="changeDesign(5)">
-DESIGN 5<br>BLUE
-</button>
-
-<button id="design6" class="designBtn" onclick="changeDesign(6)">
-DESIGN 6<br>GOLD PRO
+<button class="btn red"
+onclick="exitFullscreenMode()">
+EXIT
 </button>
 
 </div>
 
 </div>
 
-<!-- EXTRA -->
 
-<div
- class="settingBox"
- style="margin-top:10px"
->
+<!-- ================= SAVE ================= -->
 
-<h4>⚙️ Extra Functions</h4>
+<div class="panel">
 
-<div class="btnGrid">
+<div class="panelTitle">💾 SAVE / LOAD</div>
 
-<button class="btn blue" onclick="swapStrike()">
-⇄ SWAP STRIKE
+<div class="grid">
+
+<button class="btn green"
+onclick="saveState(true)">
+SAVE
 </button>
 
-<button class="btn gold" onclick="eventSix()">
-⚡ SIX
+<button class="btn blue"
+onclick="loadSaved(true)">
+LOAD SAVE
 </button>
 
-<button class="btn green" onclick="eventFour()">
-🔥 FOUR
-</button>
-
-<button class="btn red" onclick="wicket()">
-❌ WICKET
-</button>
-
-<button class="btn dark" onclick="saveState()">
-💾 SAVE
-</button>
-
-<button class="btn dark" onclick="clearSaved()">
+<button class="btn red"
+onclick="clearSave()">
 CLEAR SAVE
 </button>
 
@@ -2226,1534 +1037,1366 @@ CLEAR SAVE
 </div>
 
 </div>
-
 </div>
 
-</div>
-
-</div>
-
-<audio id="music"></audio>
 
 <script>
 
-/* ================= STATE ================= */
+/* =====================================================
+   FIREBASE
+===================================================== */
 
-let state={
-
-pkName:"PAKISTAN",
-engName:"ENGLAND",
-
-score:0,
-wickets:0,
-overs:0,
-balls:0,
-
-engScore:0,
-engWickets:0,
-engOvers:0,
-
-crr:0,
-
-matchTitle:"3RD TEST • DAY 1",
-
-reviews:"ENG 0 | PAK 0",
-
-channel:"RIZWAN CRICKET LIVE",
-
-subCurrent:0,
-subTarget:100000,
-
-event:"",
-
-battingTeam:"PAK",
-
-striker:{
- name:"BATSMAN 1",
- runs:0,
- balls:0,
- fours:0,
- sixes:0
-},
-
-nonStriker:{
- name:"BATSMAN 2",
- runs:0,
- balls:0,
- fours:0,
- sixes:0
-},
-
-bowler:{
- name:"BOWLER",
- runs:0,
- wickets:0,
- overs:0
-},
-
-ballsHistory:[],
-design:1,
-volume:100,
-speed:1
-
+const firebaseConfig={
+ apiKey:"AIzaSyA9sXLWiY6eODX5aC1CTDBT8BWpI15-0KQ",
+ authDomain:"live-match-907ac.firebaseapp.com",
+ databaseURL:"https://live-match-907ac-default-rtdb.firebaseio.com",
+ projectId:"live-match-907ac",
+ storageBucket:"live-match-907ac.firebasestorage.app",
+ messagingSenderId:"42310056971",
+ appId:"1:42310056971:web:6c9966c76b62f5c8e8db0e",
+ measurementId:"G-HTWJ4FYFXR"
 };
 
-let undoStack=[];
+firebase.initializeApp(firebaseConfig);
+
+const db=firebase.database();
+
+let firebaseReady=false;
+let roomRef=null;
+let roomCode=localStorage.getItem("scoreRoom")||"PAK2026";
+let role=localStorage.getItem("scoreRole")||"control";
+let historyStack=[];
+let ignoreRemote=false;
 
 
-/* ================= SAVE ================= */
+/* =====================================================
+   DEFAULT STATE
+===================================================== */
 
-function saveState(){
+function defaultState(){
 
-try{
+ return{
 
-localStorage.setItem(
-"PRO_CRICKET_SCOREBOARD",
-JSON.stringify(state)
-);
+  pkName:"PAKISTAN",
+  engName:"ENGLAND",
 
-}catch(e){}
+  innings:{
+   PAK:{
+    score:0,
+    wickets:0,
+    overs:0,
+    balls:0
+   },
 
+   ENG:{
+    score:0,
+    wickets:0,
+    overs:0,
+    balls:0
+   }
+  },
+
+  battingTeam:"PAK",
+
+  matchTitle:"3RD TEST • DAY 1",
+
+  reviews:"ENG 0 | PAK 0",
+
+  channel:"RIZWAN CRICKET LIVE",
+
+  subCurrent:0,
+  subTarget:100000,
+
+  event:"",
+
+  striker:{
+   name:"BATSMAN 1",
+   runs:0,
+   balls:0,
+   fours:0,
+   sixes:0
+  },
+
+  nonStriker:{
+   name:"BATSMAN 2",
+   runs:0,
+   balls:0,
+   fours:0,
+   sixes:0
+  },
+
+  bowler:{
+   name:"BOWLER",
+   runs:0,
+   wickets:0,
+   overs:0,
+   balls:0
+  },
+
+  ballsHistory:[],
+
+  design:1,
+
+  pkFlag:"https://flagcdn.com/w320/pk.png",
+
+  engFlag:"https://flagcdn.com/w320/gb.png",
+
+  strikerPhoto:"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+  nonPhoto:"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+  bowlerPhoto:"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+  soundEnabled:true,
+
+  volume:0.8,
+
+  speed:1
+ };
 }
 
+let state=defaultState();
 
-/* ================= LOAD ================= */
 
-function loadState(){
+/* =====================================================
+   AUDIO
+===================================================== */
 
-try{
+let audioCtx=null;
 
-let saved=
-localStorage.getItem(
-"PRO_CRICKET_SCOREBOARD"
-);
+function ensureAudio(){
 
-if(saved){
+ if(!audioCtx){
 
-let parsed=JSON.parse(saved);
-
-state={
- ...state,
- ...parsed,
-
- striker:{
-  ...state.striker,
-  ...(parsed.striker||{})
- },
-
- nonStriker:{
-  ...state.nonStriker,
-  ...(parsed.nonStriker||{})
- },
-
- bowler:{
-  ...state.bowler,
-  ...(parsed.bowler||{})
+  audioCtx=new(
+   window.AudioContext||
+   window.webkitAudioContext
+  )();
  }
 
-};
-
+ if(audioCtx.state==="suspended"){
+  audioCtx.resume();
+ }
 }
 
-}catch(e){}
+function beep(freq,duration,type="sine"){
 
+ if(!state.soundEnabled)return;
+
+ ensureAudio();
+
+ const osc=audioCtx.createOscillator();
+ const gain=audioCtx.createGain();
+
+ osc.type=type;
+ osc.frequency.value=freq;
+
+ gain.gain.setValueAtTime(
+  Math.max(0.01,state.volume),
+  audioCtx.currentTime
+ );
+
+ gain.gain.exponentialRampToValueAtTime(
+  0.001,
+  audioCtx.currentTime+
+  duration/state.speed
+ );
+
+ osc.connect(gain);
+ gain.connect(audioCtx.destination);
+
+ osc.start();
+
+ osc.stop(
+  audioCtx.currentTime+
+  duration/state.speed
+ );
+}
+
+function playEventSound(type){
+
+ if(!state.soundEnabled)return;
+
+ if(type==="run"){
+  beep(500,.12,"sine");
+ }
+
+ if(type==="four"){
+  beep(600,.12,"square");
+  setTimeout(()=>beep(800,.15,"square"),100);
+ }
+
+ if(type==="six"){
+  beep(700,.12,"square");
+  setTimeout(()=>beep(900,.12,"square"),120);
+  setTimeout(()=>beep(1100,.20,"square"),240);
+ }
+
+ if(type==="wicket"){
+  beep(180,.25,"sawtooth");
+  setTimeout(()=>beep(120,.30,"sawtooth"),220);
+ }
+
+ if(type==="wide"){
+  beep(350,.15,"triangle");
+ }
+
+ if(type==="noball"){
+  beep(300,.15,"triangle");
+  setTimeout(()=>beep(500,.15,"triangle"),130);
+ }
+}
+
+function enableSound(){
+
+ ensureAudio();
+
+ state.soundEnabled=true;
+
+ updateSoundUI();
+
+ pushRemote();
+
+ testSound();
+}
+
+function toggleSound(){
+
+ state.soundEnabled=!state.soundEnabled;
+
+ if(state.soundEnabled){
+  ensureAudio();
+ }
+
+ updateSoundUI();
+ pushRemote();
+}
+
+function changeVolume(amount){
+
+ state.volume=Math.min(
+  1,
+  Math.max(0,state.volume+amount/100)
+ );
+
+ updateSoundUI();
+ pushRemote();
+}
+
+function changeSpeed(amount){
+
+ state.speed=Math.min(
+  2,
+  Math.max(.5,state.speed+amount)
+ );
+
+ state.speed=Math.round(state.speed*10)/10;
+
+ updateSoundUI();
+ pushRemote();
+}
+
+function updateSoundUI(){
+
+ document.getElementById("volumeValue").textContent=
+  "VOL "+Math.round(state.volume*100)+"%";
+
+ document.getElementById("speedValue").textContent=
+  "SPEED "+state.speed.toFixed(1)+"x";
+}
+
+function testSound(){
+
+ ensureAudio();
+
+ beep(650,.15,"sine");
+
+ setTimeout(()=>{
+  beep(850,.18,"sine");
+ },150);
 }
 
 
-/* ================= UNDO ================= */
+/* =====================================================
+   PHOTO UPLOAD
+   Compressed Base64 is saved in Firebase state.
+===================================================== */
+
+function uploadPlayerPhoto(player,input){
+
+ const file=input.files[0];
+
+ if(!file)return;
+
+ if(!file.type.startsWith("image/")){
+  alert("صرف image فائل منتخب کریں۔");
+  return;
+ }
+
+ const reader=new FileReader();
+
+ reader.onload=function(e){
+
+  const img=new Image();
+
+  img.onload=function(){
+
+   const canvas=document.createElement("canvas");
+
+   const maxSize=350;
+
+   let w=img.width;
+   let h=img.height;
+
+   if(w>h){
+
+    if(w>maxSize){
+     h=h*maxSize/w;
+     w=maxSize;
+    }
+
+   }else{
+
+    if(h>maxSize){
+     w=w*maxSize/h;
+     h=maxSize;
+    }
+   }
+
+   canvas.width=w;
+   canvas.height=h;
+
+   const ctx=canvas.getContext("2d");
+
+   ctx.drawImage(img,0,0,w,h);
+
+   const data=canvas.toDataURL(
+    "image/jpeg",
+    .65
+   );
+
+   if(player==="striker"){
+    state.strikerPhoto=data;
+   }
+
+   if(player==="non"){
+    state.nonPhoto=data;
+   }
+
+   if(player==="bowler"){
+    state.bowlerPhoto=data;
+   }
+
+   render();
+   saveState(false);
+   pushRemote();
+
+  };
+
+  img.src=e.target.result;
+
+ };
+
+ reader.readAsDataURL(file);
+}
+
+
+/* =====================================================
+   BASIC FUNCTIONS
+===================================================== */
+
+function currentInnings(){
+ return state.innings[state.battingTeam];
+}
+
+function formatOvers(i){
+ return `${i.overs}.${i.balls}`;
+}
+
+function currentCRR(){
+
+ const i=currentInnings();
+
+ const balls=i.overs*6+i.balls;
+
+ return balls?
+  i.score/(balls/6):
+  0;
+}
 
 function snapshot(){
 
-undoStack.push(
-JSON.stringify(state)
-);
+ historyStack.push(
+  JSON.parse(JSON.stringify(state))
+ );
 
-if(undoStack.length>30)
-undoStack.shift();
-
+ if(historyStack.length>30){
+  historyStack.shift();
+ }
 }
 
-function undo(){
+function addBallHistory(label,type="normal"){
 
-if(!undoStack.length){
+ state.ballsHistory.push({
+  label,
+  type
+ });
 
-alert("Nothing to undo.");
-return;
-
+ if(state.ballsHistory.length>8){
+  state.ballsHistory.shift();
+ }
 }
 
-state=
-JSON.parse(
-undoStack.pop()
-);
+function finishLegalBall(){
 
-render();
+ const i=currentInnings();
 
-}
+ i.balls++;
 
+ state.bowler.balls++;
 
-/* ================= RENDER ================= */
+ if(i.balls>=6){
 
-function render(){
+  i.overs++;
+  i.balls=0;
 
-document.getElementById("pkName").textContent=state.pkName;
+  state.bowler.overs++;
+  state.bowler.balls=0;
 
-document.getElementById("engName").textContent=state.engName;
-
-document.getElementById("matchTitle").textContent=state.matchTitle;
-
-
-/* SCORE */
-
-document.getElementById("mainScore").textContent=
-state.score+"/"+state.wickets;
-
-document.getElementById("pkSmallScore").textContent=
-state.score+"/"+state.wickets;
-
-document.getElementById("engSmallScore").textContent=
-state.engScore+"/"+state.engWickets;
-
-
-/* OVERS */
-
-let overText=
-state.overs+"."+state.balls;
-
-document.getElementById("mainOvers").textContent=
-overText+" OVERS";
-
-document.getElementById("pkSmallOvers").textContent=
-overText+" OVERS";
-
-document.getElementById("engSmallOvers").textContent=
-state.engOvers+" OVERS";
-
-
-/* CRR */
-
-let totalOvers=
-state.overs+(state.balls/6);
-
-let calculatedCRR=0;
-
-if(totalOvers>0)
-calculatedCRR=
-state.score/totalOvers;
-
-state.crr=
-Number(calculatedCRR.toFixed(2));
-
-document.getElementById("crr").textContent=
-"CRR "+state.crr;
-
-document.getElementById("infoCrr").textContent=
-state.crr;
-
-
-/* REVIEWS */
-
-document.getElementById("reviews").textContent=
-state.reviews;
-
-
-/* CHANNEL */
-
-document.getElementById("channel").textContent=
-state.channel;
-
-
-/* SUBSCRIBERS */
-
-document.getElementById("subText").textContent=
-numberFormat(state.subCurrent)
-+" / "+
-numberFormat(state.subTarget);
-
-let percent=0;
-
-if(state.subTarget>0){
-
-percent=
-Math.min(
-100,
-(state.subCurrent/state.subTarget)*100
-);
-
-}
-
-document.getElementById("progressFill").style.width=
-percent+"%";
-
-
-/* MATCH INFO */
-
-let lead=
-state.score-state.engScore;
-
-if(
-state.score===0 &&
-state.engScore===0
-){
-
-document.getElementById("needText").textContent=
-"MATCH STARTING";
-
-}else{
-
-document.getElementById("needText").textContent=
-lead>=0
-?state.pkName+" LEAD "+lead+" RUNS"
-:state.engName+" LEAD "+Math.abs(lead)+" RUNS";
-
+  swapStrike(false);
+ }
 }
 
 
-/* EVENT */
+/* =====================================================
+   SCORE
+===================================================== */
 
-document.getElementById("eventText").textContent=
-state.event||"";
+function addRuns(r){
 
-updateEventClass();
+ snapshot();
 
+ const i=currentInnings();
 
-/* BATTING */
+ i.score+=r;
 
-let pkStatus=
-document.getElementById("pkStatus");
+ state.striker.runs+=r;
+ state.striker.balls++;
 
-let engStatus=
-document.getElementById("engStatus");
+ if(r===4){
+  state.striker.fours++;
+ }
 
-if(state.battingTeam==="PAK"){
+ if(r===6){
+  state.striker.sixes++;
+ }
 
-pkStatus.textContent="🏏 BATTING";
+ state.bowler.runs+=r;
 
-pkStatus.className=
-"status battingStatus";
+ finishLegalBall();
 
-engStatus.textContent="⚾ BOWLING";
+ addBallHistory(String(r));
 
-engStatus.className=
-"status bowlingStatus";
+ if(r===4){
+  state.event="FOUR";
+  playEventSound("four");
+ }
 
-}else{
+ else if(r===6){
+  state.event="SIX";
+  playEventSound("six");
+ }
 
-engStatus.textContent="🏏 BATTING";
+ else{
+  state.event=r+" RUN";
+  playEventSound("run");
+ }
 
-engStatus.className=
-"status battingStatus";
-
-pkStatus.textContent="⚾ BOWLING";
-
-pkStatus.className=
-"status bowlingStatus";
-
+ commit();
 }
-
-
-/* PLAYER 1 */
-
-document.getElementById("p1Name").textContent=
-state.striker.name;
-
-document.getElementById("p1Score").textContent=
-state.striker.runs+
-" ("+
-state.striker.balls+
-")";
-
-document.getElementById("p1Fours").textContent=
-"4s: "+state.striker.fours;
-
-document.getElementById("p1Sixes").textContent=
-"6s: "+state.striker.sixes;
-
-document.getElementById("p1SR").textContent=
-"SR: "+strikeRate(state.striker);
-
-
-/* PLAYER 2 */
-
-document.getElementById("p2Name").textContent=
-state.nonStriker.name;
-
-document.getElementById("p2Score").textContent=
-state.nonStriker.runs+
-" ("+
-state.nonStriker.balls+
-")";
-
-document.getElementById("p2Fours").textContent=
-"4s: "+state.nonStriker.fours;
-
-document.getElementById("p2Sixes").textContent=
-"6s: "+state.nonStriker.sixes;
-
-document.getElementById("p2SR").textContent=
-"SR: "+strikeRate(state.nonStriker);
-
-
-/* BOWLER */
-
-document.getElementById("bowlerName").textContent=
-state.bowler.name;
-
-document.getElementById("bowlerScore").innerHTML=
-state.bowler.wickets+
-"-"+
-state.bowler.runs+
-" <small>("+
-state.bowler.overs+
-")</small>";
-
-
-/* VOLUME */
-
-let vol=
-Math.max(
-0,
-Math.min(
-100,
-state.volume||0
-)
-);
-
-document.getElementById("volumeSlider").value=vol;
-
-document.getElementById("volumeValue").textContent=
-vol+"%";
-
-document.getElementById("music").volume=
-vol/100;
-
-
-/* SPEED */
-
-let speed=
-Number(state.speed)||1;
-
-document.getElementById("music").playbackRate=
-speed;
-
-document.getElementById("speedValue").textContent=
-speed+"x";
-
-updateSpeedButtons();
-
-
-/* BALLS */
-
-renderBalls();
-
-applyDesign();
-
-saveState();
-
-}
-
-
-/* ================= SCORE ================= */
-
-function addRuns(runs){
-
-snapshot();
-
-state.score+=runs;
-
-state.striker.runs+=runs;
-state.striker.balls++;
-
-if(runs===4)
-state.striker.fours++;
-
-if(runs===6)
-state.striker.sixes++;
-
-state.balls++;
-
-addBall(
- runs===6
- ?"6"
- :runs===4
- ?"4"
- :String(runs),
-
- runs===6
- ?"six"
- :runs===4
- ?"four"
- :""
-);
-
-if(runs===6)
-state.event="SIX";
-
-else if(runs===4)
-state.event="FOUR";
-
-else if(runs===0)
-state.event="DOT BALL";
-
-else
-state.event="";
-
-if(runs%2===1)
-swapStrike(false);
-
-if(state.balls>=6)
-finishOver();
-
-render();
-
-}
-
-
-/* ================= EVENT SIX ================= */
-
-function eventSix(){
-addRuns(6);
-}
-
-
-/* ================= EVENT FOUR ================= */
 
 function eventFour(){
-addRuns(4);
+ addRuns(4);
 }
 
+function eventSix(){
+ addRuns(6);
+}
 
-/* ================= WICKET ================= */
+function dotBall(){
+
+ snapshot();
+
+ state.striker.balls++;
+
+ finishLegalBall();
+
+ addBallHistory("•");
+
+ state.event="DOT BALL";
+
+ playEventSound("run");
+
+ commit();
+}
 
 function wicket(){
 
-snapshot();
+ snapshot();
 
-state.wickets++;
+ const i=currentInnings();
 
-state.striker.balls++;
+ i.wickets++;
 
-state.balls++;
+ state.bowler.wickets++;
 
-state.bowler.wickets++;
+ state.striker.balls++;
 
-addBall(
-"W",
-"wicket"
-);
+ finishLegalBall();
 
-state.event="WICKET";
+ addBallHistory("W","wicket");
 
-if(state.balls>=6)
-finishOver();
+ state.event="WICKET";
 
-render();
+ playEventSound("wicket");
 
+ commit();
 }
-
-
-/* ================= WIDE ================= */
 
 function wide(){
 
-snapshot();
+ snapshot();
 
-state.score++;
-state.bowler.runs++;
+ const i=currentInnings();
 
-addBall("WD","extra");
+ i.score++;
 
-state.event="WIDE";
+ state.bowler.runs++;
 
-render();
+ addBallHistory("Wd","wide");
 
+ state.event="WIDE";
+
+ playEventSound("wide");
+
+ commit();
 }
-
-
-/* ================= NO BALL ================= */
 
 function noBall(){
 
-snapshot();
+ snapshot();
 
-state.score++;
-state.bowler.runs++;
-state.striker.runs++;
+ const i=currentInnings();
 
-addBall("NB","extra");
+ i.score++;
 
-state.event="NO BALL";
+ state.bowler.runs++;
 
-render();
+ state.striker.balls++;
 
+ addBallHistory("Nb","noball");
+
+ state.event="NO BALL";
+
+ playEventSound("noball");
+
+ commit();
 }
 
 
-/* ================= BYE ================= */
+/* =====================================================
+   STRIKE
+===================================================== */
 
-function bye(){
+function swapStrike(makeSnapshot=true){
 
-snapshot();
+ if(makeSnapshot){
+  snapshot();
+ }
 
-state.score++;
-state.balls++;
+ const temp=state.striker;
 
-addBall("B","extra");
+ state.striker=state.nonStriker;
+ state.nonStriker=temp;
 
-state.event="BYE";
+ state.event="STRIKE CHANGED";
 
-if(state.balls>=6)
-finishOver();
-
-render();
-
+ if(makeSnapshot){
+  commit();
+ }
 }
 
 
-/* ================= LEG BYE ================= */
-
-function legBye(){
-
-snapshot();
-
-state.score++;
-state.balls++;
-
-addBall("LB","extra");
-
-state.event="LEG BYE";
-
-if(state.balls>=6)
-finishOver();
-
-render();
-
-}
-
-
-/* ================= FINISH OVER ================= */
-
-function finishOver(){
-
-state.overs++;
-state.balls=0;
-
-state.bowler.overs++;
-
-swapStrike(false);
-
-}
-
-
-/* ================= NEW OVER ================= */
+/* =====================================================
+   NEW OVER
+===================================================== */
 
 function newOver(){
 
-if(state.balls!==0){
+ const i=currentInnings();
 
-alert(
-"6 legal balls مکمل ہونے کے بعد New Over ہوگا۔"
-);
+ if(
+  i.balls!==0 &&
+  !confirm("ابھی اوور مکمل نہیں ہوا۔ نیا اوور شروع کریں؟")
+ ){
+  return;
+ }
 
-return;
+ snapshot();
 
-}
+ if(i.balls!==0){
 
-snapshot();
+  i.overs++;
+  i.balls=0;
 
-state.event="NEW OVER";
+  state.bowler.overs++;
+  state.bowler.balls=0;
+ }
 
-render();
+ swapStrike(false);
 
-}
+ state.event="NEW OVER";
 
-
-/* ================= STRIKE ================= */
-
-function swapStrike(doRender=true){
-
-let temp=state.striker;
-
-state.striker=
-state.nonStriker;
-
-state.nonStriker=
-temp;
-
-if(doRender)
-render();
-
+ commit();
 }
 
 
-/* ================= BALL HISTORY ================= */
-
-function addBall(value,type=""){
-
-state.ballsHistory.unshift({
- value:value,
- type:type
-});
-
-if(state.ballsHistory.length>12)
-state.ballsHistory.pop();
-
-}
-
-function renderBalls(){
-
-let box=
-document.getElementById("balls");
-
-box.innerHTML="";
-
-state.ballsHistory
-.slice(0,10)
-.reverse()
-.forEach(item=>{
-
-let div=
-document.createElement("span");
-
-div.className=
-"ball "+(item.type||"");
-
-div.textContent=
-item.value;
-
-box.appendChild(div);
-
-});
-
-}
-
-
-/* ================= EVENT ONLY ================= */
-
-function setEvent(text){
-
-snapshot();
-
-state.event=text;
-
-render();
-
-}
-
-function customEvent(){
-
-let val=
-document.getElementById("eventInput")
-.value.trim();
-
-if(!val)
-return;
-
-snapshot();
-
-state.event=
-val.toUpperCase();
-
-render();
-
-}
-
-
-/* ================= PLAYERS ================= */
+/* =====================================================
+   SETTINGS
+===================================================== */
 
 function applyPlayers(){
 
-snapshot();
+ snapshot();
 
-let p1=
-document.getElementById("p1NameInput")
-.value.trim();
+ state.striker.name=
+  document.getElementById("strikerInput").value.trim()
+  ||"BATSMAN 1";
 
-let p2=
-document.getElementById("p2NameInput")
-.value.trim();
+ state.nonStriker.name=
+  document.getElementById("nonInput").value.trim()
+  ||"BATSMAN 2";
 
-let bowler=
-document.getElementById("bowlerNameInput")
-.value.trim();
+ state.bowler.name=
+  document.getElementById("bowlerInput").value.trim()
+  ||"BOWLER";
 
-if(p1)
-state.striker.name=
-p1.toUpperCase();
+ state.event="PLAYERS UPDATED";
 
-if(p2)
-state.nonStriker.name=
-p2.toUpperCase();
+ commit();
+}
 
-if(bowler)
-state.bowler.name=
-bowler.toUpperCase();
+function applyGeneralSettings(){
 
-render();
+ snapshot();
 
+ state.pkName=
+  document.getElementById("pkNameInput").value.trim()
+  ||"PAKISTAN";
+
+ state.engName=
+  document.getElementById("engNameInput").value.trim()
+  ||"ENGLAND";
+
+ state.battingTeam=
+  document.getElementById("battingInput").value;
+
+ state.matchTitle=
+  document.getElementById("titleInput").value.trim()
+  ||"MATCH";
+
+ state.reviews=
+  document.getElementById("reviewsInput").value.trim()
+  ||"ENG 0 | PAK 0";
+
+ state.channel=
+  document.getElementById("channelInput").value.trim()
+  ||"RIZWAN CRICKET LIVE";
+
+ state.subCurrent=
+  Number(document.getElementById("subCurrentInput").value)||0;
+
+ state.subTarget=
+  Number(document.getElementById("subTargetInput").value)||100000;
+
+ state.event="SETTINGS UPDATED";
+
+ commit();
 }
 
 
-/* ================= TEAMS ================= */
+/* =====================================================
+   DESIGNS
+===================================================== */
 
-function applyTeams(){
+function design(n){
 
-snapshot();
+ snapshot();
 
-let pk=
-document.getElementById("pkNameInput")
-.value.trim();
+ state.design=n;
 
-let eng=
-document.getElementById("engNameInput")
-.value.trim();
+ state.event="DESIGN "+n;
 
-let title=
-document.getElementById("matchTitleInput")
-.value.trim();
-
-if(pk)
-state.pkName=
-pk.toUpperCase();
-
-if(eng)
-state.engName=
-eng.toUpperCase();
-
-if(title)
-state.matchTitle=
-title.toUpperCase();
-
-render();
-
+ commit();
 }
 
 
-/* ================= BATTING ================= */
+/* =====================================================
+   FIREBASE SYNC
+===================================================== */
 
-function applyBatting(){
+function setStatus(text,on=true){
 
-snapshot();
+ const e=document.getElementById("syncStatus");
 
-state.battingTeam=
-document.getElementById("battingSelect").value;
+ e.textContent=text;
 
-render();
+ e.classList.toggle("off",!on);
+}
 
+function pushRemote(){
+
+ if(
+  !firebaseReady||
+  !roomRef||
+  role!=="control"||
+  ignoreRemote
+ ){
+  return;
+ }
+
+ roomRef
+ .set(state)
+ .then(()=>{
+  setStatus(
+   "🟢 LIVE SYNC • ROOM "+roomCode,
+   true
+  );
+ })
+ .catch(e=>{
+  setStatus(
+   "🔴 Sync error: "+e.message,
+   false
+  );
+ });
+}
+
+function connectRoom(){
+
+ roomCode=
+  (
+   document.getElementById("roomInput").value.trim()
+   ||"PAK2026"
+  )
+  .replace(/[.#$[\]/]/g,"-")
+  .slice(0,40);
+
+ localStorage.setItem(
+  "scoreRoom",
+  roomCode
+ );
+
+ roomRef=db.ref(
+  "scoreboards/"+roomCode
+ );
+
+ setStatus(
+  "⏳ Connecting Room "+roomCode+"...",
+  true
+ );
+
+ roomRef.off();
+
+ roomRef.on("value",snap=>{
+
+  if(!snap.exists()){
+
+   if(role==="control"){
+    pushRemote();
+   }
+
+   else{
+    setStatus(
+     "🟡 Room empty — Control موبائل سے شروع کریں",
+     false
+    );
+   }
+
+   return;
+  }
+
+  if(role==="broadcast"){
+
+   ignoreRemote=true;
+
+   try{
+
+    state=snap.val();
+
+    historyStack=[];
+
+    render();
+
+    saveState(false);
+
+    setStatus(
+     "🟢 LIVE • "+roomCode,
+     true
+    );
+
+   }finally{
+
+    ignoreRemote=false;
+   }
+
+  }else{
+
+   setStatus(
+    "🟢 CONNECTED • "+roomCode,
+    true
+   );
+  }
+
+ });
+}
+
+function syncNow(){
+
+ if(!roomRef){
+  connectRoom();
+ }else{
+  pushRemote();
+ }
 }
 
 
-/* ================= SCORE SETTINGS ================= */
+/* =====================================================
+   ROLE
+===================================================== */
 
-function applyScoreSettings(){
+function setRole(r){
 
-snapshot();
+ role=r;
 
-let score=
-document.getElementById("scoreInput")
-.value.trim();
+ localStorage.setItem(
+  "scoreRole",
+  r
+ );
 
-let overs=
-document.getElementById("oversInput")
-.value.trim();
+ document
+ .getElementById("controlRoleBtn")
+ .classList.toggle(
+  "roleActive",
+  r==="control"
+ );
 
-let reviews=
-document.getElementById("reviewsInput")
-.value.trim();
+ document
+ .getElementById("broadcastRoleBtn")
+ .classList.toggle(
+  "roleActive",
+  r==="broadcast"
+ );
 
-if(score){
+ if(r==="broadcast"){
 
-let parts=
-score.split(/[\/-]/);
+  document.body.classList.add(
+   "broadcastOnly"
+  );
 
-if(parts.length===2){
+  document.body.classList.remove(
+   "shortMode"
+  );
 
-let s=parseInt(parts[0]);
-let w=parseInt(parts[1]);
+ }else{
 
-if(!isNaN(s))
-state.score=Math.max(0,s);
-
-if(!isNaN(w))
-state.wickets=Math.max(0,w);
-
-}
-
-}
-
-if(overs){
-
-let parts=
-overs.split(".");
-
-let o=parseInt(parts[0]);
-
-let b=
-parts[1]
-?parseInt(parts[1])
-:0;
-
-if(!isNaN(o))
-state.overs=Math.max(0,o);
-
-if(!isNaN(b))
-state.balls=
-Math.min(
-5,
-Math.max(0,b)
-);
-
-}
-
-if(reviews)
-state.reviews=reviews;
-
-render();
-
+  document.body.classList.remove(
+   "broadcastOnly",
+   "shortMode"
+  );
+ }
 }
 
 
-/* ================= CHANNEL ================= */
+/* =====================================================
+   RENDER
+===================================================== */
 
-function applyChannel(){
+function render(){
 
-snapshot();
+ document.body.className=
+  "design"+(state.design||1);
 
-let channel=
-document.getElementById("channelInput")
-.value.trim();
+ if(role==="broadcast"){
+  document.body.classList.add(
+   "broadcastOnly"
+  );
+ }
 
-let current=
-parseInt(
-document.getElementById("subCurrentInput").value
-);
+ const p=state.innings.PAK;
+ const e=state.innings.ENG;
+ const c=currentInnings();
 
-let target=
-parseInt(
-document.getElementById("subTargetInput").value
-);
+ const set=(id,v)=>{
 
-if(channel)
-state.channel=
-channel.toUpperCase();
+  const x=document.getElementById(id);
 
-if(!isNaN(current))
-state.subCurrent=current;
+  if(x)x.textContent=v;
+ };
 
-if(!isNaN(target))
-state.subTarget=target;
+ set("pakName",state.pkName);
+ set("engName",state.engName);
 
-render();
+ document.getElementById("pakFlag").src=
+  state.pkFlag;
 
+ document.getElementById("engFlag").src=
+  state.engFlag;
+
+ set(
+  "pakScore",
+  `${p.score}/${p.wickets}`
+ );
+
+ set(
+  "engScore",
+  `${e.score}/${e.wickets}`
+ );
+
+ set(
+  "pakOvers",
+  `${formatOvers(p)} OVERS`
+ );
+
+ set(
+  "engOvers",
+  `${formatOvers(e)} OVERS`
+ );
+
+ const pb=document.getElementById("pakBox");
+ const eb=document.getElementById("engBox");
+
+ if(state.battingTeam==="PAK"){
+
+  pb.classList.add("batting");
+  eb.classList.remove("batting");
+
+  set("pakStatus","BATTING");
+  set("engStatus","BOWLING");
+
+ }else{
+
+  eb.classList.add("batting");
+  pb.classList.remove("batting");
+
+  set("engStatus","BATTING");
+  set("pakStatus","BOWLING");
+ }
+
+ set(
+  "mainScore",
+  `${c.score}/${c.wickets}`
+ );
+
+ set(
+  "mainOvers",
+  `${formatOvers(c)} OVERS`
+ );
+
+ set(
+  "crr",
+  `CRR ${currentCRR().toFixed(2)}`
+ );
+
+ set(
+  "infoCRR",
+  `CRR ${currentCRR().toFixed(2)}`
+ );
+
+ set(
+  "matchTitle",
+  state.matchTitle
+ );
+
+ set(
+  "infoMatch",
+  state.event||"MATCH READY"
+ );
+
+ set(
+  "infoReviews",
+  state.reviews
+ );
+
+ set(
+  "eventBadge",
+  `${state.event||"READY"} • ${c.score}/${c.wickets}`
+ );
+
+ set(
+  "channel",
+  state.channel
+ );
+
+ set(
+  "subs",
+  `SUBS ${state.subCurrent} / ${state.subTarget}`
+ );
+
+
+ /* PLAYER DATA */
+
+ set(
+  "strikerName",
+  state.striker.name
+ );
+
+ set(
+  "nonName",
+  state.nonStriker.name
+ );
+
+ set(
+  "bowlerName",
+  state.bowler.name
+ );
+
+ set(
+  "strikerScore",
+  `${state.striker.runs} (${state.striker.balls})`
+ );
+
+ set(
+  "nonScore",
+  `${state.nonStriker.runs} (${state.nonStriker.balls})`
+ );
+
+ const sr1=
+  state.striker.balls?
+  state.striker.runs/state.striker.balls*100:
+  0;
+
+ const sr2=
+  state.nonStriker.balls?
+  state.nonStriker.runs/state.nonStriker.balls*100:
+  0;
+
+ set(
+  "strikerExtra",
+  `${state.striker.fours}x4 • ${state.striker.sixes}x6 • SR ${sr1.toFixed(2)}`
+ );
+
+ set(
+  "nonExtra",
+  `${state.nonStriker.fours}x4 • ${state.nonStriker.sixes}x6 • SR ${sr2.toFixed(2)}`
+ );
+
+ set(
+  "bowlerScore",
+  `${state.bowler.wickets}-${state.bowler.runs}`
+ );
+
+ const bowlerBalls=
+  state.bowler.overs*6+
+  state.bowler.balls;
+
+ const economy=
+  bowlerBalls?
+  state.bowler.runs/(bowlerBalls/6):
+  0;
+
+ set(
+  "bowlerExtra",
+  `${state.bowler.overs}.${state.bowler.balls} OV • ECO ${economy.toFixed(2)}`
+ );
+
+
+ /* PLAYER PHOTOS */
+
+ document.getElementById("strikerPhoto").src=
+  state.strikerPhoto;
+
+ document.getElementById("nonPhoto").src=
+  state.nonPhoto;
+
+ document.getElementById("bowlerPhoto").src=
+  state.bowlerPhoto;
+
+ document.getElementById("strikerPreview").src=
+  state.strikerPhoto;
+
+ document.getElementById("nonPreview").src=
+  state.nonPhoto;
+
+ document.getElementById("bowlerPreview").src=
+  state.bowlerPhoto;
+
+
+ /* RECENT BALLS */
+
+ const recent=
+  document.getElementById("recent");
+
+ recent.innerHTML="";
+
+ (state.ballsHistory||[])
+ .forEach(b=>{
+
+  const div=document.createElement("div");
+
+  div.className="ball";
+
+  div.textContent=b.label;
+
+  recent.appendChild(div);
+ });
+
+
+ /* SOUND */
+
+ updateSoundUI();
 }
 
 
-/* ================= IMAGES ================= */
+/* =====================================================
+   SAVE
+===================================================== */
 
-function uploadImage(event,id){
+function saveState(show){
 
-let file=
-event.target.files[0];
+ localStorage.setItem(
+  "PRO_CRICKET_SCOREBOARD_V4",
+  JSON.stringify(state)
+ );
 
-if(!file)
-return;
-
-let reader=
-new FileReader();
-
-reader.onload=function(e){
-
-document.getElementById(id).src=
-e.target.result;
-
-try{
-
-localStorage.setItem(
-"img_"+id,
-e.target.result
-);
-
-}catch(err){
-
-alert(
-"Image بہت بڑی ہے۔ چھوٹی image استعمال کریں۔"
-);
-
+ if(show){
+  alert("Scoreboard محفوظ ہوگیا۔");
+ }
 }
 
-};
+function loadSaved(show){
 
-reader.readAsDataURL(file);
+ const s=
+  localStorage.getItem(
+   "PRO_CRICKET_SCOREBOARD_V4"
+  );
 
+ if(!s){
+
+  if(show){
+   alert("کوئی Save موجود نہیں۔");
+  }
+
+  return;
+ }
+
+ try{
+
+  state=JSON.parse(s);
+
+  render();
+
+  if(show){
+   alert("Save Load ہوگیا۔");
+  }
+
+ }catch(e){
+
+  alert("Saved data خراب ہے۔");
+ }
 }
 
+function clearSave(){
 
-/* ================= RESTORE FLAGS ================= */
+ localStorage.removeItem(
+  "PRO_CRICKET_SCOREBOARD_V4"
+ );
 
-function restoreFlags(){
-
-document.getElementById("pkFlag").src=
-"https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg";
-
-document.getElementById("engFlag").src=
-"https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg";
-
-try{
-
-localStorage.removeItem("img_pkFlag");
-localStorage.removeItem("img_engFlag");
-
-}catch(e){}
-
-}
-
-
-/* ================= LOAD IMAGES ================= */
-
-function loadImages(){
-
-[
-"pkFlag",
-"engFlag",
-"p1Photo",
-"p2Photo",
-"bowlerPhoto"
-].forEach(id=>{
-
-try{
-
-let img=
-localStorage.getItem("img_"+id);
-
-if(img)
-document.getElementById(id).src=img;
-
-}catch(e){}
-
-});
-
+ alert("Saved data clear ہوگیا۔");
 }
 
 
-/* ================= MUSIC ================= */
+/* =====================================================
+   UNDO
+===================================================== */
 
-let musicURL="";
+function undo(){
 
-function loadMusic(event){
+ if(!historyStack.length){
 
-let file=
-event.target.files[0];
+  alert(
+   "UNDO کے لیے کوئی پچھلا عمل موجود نہیں۔"
+  );
 
-if(!file)
-return;
+  return;
+ }
 
-if(musicURL)
-URL.revokeObjectURL(musicURL);
+ state=historyStack.pop();
 
-musicURL=
-URL.createObjectURL(file);
-
-let music=
-document.getElementById("music");
-
-music.src=musicURL;
-
-music.volume=
-(state.volume||100)/100;
-
-music.playbackRate=
-Number(state.speed)||1;
-
+ commit();
 }
 
 
-/* PLAY */
+/* =====================================================
+   RESET
+===================================================== */
 
-function playMusic(){
+function resetMatch(){
 
-let music=
-document.getElementById("music");
+ if(
+  !confirm(
+   "کیا واقعی پورا میچ 0/0 سے شروع کرنا ہے؟"
+  )
+ ){
+  return;
+ }
 
-if(!music.src){
+ snapshot();
 
-alert(
-"پہلے Sound/Music upload کریں۔"
-);
+ const keep={
 
-return;
+  pkName:state.pkName,
+  engName:state.engName,
+  battingTeam:state.battingTeam,
+  matchTitle:state.matchTitle,
+  reviews:state.reviews,
+  channel:state.channel,
+  subCurrent:state.subCurrent,
+  subTarget:state.subTarget,
+  pkFlag:state.pkFlag,
+  engFlag:state.engFlag,
+  design:state.design,
 
-}
+  strikerPhoto:state.strikerPhoto,
+  nonPhoto:state.nonPhoto,
+  bowlerPhoto:state.bowlerPhoto,
 
-music.volume=
-(state.volume||100)/100;
+  soundEnabled:state.soundEnabled,
+  volume:state.volume,
+  speed:state.speed
+ };
 
-music.playbackRate=
-Number(state.speed)||1;
+ state=defaultState();
 
-music.play().catch(()=>{});
+ Object.assign(state,keep);
 
-}
-
-
-/* PAUSE */
-
-function pauseMusic(){
-
-document.getElementById("music").pause();
-
-}
-
-
-/* STOP */
-
-function stopMusic(){
-
-let music=
-document.getElementById("music");
-
-music.pause();
-music.currentTime=0;
-
+ commit();
 }
 
 
-/* ================= VOLUME ================= */
+/* =====================================================
+   FULLSCREEN
+===================================================== */
 
-function changeVolume(value){
+function requestFS(){
 
-let v=
-Math.max(
-0,
-Math.min(
-100,
-Number(value)
-)
-);
-
-state.volume=v;
-
-let music=
-document.getElementById("music");
-
-music.volume=
-v/100;
-
-document.getElementById("volumeValue")
-.textContent=
-v+"%";
-
-saveState();
-
+ document.documentElement
+ .requestFullscreen?.()
+ .catch(()=>{});
 }
-
-
-/* ================= SPEED ================= */
-
-function changeSpeed(value){
-
-let speed=
-Number(value);
-
-if(!isFinite(speed))
-speed=1;
-
-speed=
-Math.max(
-0.5,
-Math.min(
-2,
-speed
-)
-);
-
-state.speed=speed;
-
-let music=
-document.getElementById("music");
-
-music.playbackRate=speed;
-
-document.getElementById("speedValue")
-.textContent=
-speed+"x";
-
-updateSpeedButtons();
-
-saveState();
-
-}
-
-
-/* SPEED BUTTON ACTIVE */
-
-function updateSpeedButtons(){
-
-let speed=
-Number(state.speed)||1;
-
-let buttons={
-
-speed05:.5,
-speed075:.75,
-speed1:1,
-speed125:1.25,
-speed15:1.5,
-speed2:2
-
-};
-
-Object.keys(buttons)
-.forEach(id=>{
-
-let b=
-document.getElementById(id);
-
-if(b){
-
-b.classList.toggle(
-"active",
-buttons[id]===speed
-);
-
-}
-
-});
-
-}
-
-
-/* ================= DESIGN ================= */
-
-function changeDesign(n){
-
-snapshot();
-
-state.design=n;
-
-applyDesign();
-
-saveState();
-
-}
-
-function applyDesign(){
-
-let broadcast=
-document.getElementById("broadcast");
-
-for(let i=1;i<=6;i++)
-broadcast.classList.remove("design"+i);
-
-if(state.design>1)
-broadcast.classList.add("design"+state.design);
-
-for(let i=1;i<=6;i++){
-
-let b=
-document.getElementById("design"+i);
-
-if(b)
-b.classList.toggle(
-"active",
-i===state.design
-);
-
-}
-
-}
-
-
-/* ================= EVENT COLOR ================= */
-
-function updateEventClass(){
-
-let area=
-document.getElementById("eventArea");
-
-area.classList.remove(
-"event-six",
-"event-four",
-"event-wicket",
-"event-dot"
-);
-
-let e=
-(state.event||"").toUpperCase();
-
-if(e.includes("SIX"))
-
-area.classList.add("event-six");
-
-else if(e.includes("FOUR"))
-
-area.classList.add("event-four");
-
-else if(e.includes("WICKET"))
-
-area.classList.add("event-wicket");
-
-else if(
-e.includes("DOT")||
-e.includes("WIDE")||
-e.includes("NO BALL")
-)
-
-area.classList.add("event-dot");
-
-}
-
-
-/* ================= BROADCAST MODE ================= */
 
 function broadcastMode(){
 
-document.body.classList.remove("longFullscreen");
+ document.body.classList.add(
+  "broadcastOnly"
+ );
 
-document.body.classList.add("broadcastOnly");
+ document.body.classList.remove(
+  "shortMode"
+ );
 
+ requestFS();
 }
 
+function longMode(){
 
-/* ================= NORMAL ================= */
+ document.body.classList.add(
+  "broadcastOnly"
+ );
 
-function normalMode(){
+ document.body.classList.remove(
+  "shortMode"
+ );
 
-document.body.classList.remove(
-"broadcastOnly",
-"longFullscreen"
-);
-
-let b=
-document.getElementById("broadcast");
-
-b.classList.remove("shortMode");
-
-b.style.aspectRatio="16/9";
-
+ requestFS();
 }
-
-
-/* ================= LONG 16:9 ================= */
-
-async function longMode(){
-
-let b=
-document.getElementById("broadcast");
-
-b.classList.remove("shortMode");
-
-document.body.classList.remove("broadcastOnly");
-
-document.body.classList.add("longFullscreen");
-
-try{
-
-if(!document.fullscreenElement){
-
-await b.requestFullscreen();
-
-}
-
-}catch(e){}
-
-}
-
-
-/* ================= SHORT ================= */
 
 function shortMode(){
 
-document.body.classList.remove(
-"broadcastOnly",
-"longFullscreen"
-);
+ document.body.classList.add(
+  "shortMode"
+ );
 
-let b=
-document.getElementById("broadcast");
+ document.body.classList.remove(
+  "broadcastOnly"
+ );
 
-b.classList.add("shortMode");
+ requestFS();
+}
 
+function exitFullscreenMode(){
+
+ document.body.classList.remove(
+  "broadcastOnly",
+  "shortMode"
+ );
+
+ if(document.fullscreenElement){
+  document.exitFullscreen().catch(()=>{});
+ }
+
+ setRole(role);
 }
 
 
-/* ================= RESET ================= */
+/* =====================================================
+   COMMIT
+===================================================== */
 
-function resetAll(){
+function commit(){
 
-if(!confirm(
-"Score کو دوبارہ 0/0 سے شروع کرنا ہے؟"
-))
-return;
+ render();
 
-snapshot();
+ saveState(false);
 
-state={
-
-pkName:"PAKISTAN",
-engName:"ENGLAND",
-
-score:0,
-wickets:0,
-overs:0,
-balls:0,
-
-engScore:0,
-engWickets:0,
-engOvers:0,
-
-crr:0,
-
-matchTitle:"3RD TEST • DAY 1",
-
-reviews:"ENG 0 | PAK 0",
-
-channel:"RIZWAN CRICKET LIVE",
-
-subCurrent:0,
-subTarget:100000,
-
-event:"",
-
-battingTeam:"PAK",
-
-striker:{
- name:"BATSMAN 1",
- runs:0,
- balls:0,
- fours:0,
- sixes:0
-},
-
-nonStriker:{
- name:"BATSMAN 2",
- runs:0,
- balls:0,
- fours:0,
- sixes:0
-},
-
-bowler:{
- name:"BOWLER",
- runs:0,
- wickets:0,
- overs:0
-},
-
-ballsHistory:[],
-design:1,
-volume:100,
-speed:1
-
-};
-
-document.getElementById("volumeSlider").value=100;
-
-render();
-
+ pushRemote();
 }
 
 
-/* ================= SETTINGS ================= */
+/* =====================================================
+   FIREBASE AUTH START
+===================================================== */
 
-function toggleSettings(){
+firebase.auth()
+.signInAnonymously()
+.then(()=>{
 
-document.getElementById("settingsBody")
-.classList.toggle("open");
+ firebaseReady=true;
 
-}
+ setStatus(
+  "🟢 Firebase connected",
+  true
+ );
 
+ connectRoom();
 
-/* ================= CLEAR SAVE ================= */
+})
+.catch(e=>{
 
-function clearSaved(){
-
-localStorage.removeItem(
-"PRO_CRICKET_SCOREBOARD"
-);
-
-alert(
-"Saved scoreboard clear ہوگیا۔"
-);
-
-}
-
-
-/* ================= HELPERS ================= */
-
-function strikeRate(player){
-
-if(!player.balls)
-return "0.00";
-
-return(
-(player.runs/player.balls)*100
-).toFixed(2);
-
-}
-
-function numberFormat(n){
-
-return Number(n||0)
-.toLocaleString();
-
-}
-
-
-/* ================= FULLSCREEN ================= */
-
-document.addEventListener(
-"fullscreenchange",
-function(){
-
-if(!document.fullscreenElement){
-
-document.body.classList.remove(
-"longFullscreen"
-);
-
-}
-
+ setStatus(
+  "🔴 Firebase Auth: "+e.message,
+  false
+ );
 });
 
 
-/* ================= KEYBOARD ================= */
+/* =====================================================
+   START
+===================================================== */
 
-document.addEventListener(
-"keydown",
-function(e){
+document.getElementById("roomInput").value=
+ roomCode;
 
-if(e.key==="1")
-addRuns(1);
-
-if(e.key==="2")
-addRuns(2);
-
-if(e.key==="3")
-addRuns(3);
-
-if(e.key==="4")
-addRuns(4);
-
-if(e.key==="6")
-addRuns(6);
-
-if(e.key.toLowerCase()==="w")
-wicket();
-
-if(e.key.toLowerCase()==="u")
-undo();
-
-});
-
-
-/* ================= START ================= */
-
-loadState();
-
-loadImages();
-
-document.getElementById("battingSelect").value=
-state.battingTeam;
+setRole(role);
 
 render();
 
