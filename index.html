@@ -1403,4 +1403,2167 @@ placeholder="مثلاً 10.3">
 <br>
 
 <button class="btn orange"
-onclick
+onclick="applyManualScore()">
+APPLY CURRENT INNINGS
+</button>
+
+</div>
+
+<!-- FLAGS -->
+
+<div class="panel">
+
+<div class="panelTitle">
+🇵🇰 FLAGS / TEAM IMAGES
+</div>
+
+<div class="formGrid">
+
+<div class="field">
+<label>PAK FLAG / IMAGE URL</label>
+<input id="pkFlagInput"
+placeholder="Image URL">
+</div>
+
+<div class="field">
+<label>ENG FLAG / IMAGE URL</label>
+<input id="engFlagInput"
+placeholder="Image URL">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn green"
+onclick="applyFlags()">
+APPLY FLAGS
+</button>
+
+</div>
+
+<!-- DESIGNS -->
+
+<div class="panel">
+
+<div class="panelTitle">
+🎨 DESIGNS
+</div>
+
+<div class="grid">
+
+<button class="btn green"
+onclick="design(1)">
+DESIGN 1
+</button>
+
+<button class="btn blue"
+onclick="design(2)">
+DESIGN 2
+</button>
+
+<button class="btn orange"
+onclick="design(3)">
+DESIGN 3
+</button>
+
+<button class="btn purple"
+onclick="design(4)">
+DESIGN 4
+</button>
+
+<button class="btn red"
+onclick="design(5)">
+DESIGN 5
+</button>
+
+<button class="btn"
+onclick="design(6)">
+DESIGN 6
+</button>
+
+</div>
+
+</div>
+
+<!-- SAVE -->
+
+<div class="panel">
+
+<div class="panelTitle">
+💾 SAVE / LOAD
+</div>
+
+<div class="grid">
+
+<button class="btn green"
+onclick="saveState(true)">
+SAVE
+</button>
+
+<button class="btn blue"
+onclick="loadSaved(true)">
+LOAD SAVE
+</button>
+
+<button class="btn red"
+onclick="clearSave()">
+CLEAR SAVE
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* =========================================================
+   FIREBASE
+   ========================================================= */
+
+const firebaseConfig = {
+    databaseURL:"https://live-match-907ac-default-rtdb.firebaseio.com/",
+    projectId:"live-match-907ac"
+};
+
+let db = null;
+let firebaseReady = false;
+let roomRef = null;
+
+try{
+
+    if(
+        typeof firebase !== "undefined" &&
+        firebase.database
+    ){
+
+        firebase.initializeApp(firebaseConfig);
+
+        db = firebase.database();
+
+        firebaseReady = true;
+
+    }
+
+}catch(error){
+
+    console.log(
+        "Firebase optional error:",
+        error
+    );
+
+    firebaseReady = false;
+
+}
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
+
+let roomCode =
+localStorage.getItem("scoreRoom") ||
+"PAK2026";
+
+let role =
+localStorage.getItem("scoreRole") ||
+"control";
+
+let historyStack = [];
+
+let state;
+
+
+/* =========================================================
+   DEFAULT STATE
+   ========================================================= */
+
+function defaultState(){
+
+return{
+
+pkName:"PAKISTAN",
+
+engName:"ENGLAND",
+
+innings:{
+
+PAK:{
+score:0,
+wickets:0,
+overs:0,
+balls:0
+},
+
+ENG:{
+score:0,
+wickets:0,
+overs:0,
+balls:0
+}
+
+},
+
+battingTeam:"PAK",
+
+matchTitle:"3RD TEST • DAY 1",
+
+reviews:"ENG 0 | PAK 0",
+
+channel:"RIZWAN CRICKET LIVE",
+
+subCurrent:0,
+
+subTarget:100000,
+
+event:"",
+
+striker:{
+name:"BATSMAN 1",
+runs:0,
+balls:0,
+fours:0,
+sixes:0
+},
+
+nonStriker:{
+name:"BATSMAN 2",
+runs:0,
+balls:0,
+fours:0,
+sixes:0
+},
+
+bowler:{
+name:"BOWLER",
+runs:0,
+wickets:0,
+overs:0,
+balls:0
+},
+
+ballsHistory:[],
+
+design:1,
+
+pkFlag:"https://flagcdn.com/w320/pk.png",
+
+engFlag:"https://flagcdn.com/w320/gb.png",
+
+strikerPhoto:
+"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+nonStrikerPhoto:
+"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+nonPhoto:
+"https://cdn-icons-png.flaticon.com/512/149/149071.png",
+
+bowlerPhoto:
+"https://cdn-icons-png.flaticon.com/512/149/149071.png"
+
+};
+
+}
+
+
+state = defaultState();
+
+
+/* =========================================================
+   BASIC FUNCTIONS
+   ========================================================= */
+
+function currentInnings(){
+
+return state.innings[state.battingTeam];
+
+}
+
+
+function formatOvers(i){
+
+return `${i.overs}.${i.balls}`;
+
+}
+
+
+function currentCRR(){
+
+let i = currentInnings();
+
+let balls =
+(i.overs * 6) +
+i.balls;
+
+return balls
+? i.score / (balls / 6)
+: 0;
+
+}
+
+
+function snapshot(){
+
+historyStack.push(
+JSON.parse(JSON.stringify(state))
+);
+
+if(historyStack.length > 30){
+
+historyStack.shift();
+
+}
+
+}
+
+
+function addBallHistory(
+label,
+type="normal"
+){
+
+state.ballsHistory.push({
+label:label,
+type:type
+});
+
+if(state.ballsHistory.length > 8){
+
+state.ballsHistory.shift();
+
+}
+
+}
+
+
+/* =========================================================
+   LEGAL BALL
+   ========================================================= */
+
+function finishLegalBall(){
+
+let i = currentInnings();
+
+i.balls++;
+
+state.bowler.balls++;
+
+if(i.balls >= 6){
+
+i.overs++;
+
+i.balls=0;
+
+state.bowler.overs++;
+
+state.bowler.balls=0;
+
+swapStrike(false);
+
+}
+
+}
+
+
+/* =========================================================
+   COMMIT
+   ========================================================= */
+
+function commit(){
+
+render();
+
+saveState(false);
+
+pushRemote();
+
+}
+
+
+/* =========================================================
+   SCORE BUTTONS
+   ========================================================= */
+
+function addRuns(r){
+
+snapshot();
+
+let i = currentInnings();
+
+i.score += r;
+
+state.striker.runs += r;
+
+state.striker.balls++;
+
+if(r===4){
+
+state.striker.fours++;
+
+}
+
+if(r===6){
+
+state.striker.sixes++;
+
+}
+
+state.bowler.runs += r;
+
+finishLegalBall();
+
+if(r % 2){
+
+swapStrike(false);
+
+}
+
+if(r===6){
+
+state.event =
+"SIX • " +
+state.striker.name;
+
+}else if(r===4){
+
+state.event =
+"FOUR • " +
+state.striker.name;
+
+}else{
+
+state.event =
+"+" +
+r +
+" RUN";
+
+}
+
+addBallHistory(
+String(r),
+r===6
+? "six"
+: r===4
+? "four"
+: "normal"
+);
+
+commit();
+
+}
+
+
+function dotBall(){
+
+snapshot();
+
+state.striker.balls++;
+
+finishLegalBall();
+
+state.event="DOT BALL";
+
+addBallHistory(
+"•",
+"dot"
+);
+
+commit();
+
+}
+
+
+function legalBall(){
+
+dotBall();
+
+}
+
+
+function wicket(){
+
+snapshot();
+
+let i=currentInnings();
+
+i.wickets++;
+
+state.bowler.wickets++;
+
+state.striker.balls++;
+
+finishLegalBall();
+
+state.event="WICKET";
+
+addBallHistory(
+"W",
+"wicket"
+);
+
+commit();
+
+}
+
+
+function wide(){
+
+snapshot();
+
+currentInnings().score++;
+
+state.bowler.runs++;
+
+state.event="WIDE +1";
+
+addBallHistory(
+"Wd",
+"extra"
+);
+
+commit();
+
+}
+
+
+function noBall(){
+
+snapshot();
+
+currentInnings().score++;
+
+state.bowler.runs++;
+
+state.event="NO BALL +1";
+
+addBallHistory(
+"Nb",
+"extra"
+);
+
+commit();
+
+}
+
+
+function bye(){
+
+snapshot();
+
+currentInnings().score++;
+
+finishLegalBall();
+
+state.event="BYE +1";
+
+addBallHistory(
+"B",
+"extra"
+);
+
+commit();
+
+}
+
+
+function legBye(){
+
+snapshot();
+
+currentInnings().score++;
+
+finishLegalBall();
+
+state.event="LEG BYE +1";
+
+addBallHistory(
+"Lb",
+"extra"
+);
+
+commit();
+
+}
+
+
+/* =========================================================
+   STRIKE
+   ========================================================= */
+
+function swapStrike(
+makeSnapshot=true
+){
+
+if(makeSnapshot){
+
+snapshot();
+
+}
+
+[
+state.striker,
+state.nonStriker
+]=[
+state.nonStriker,
+state.striker
+];
+
+if(makeSnapshot){
+
+state.event="STRIKE CHANGED";
+
+commit();
+
+}
+
+}
+
+
+/* =========================================================
+   NEW OVER
+   ========================================================= */
+
+function newOver(){
+
+let i=currentInnings();
+
+if(
+i.balls!==0 &&
+!confirm(
+"ابھی اوور مکمل نہیں ہوا۔ زبردستی نیا اوور شروع کریں؟"
+)
+){
+
+return;
+
+}
+
+snapshot();
+
+if(i.balls!==0){
+
+i.overs++;
+
+i.balls=0;
+
+state.bowler.overs++;
+
+state.bowler.balls=0;
+
+}
+
+swapStrike(false);
+
+state.event="NEW OVER";
+
+commit();
+
+}
+
+
+/* =========================================================
+   EVENT BUTTONS
+   ========================================================= */
+
+function eventSix(){
+
+addRuns(6);
+
+}
+
+function eventFour(){
+
+addRuns(4);
+
+}
+
+function eventWicket(){
+
+wicket();
+
+}
+
+function eventDot(){
+
+dotBall();
+
+}
+
+function clearEvent(){
+
+snapshot();
+
+state.event="";
+
+commit();
+
+}
+
+
+/* =========================================================
+   PLAYERS
+   ========================================================= */
+
+function applyPlayers(){
+
+snapshot();
+
+state.striker.name =
+document.getElementById(
+"strikerInput"
+).value.trim()
+||
+"BATSMAN 1";
+
+state.nonStriker.name =
+document.getElementById(
+"nonInput"
+).value.trim()
+||
+"BATSMAN 2";
+
+state.bowler.name =
+document.getElementById(
+"bowlerInput"
+).value.trim()
+||
+"BOWLER";
+
+state.event="PLAYERS UPDATED";
+
+commit();
+
+}
+
+
+/* =========================================================
+   GENERAL SETTINGS
+   ========================================================= */
+
+function applyGeneralSettings(){
+
+snapshot();
+
+state.pkName =
+document.getElementById(
+"pkNameInput"
+).value.trim()
+||
+"PAKISTAN";
+
+state.engName =
+document.getElementById(
+"engNameInput"
+).value.trim()
+||
+"ENGLAND";
+
+state.battingTeam =
+document.getElementById(
+"battingInput"
+).value;
+
+state.matchTitle =
+document.getElementById(
+"titleInput"
+).value.trim()
+||
+"MATCH";
+
+state.reviews =
+document.getElementById(
+"reviewsInput"
+).value.trim()
+||
+"ENG 0 | PAK 0";
+
+state.channel =
+document.getElementById(
+"channelInput"
+).value.trim()
+||
+"RIZWAN CRICKET LIVE";
+
+state.subCurrent =
+Number(
+document.getElementById(
+"subCurrentInput"
+).value
+)
+||
+0;
+
+state.subTarget =
+Number(
+document.getElementById(
+"subTargetInput"
+).value
+)
+||
+100000;
+
+state.event="SETTINGS UPDATED";
+
+commit();
+
+}
+
+
+/* =========================================================
+   MANUAL SCORE
+   ========================================================= */
+
+function applyManualScore(){
+
+let score =
+Math.max(
+0,
+Number(
+document.getElementById(
+"manualScore"
+).value
+)
+||
+0
+);
+
+let w =
+Math.max(
+0,
+Number(
+document.getElementById(
+"manualWickets"
+).value
+)
+||
+0
+);
+
+let t =
+document.getElementById(
+"manualOvers"
+).value.trim();
+
+let o=0;
+let b=0;
+
+if(t.includes(".")){
+
+let p=t.split(".");
+
+o=Math.max(
+0,
+parseInt(p[0])||0
+);
+
+b=Math.min(
+5,
+Math.max(
+0,
+parseInt(p[1])||0
+)
+);
+
+}else{
+
+o=Math.max(
+0,
+parseInt(t)||0
+);
+
+}
+
+snapshot();
+
+let i=currentInnings();
+
+i.score=score;
+i.wickets=w;
+i.overs=o;
+i.balls=b;
+
+state.event="MANUAL SCORE UPDATED";
+
+commit();
+
+}
+
+
+/* =========================================================
+   FLAGS
+   ========================================================= */
+
+function applyFlags(){
+
+snapshot();
+
+let p =
+document.getElementById(
+"pkFlagInput"
+).value.trim();
+
+let e =
+document.getElementById(
+"engFlagInput"
+).value.trim();
+
+if(p){
+
+state.pkFlag=p;
+
+}
+
+if(e){
+
+state.engFlag=e;
+
+}
+
+state.event="FLAGS UPDATED";
+
+commit();
+
+}
+
+
+/* =========================================================
+   DESIGNS
+   ========================================================= */
+
+function design(n){
+
+snapshot();
+
+state.design=n;
+
+state.event=
+"DESIGN " +
+n;
+
+commit();
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetMatch(){
+
+if(
+!confirm(
+"کیا واقعی پورا میچ 0/0 سے شروع کرنا ہے؟"
+)
+){
+
+return;
+
+}
+
+let keep={
+
+pkName:state.pkName,
+
+engName:state.engName,
+
+battingTeam:state.battingTeam,
+
+matchTitle:state.matchTitle,
+
+reviews:state.reviews,
+
+channel:state.channel,
+
+subCurrent:state.subCurrent,
+
+subTarget:state.subTarget,
+
+pkFlag:state.pkFlag,
+
+engFlag:state.engFlag,
+
+design:state.design
+
+};
+
+state=defaultState();
+
+Object.assign(
+state,
+keep
+);
+
+historyStack=[];
+
+commit();
+
+}
+
+
+/* =========================================================
+   UNDO
+   ========================================================= */
+
+function undo(){
+
+if(!historyStack.length){
+
+alert(
+"UNDO کے لیے کوئی پچھلا عمل موجود نہیں۔"
+);
+
+return;
+
+}
+
+state=historyStack.pop();
+
+commit();
+
+}
+
+
+/* =========================================================
+   LOCAL SAVE
+   ========================================================= */
+
+function saveState(show){
+
+try{
+
+localStorage.setItem(
+"PRO_CRICKET_SCOREBOARD_V3",
+JSON.stringify(state)
+);
+
+if(show){
+
+alert(
+"Scoreboard محفوظ ہوگیا۔"
+);
+
+}
+
+}catch(e){
+
+if(show){
+
+alert(
+"Save نہیں ہو سکا۔"
+);
+
+}
+
+}
+
+}
+
+
+function loadSaved(show){
+
+let s =
+localStorage.getItem(
+"PRO_CRICKET_SCOREBOARD_V3"
+);
+
+if(!s){
+
+if(show){
+
+alert(
+"کوئی Save موجود نہیں۔"
+);
+
+}
+
+return;
+
+}
+
+try{
+
+state=JSON.parse(s);
+
+state=normalizeState(state);
+
+render();
+
+if(show){
+
+alert(
+"Save Load ہوگیا۔"
+);
+
+}
+
+}catch(e){
+
+alert(
+"Save خراب ہے۔"
+);
+
+}
+
+}
+
+
+function clearSave(){
+
+localStorage.removeItem(
+"PRO_CRICKET_SCOREBOARD_V3"
+);
+
+alert(
+"Saved data clear ہوگیا۔"
+);
+
+}
+
+
+/* =========================================================
+   FULLSCREEN
+   ========================================================= */
+
+function broadcastMode(){
+
+document.body.classList.add(
+"broadcastOnly"
+);
+
+document.body.classList.remove(
+"shortMode"
+);
+
+requestFS();
+
+}
+
+
+function longMode(){
+
+document.body.classList.add(
+"broadcastOnly"
+);
+
+document.body.classList.remove(
+"shortMode"
+);
+
+requestFS();
+
+}
+
+
+function shortMode(){
+
+document.body.classList.add(
+"shortMode"
+);
+
+document.body.classList.remove(
+"broadcastOnly"
+);
+
+requestFS();
+
+}
+
+
+function exitFullscreenMode(){
+
+document.body.classList.remove(
+"broadcastOnly",
+"shortMode"
+);
+
+if(document.fullscreenElement){
+
+document.exitFullscreen()
+.catch(
+()=>{}
+);
+
+}
+
+setRole(role);
+
+}
+
+
+function requestFS(){
+
+if(
+document.documentElement.requestFullscreen
+){
+
+document.documentElement
+.requestFullscreen()
+.catch(
+()=>{}
+);
+
+}
+
+}
+
+
+/* =========================================================
+   ROLE
+   ========================================================= */
+
+function setRole(r){
+
+role=r;
+
+localStorage.setItem(
+"scoreRole",
+r
+);
+
+let c =
+document.getElementById(
+"controlRoleBtn"
+);
+
+let b =
+document.getElementById(
+"broadcastRoleBtn"
+);
+
+if(c){
+
+c.classList.toggle(
+"roleActive",
+r==="control"
+);
+
+}
+
+if(b){
+
+b.classList.toggle(
+"roleActive",
+r==="broadcast"
+);
+
+}
+
+if(r==="broadcast"){
+
+document.body.classList.add(
+"broadcastOnly"
+);
+
+document.body.classList.remove(
+"shortMode"
+);
+
+}else{
+
+document.body.classList.remove(
+"broadcastOnly",
+"shortMode"
+);
+
+}
+
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+function setStatus(
+text,
+on=true
+){
+
+let e =
+document.getElementById(
+"syncStatus"
+);
+
+if(!e){
+
+return;
+
+}
+
+e.textContent=text;
+
+e.classList.toggle(
+"off",
+!on
+);
+
+}
+
+
+/* =========================================================
+   FIREBASE PUSH
+   ========================================================= */
+
+function pushRemote(){
+
+if(
+!firebaseReady ||
+!db ||
+!roomRef ||
+role!=="control"
+){
+
+return;
+
+}
+
+roomRef
+.set(state)
+.then(
+function(){
+
+setStatus(
+"🟢 LIVE SYNC • ROOM " +
+roomCode,
+true
+);
+
+}
+)
+.catch(
+function(e){
+
+setStatus(
+"🔴 DATABASE ERROR: " +
+e.message,
+false
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   CONNECT ROOM
+   ========================================================= */
+
+function connectRoom(){
+
+if(!firebaseReady || !db){
+
+setStatus(
+"🟡 Firebase unavailable — local buttons چل رہے ہیں",
+false
+);
+
+return;
+
+}
+
+roomCode =
+(
+document.getElementById(
+"roomInput"
+).value.trim()
+||
+"PAK2026"
+)
+.replace(
+/[.#$[\]/]/g,
+"-"
+)
+.slice(
+0,
+40
+);
+
+localStorage.setItem(
+"scoreRoom",
+roomCode
+);
+
+if(roomRef){
+
+try{
+
+roomRef.off();
+
+}catch(e){}
+
+roomRef=null;
+
+}
+
+roomRef =
+db.ref(
+"scoreboards/" +
+roomCode
+);
+
+setStatus(
+"⏳ CONNECTING ROOM " +
+roomCode +
+"...",
+true
+);
+
+roomRef.on(
+"value",
+function(snap){
+
+if(!snap.exists()){
+
+if(role==="control"){
+
+pushRemote();
+
+}else{
+
+setStatus(
+"🟡 ROOM EMPTY — پہلے CONTROL MOBILE سے SYNC کریں",
+false
+);
+
+}
+
+return;
+
+}
+
+if(role==="broadcast"){
+
+try{
+
+state =
+normalizeState(
+snap.val()
+);
+
+historyStack=[];
+
+render();
+
+saveState(false);
+
+setStatus(
+"🟢 LIVE SYNC • ROOM " +
+roomCode,
+true
+);
+
+}catch(e){
+
+console.log(e);
+
+}
+
+}else{
+
+setStatus(
+"🟢 CONTROL CONNECTED • ROOM " +
+roomCode,
+true
+);
+
+}
+
+},
+function(err){
+
+setStatus(
+"🔴 DATABASE ERROR: " +
+err.message,
+false
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   NORMALIZE FIREBASE DATA
+   ========================================================= */
+
+function normalizeState(s){
+
+const d=defaultState();
+
+if(
+!s ||
+typeof s!=="object"
+){
+
+return d;
+
+}
+
+const out =
+Object.assign(
+d,
+s
+);
+
+out.innings =
+Object.assign(
+d.innings,
+s.innings || {}
+);
+
+out.innings.PAK =
+Object.assign(
+d.innings.PAK,
+(
+s.innings &&
+s.innings.PAK
+) || {}
+);
+
+out.innings.ENG =
+Object.assign(
+d.innings.ENG,
+(
+s.innings &&
+s.innings.ENG
+) || {}
+);
+
+out.striker =
+Object.assign(
+d.striker,
+s.striker || {}
+);
+
+out.nonStriker =
+Object.assign(
+d.nonStriker,
+s.nonStriker || {}
+);
+
+out.bowler =
+Object.assign(
+d.bowler,
+s.bowler || {}
+);
+
+out.ballsHistory =
+Array.isArray(
+s.ballsHistory
+)
+?
+s.ballsHistory
+:
+[];
+
+out.strikerPhoto =
+s.strikerPhoto ||
+d.strikerPhoto;
+
+out.nonStrikerPhoto =
+s.nonStrikerPhoto ||
+s.nonPhoto ||
+d.nonStrikerPhoto;
+
+out.nonPhoto =
+out.nonStrikerPhoto;
+
+out.bowlerPhoto =
+s.bowlerPhoto ||
+d.bowlerPhoto;
+
+return out;
+
+}
+
+
+/* =========================================================
+   SYNC NOW
+   ========================================================= */
+
+function syncNow(){
+
+if(!firebaseReady){
+
+setStatus(
+"🟡 Firebase unavailable — local buttons چل رہے ہیں",
+false
+);
+
+return;
+
+}
+
+if(!roomRef){
+
+connectRoom();
+
+}else{
+
+pushRemote();
+
+}
+
+}
+
+
+/* =========================================================
+   FIREBASE CONNECTION MONITOR
+   ========================================================= */
+
+if(
+firebaseReady &&
+db
+){
+
+try{
+
+db.ref(
+".info/connected"
+).on(
+"value",
+function(snap){
+
+if(
+snap.val()===true
+){
+
+setStatus(
+"🟢 FIREBASE DATABASE CONNECTED",
+true
+);
+
+if(!roomRef){
+
+connectRoom();
+
+}
+
+}else{
+
+setStatus(
+"🟡 FIREBASE OFFLINE / CONNECTING...",
+false
+);
+
+}
+
+}
+);
+
+}catch(e){
+
+console.log(
+"Firebase monitor error",
+e
+);
+
+}
+
+}else{
+
+setStatus(
+"🟡 LOCAL MODE — SCORE BUTTONS READY",
+false
+);
+
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function render(){
+
+document.body.className =
+"design" +
+(state.design || 1);
+
+if(
+role==="broadcast"
+){
+
+document.body.classList.add(
+"broadcastOnly"
+);
+
+}
+
+let p =
+state.innings.PAK;
+
+let e =
+state.innings.ENG;
+
+let c =
+currentInnings();
+
+const set =
+function(id,v){
+
+let x =
+document.getElementById(id);
+
+if(x){
+
+x.textContent=v;
+
+}
+
+};
+
+
+/* TEAM */
+
+set(
+"pakName",
+state.pkName
+);
+
+set(
+"engName",
+state.engName
+);
+
+let pf =
+document.getElementById(
+"pakFlag"
+);
+
+let ef =
+document.getElementById(
+"engFlag"
+);
+
+if(pf){
+
+pf.src=state.pkFlag;
+
+}
+
+if(ef){
+
+ef.src=state.engFlag;
+
+}
+
+
+/* SCORE */
+
+set(
+"pakScore",
+`${p.score}/${p.wickets}`
+);
+
+set(
+"engScore",
+`${e.score}/${e.wickets}`
+);
+
+set(
+"pakOvers",
+`${formatOvers(p)} OVERS`
+);
+
+set(
+"engOvers",
+`${formatOvers(e)} OVERS`
+);
+
+
+/* BATTING TEAM */
+
+let pb =
+document.getElementById(
+"pakBox"
+);
+
+let eb =
+document.getElementById(
+"engBox"
+);
+
+if(
+state.battingTeam==="PAK"
+){
+
+pb.classList.add(
+"batting"
+);
+
+pb.classList.remove(
+"bowling"
+);
+
+eb.classList.add(
+"bowling"
+);
+
+eb.classList.remove(
+"batting"
+);
+
+set(
+"pakStatus",
+"BATTING"
+);
+
+set(
+"engStatus",
+"BOWLING"
+);
+
+}else{
+
+eb.classList.add(
+"batting"
+);
+
+eb.classList.remove(
+"bowling"
+);
+
+pb.classList.add(
+"bowling"
+);
+
+pb.classList.remove(
+"batting"
+);
+
+set(
+"engStatus",
+"BATTING"
+);
+
+set(
+"pakStatus",
+"BOWLING"
+);
+
+}
+
+
+/* MAIN SCORE */
+
+set(
+"mainScore",
+`${c.score}/${c.wickets}`
+);
+
+set(
+"mainOvers",
+`${formatOvers(c)} OVERS`
+);
+
+let cr =
+currentCRR();
+
+set(
+"crr",
+`CRR ${cr.toFixed(2)}`
+);
+
+set(
+"infoCRR",
+`CRR ${cr.toFixed(2)}`
+);
+
+set(
+"matchTitle",
+state.matchTitle
+);
+
+set(
+"infoMatch",
+state.battingTeam==="PAK"
+?
+state.pkName +
+" BATTING"
+:
+state.engName +
+" BATTING"
+);
+
+set(
+"infoReviews",
+state.reviews
+);
+
+set(
+"eventBadge",
+state.event ||
+`${state.battingTeam} • ${c.score}/${c.wickets}`
+);
+
+
+/* PLAYERS */
+
+set(
+"strikerName",
+state.striker.name
+);
+
+set(
+"nonName",
+state.nonStriker.name
+);
+
+set(
+"bowlerName",
+state.bowler.name
+);
+
+set(
+"strikerScore",
+`${state.striker.runs} (${state.striker.balls})`
+);
+
+set(
+"nonScore",
+`${state.nonStriker.runs} (${state.nonStriker.balls})`
+);
+
+
+let ss =
+state.striker.balls
+?
+state.striker.runs /
+state.striker.balls *
+100
+:
+0;
+
+let ns =
+state.nonStriker.balls
+?
+state.nonStriker.runs /
+state.nonStriker.balls *
+100
+:
+0;
+
+set(
+"strikerExtra",
+`${state.striker.fours}x4 • ${state.striker.sixes}x6 • SR ${ss.toFixed(2)}`
+);
+
+set(
+"nonExtra",
+`${state.nonStriker.fours}x4 • ${state.nonStriker.sixes}x6 • SR ${ns.toFixed(2)}`
+);
+
+
+let bb =
+state.bowler.overs * 6 +
+state.bowler.balls;
+
+let eco =
+bb
+?
+state.bowler.runs /
+(bb / 6)
+:
+0;
+
+set(
+"bowlerScore",
+`${state.bowler.runs}-${state.bowler.wickets}`
+);
+
+set(
+"bowlerExtra",
+`${state.bowler.overs}.${state.bowler.balls} OV • ECO ${eco.toFixed(2)}`
+);
+
+
+/* PHOTOS */
+
+let sp =
+document.getElementById(
+"strikerPhoto"
+);
+
+let np =
+document.getElementById(
+"nonPhoto"
+);
+
+let bp =
+document.getElementById(
+"bowlerPhoto"
+);
+
+if(sp){
+
+sp.src =
+state.strikerPhoto;
+
+}
+
+if(np){
+
+np.src =
+state.nonStrikerPhoto ||
+state.nonPhoto;
+
+}
+
+if(bp){
+
+bp.src =
+state.bowlerPhoto;
+
+}
+
+
+/* CHANNEL */
+
+set(
+"channel",
+state.channel
+);
+
+set(
+"subs",
+`SUBS ${Number(state.subCurrent).toLocaleString()} / ${Number(state.subTarget).toLocaleString()}`
+);
+
+
+/* RECENT BALLS */
+
+let recent =
+document.getElementById(
+"recent"
+);
+
+if(recent){
+
+recent.innerHTML="";
+
+(
+state.ballsHistory || []
+)
+.forEach(
+function(i){
+
+let b =
+document.createElement(
+"div"
+);
+
+b.className =
+"ball " +
+i.type;
+
+b.textContent =
+i.label;
+
+recent.appendChild(b);
+
+}
+);
+
+}
+
+
+/* FORM VALUES */
+
+const vals={
+
+pkNameInput:
+state.pkName,
+
+engNameInput:
+state.engName,
+
+battingInput:
+state.battingTeam,
+
+titleInput:
+state.matchTitle,
+
+reviewsInput:
+state.reviews,
+
+channelInput:
+state.channel,
+
+subCurrentInput:
+state.subCurrent,
+
+subTargetInput:
+state.subTarget,
+
+strikerInput:
+state.striker.name,
+
+nonInput:
+state.nonStriker.name,
+
+bowlerInput:
+state.bowler.name
+
+};
+
+
+Object.entries(vals)
+.forEach(
+function(pair){
+
+let id=pair[0];
+
+let v=pair[1];
+
+let x =
+document.getElementById(id);
+
+if(x){
+
+x.value=v;
+
+}
+
+}
+);
+
+setRole(role);
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(function init(){
+
+document.getElementById(
+"roomInput"
+).value=roomCode;
+
+setRole(role);
+
+/*
+   ہمیشہ نئی فائل کھولنے پر
+   score 0/0 سے شروع ہوگا۔
+*/
+
+state=defaultState();
+
+render();
+
+})();
+
+</script>
+
+</body>
+</html>
