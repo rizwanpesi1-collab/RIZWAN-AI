@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>PRO CRICKET LIVE SCOREBOARD</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 
+html,body{
+ width:100%;
+ min-height:100%;
+}
+
 body{
  background:#000;
  color:#fff;
- font-family:Arial,sans-serif
+ font-family:Arial,sans-serif;
 }
 
 button,input,select{font-family:Arial,sans-serif}
@@ -21,7 +26,7 @@ button{cursor:pointer}
  width:100%;
  display:flex;
  flex-direction:column;
- align-items:center
+ align-items:center;
 }
 
 .broadcast{
@@ -120,8 +125,6 @@ button{cursor:pointer}
  position:relative;
 }
 
-/* گھومتا ہوا رنگ والا گول دائرہ */
-
 .flagRing{
  position:relative;
  width:72%;
@@ -139,14 +142,8 @@ button{cursor:pointer}
  inset:-4px;
  border-radius:50%;
  background:conic-gradient(
-  #ff004c,
-  #ff8c00,
-  #fff000,
-  #00ff66,
-  #00d9ff,
-  #8a00ff,
-  #ff00b7,
-  #ff004c
+  #ff004c,#ff8c00,#fff000,#00ff66,
+  #00d9ff,#8a00ff,#ff00b7,#ff004c
  );
  animation:flagSpin 1.8s linear infinite;
  filter:
@@ -204,12 +201,7 @@ button{cursor:pointer}
  background:
  linear-gradient(
   to bottom,
-  #fff,
-  #00eaff,
-  #00ff55,
-  #ffe600,
-  #ff3b5c,
-  #fff
+  #fff,#00eaff,#00ff55,#ffe600,#ff3b5c,#fff
  );
  background-size:100% 400%;
  animation:verticalShine 2.5s linear infinite;
@@ -273,13 +265,8 @@ button{cursor:pointer}
  background:
  linear-gradient(
   to bottom,
-  #ff004c,
-  #ff7b00,
-  #ffe600,
-  #00ff66,
-  #00d9ff,
-  #8a2cff,
-  #ff004c
+  #ff004c,#ff7b00,#ffe600,#00ff66,
+  #00d9ff,#8a2cff,#ff004c
  );
  background-size:100% 400%;
  animation:verticalShine 3s linear infinite;
@@ -301,13 +288,8 @@ button{cursor:pointer}
  linear-gradient(#000,#000) padding-box,
  linear-gradient(
   270deg,
-  #ff0055,
-  #ff8c00,
-  #fff000,
-  #00ff66,
-  #00d9ff,
-  #8a00ff,
-  #ff0055
+  #ff0055,#ff8c00,#fff000,#00ff66,
+  #00d9ff,#8a00ff,#ff0055
  ) border-box;
  background-size:100% 100%,500% 500%;
  animation:rgbMove 4s linear infinite;
@@ -321,11 +303,6 @@ button{cursor:pointer}
 }
 
 /* ================= EVENT ================= */
-
-/*
- EVENT کو پہلے سے نیچے کیا گیا ہے
- تاکہ Score اور Overs صاف نظر آئیں
-*/
 
 .eventArea{
  position:absolute;
@@ -363,13 +340,8 @@ button{cursor:pointer}
  background:
  linear-gradient(
   to bottom,
-  #ff0055,
-  #ff8c00,
-  #fff000,
-  #00ff66,
-  #00d9ff,
-  #a000ff,
-  #ff0055
+  #ff0055,#ff8c00,#fff000,#00ff66,
+  #00d9ff,#a000ff,#ff0055
  );
  background-size:100% 450%;
  animation:verticalShine 2s linear infinite;
@@ -396,11 +368,7 @@ button{cursor:pointer}
  background:
  linear-gradient(
   to bottom,
-  #fff,
-  #ff0000,
-  #8b0000,
-  #ff3030,
-  #fff
+  #fff,#ff0000,#8b0000,#ff3030,#fff
  );
  background-size:100% 400%;
  animation:
@@ -429,10 +397,7 @@ button{cursor:pointer}
  height:7%;
  background:
  linear-gradient(
-  90deg,
-  #050505,
-  #1c1c1c 50%,
-  #050505
+  90deg,#050505,#1c1c1c 50%,#050505
  );
  border-top:2px solid #e0b900;
  border-bottom:2px solid #e0b900;
@@ -510,8 +475,7 @@ button{cursor:pointer}
  inset:-30%;
  background:
  linear-gradient(
-  45deg,
-  transparent,
+  45deg,transparent,
   rgba(255,255,255,.4),
   transparent
  );
@@ -532,11 +496,7 @@ button{cursor:pointer}
 .ball.wicket{
  background:
  linear-gradient(
-  270deg,
-  #ff0000,
-  #ff5050,
-  #8b0000,
-  #ff0000
+  270deg,#ff0000,#ff5050,#8b0000,#ff0000
  );
  background-size:300% 300%;
  animation:rgbMove 1.5s linear infinite;
@@ -567,18 +527,14 @@ button{cursor:pointer}
 .playerCard{
  position:relative;
  overflow:hidden;
+ min-width:0;
  border:2px solid transparent !important;
  background:
  linear-gradient(135deg,#9f121d,#40060a) padding-box,
  linear-gradient(
   270deg,
-  #ff004c,
-  #ff8c00,
-  #ffe600,
-  #00ff66,
-  #00d9ff,
-  #8a2cff,
-  #ff004c
+  #ff004c,#ff8c00,#ffe600,#00ff66,
+  #00d9ff,#8a2cff,#ff004c
  ) border-box !important;
  background-size:100% 100%,500% 500%;
  animation:
@@ -604,12 +560,8 @@ button{cursor:pointer}
  background:
  linear-gradient(
   270deg,
-  #ff004c,
-  #ffae00,
-  #fff000,
-  #00ff66,
-  #00d9ff,
-  #ff004c
+  #ff004c,#ffae00,#fff000,#00ff66,
+  #00d9ff,#ff004c
  );
  background-size:400% 400%;
  animation:rgbMove 3s ease infinite;
@@ -639,11 +591,15 @@ button{cursor:pointer}
  display:flex;
  flex-direction:column;
  justify-content:center;
+ min-width:0;
 }
 
 .playerName{
  font-size:clamp(10px,1.7vw,27px);
  font-weight:1000;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
 .playerRuns{
@@ -654,13 +610,8 @@ button{cursor:pointer}
  background:
  linear-gradient(
   to bottom,
-  #ff004c,
-  #ff9d00,
-  #fff700,
-  #00ff66,
-  #00cfff,
-  #b100ff,
-  #ff004c
+  #ff004c,#ff9d00,#fff700,#00ff66,
+  #00cfff,#b100ff,#ff004c
  );
  background-size:100% 450%;
  animation:verticalShine 2.8s linear infinite;
@@ -676,6 +627,7 @@ button{cursor:pointer}
  gap:6px;
  font-size:clamp(6px,.9vw,13px);
  font-weight:bold;
+ flex-wrap:wrap;
 }
 
 #p1SR,#p2SR{
@@ -684,13 +636,8 @@ button{cursor:pointer}
  background:
  linear-gradient(
   270deg,
-  #ff0055,
-  #ff8c00,
-  #fff000,
-  #00ff6a,
-  #00d9ff,
-  #8a00ff,
-  #ff0055
+  #ff0055,#ff8c00,#fff000,#00ff6a,
+  #00d9ff,#8a00ff,#ff0055
  );
  background-size:500% 500%;
  animation:rgbMove 4s ease infinite;
@@ -706,12 +653,8 @@ button{cursor:pointer}
  linear-gradient(135deg,#096a3c,#032c1a) padding-box,
  linear-gradient(
   270deg,
-  #00ff6a,
-  #00d9ff,
-  #fff000,
-  #ff004c,
-  #8a00ff,
-  #00ff6a
+  #00ff6a,#00d9ff,#fff000,
+  #ff004c,#8a00ff,#00ff6a
  ) border-box !important;
  background-size:100% 100%,500% 500%;
 }
@@ -739,10 +682,7 @@ button{cursor:pointer}
  height:8%;
  background:
  linear-gradient(
-  90deg,
-  #d2b119,
-  #fff4a0 50%,
-  #d2b119
+  90deg,#d2b119,#fff4a0 50%,#d2b119
  );
  color:#111;
  display:grid;
@@ -873,10 +813,7 @@ label{
  padding:13px;
  background:
  linear-gradient(
-  90deg,
-  #151d25,
-  #252e38,
-  #151d25
+  90deg,#151d25,#252e38,#151d25
  );
  color:#ffd900;
  font-size:18px;
@@ -1024,22 +961,14 @@ label{
 .design2 .eventBox{
  background:
  linear-gradient(
-  90deg,
-  #005c35,
-  #00a851,
-  #005c35
+  90deg,#005c35,#00a851,#005c35
  );
 }
 
 .design3 .mainScore{
  background:
  linear-gradient(
-  to bottom,
-  #fff,
-  #ffe000,
-  #ff9d00,
-  #ffe000,
-  #fff
+  to bottom,#fff,#ffe000,#ff9d00,#ffe000,#fff
  );
  background-size:100% 400%;
  -webkit-background-clip:text;
@@ -1073,14 +1002,10 @@ label{
 .design5{
  background:
  radial-gradient(
-  circle at 50% 60%,
-  #174b80,
-  transparent 38%
+  circle at 50% 60%,#174b80,transparent 38%
  ),
  linear-gradient(
-  #07101b,
-  #0a2440 45%,
-  #123e28
+  #07101b,#0a2440 45%,#123e28
  );
 }
 
@@ -1091,17 +1016,11 @@ label{
 .design5 .playerCard{
  background:
  linear-gradient(
-  135deg,
-  #064d88,
-  #031c32
+  135deg,#064d88,#031c32
  ) padding-box,
  linear-gradient(
-  270deg,
-  #00d9ff,
-  #fff000,
-  #ff004c,
-  #00ff66,
-  #00d9ff
+  270deg,#00d9ff,#fff000,#ff004c,
+  #00ff66,#00d9ff
  ) border-box !important;
  background-size:100% 100%,500% 500%;
 }
@@ -1109,26 +1028,17 @@ label{
 .design6{
  background:
  radial-gradient(
-  circle at 50% 60%,
-  #532f09,
-  transparent 40%
+  circle at 50% 60%,#532f09,transparent 40%
  ),
  linear-gradient(
-  #111,
-  #30200e 45%,
-  #16351e
+  #111,#30200e 45%,#16351e
  );
 }
 
 .design6 .mainScore{
  background:
  linear-gradient(
-  to bottom,
-  #fff,
-  #ffdf47,
-  #ff8c00,
-  #ffe66b,
-  #fff
+  to bottom,#fff,#ffdf47,#ff8c00,#ffe66b,#fff
  );
  background-size:100% 400%;
  -webkit-background-clip:text;
@@ -1141,26 +1051,17 @@ label{
 .design6 .eventBox{
  background:
  linear-gradient(
-  90deg,
-  #542b00,
-  #b56a00,
-  #542b00
+  90deg,#542b00,#b56a00,#542b00
  );
 }
 
 .design6 .playerCard{
  background:
  linear-gradient(
-  135deg,
-  #7d4c08,
-  #241605
+  135deg,#7d4c08,#241605
  ) padding-box,
  linear-gradient(
-  270deg,
-  #ffc62c,
-  #ff4b00,
-  #fff000,
-  #ffc62c
+  270deg,#ffc62c,#ff4b00,#fff000,#ffc62c
  ) border-box !important;
  background-size:100% 100%,500% 500%;
 }
@@ -1224,7 +1125,7 @@ body.broadcastOnly .broadcast{
  aspect-ratio:auto;
 }
 
-/* ================= LONG FULL SCREEN ================= */
+/* ================= LONG FULLSCREEN ================= */
 
 body.longFullscreen{
  overflow:hidden;
@@ -1232,19 +1133,212 @@ body.longFullscreen{
 
 body.longFullscreen .app{
  width:100vw;
- height:100vh;
+ height:100dvh;
+ min-height:100dvh;
 }
 
 body.longFullscreen .broadcast{
  width:100vw;
- height:100vh;
+ height:100dvh;
+ min-height:100dvh;
  max-width:none;
  aspect-ratio:auto;
  border:0;
+ overflow:hidden;
 }
 
 body.longFullscreen .controls{
  display:none;
+}
+
+/* =========================================================
+   MOBILE LANDSCAPE / 16:9 FULLSCREEN FIX
+   ========================================================= */
+
+@media (orientation:landscape){
+
+ body.longFullscreen{
+  width:100vw;
+  height:100dvh;
+  overflow:hidden;
+ }
+
+ body.longFullscreen .app{
+  width:100vw;
+  height:100dvh;
+  min-height:100dvh;
+ }
+
+ body.longFullscreen .broadcast{
+  width:100vw;
+  height:100dvh;
+  min-height:100dvh;
+  max-width:none;
+  aspect-ratio:auto;
+  border:0;
+ }
+
+ body.longFullscreen .topArea{
+  top:1%;
+  left:1%;
+  right:1%;
+  height:25%;
+ }
+
+ body.longFullscreen .eventArea{
+  top:29%;
+  left:5%;
+  right:5%;
+  height:11%;
+ }
+
+ body.longFullscreen .eventBox{
+  height:85%;
+ }
+
+ body.longFullscreen .infoBar{
+  top:41%;
+  height:7%;
+ }
+
+ body.longFullscreen .recent{
+  top:49%;
+  height:7%;
+ }
+
+ body.longFullscreen .players{
+  top:57%;
+  left:1%;
+  right:1%;
+  height:35%;
+  gap:5px;
+ }
+
+ body.longFullscreen .playerCard{
+  height:100%;
+  min-height:0;
+ }
+
+ body.longFullscreen .bottomBar{
+  bottom:0;
+  height:8%;
+ }
+
+ body.longFullscreen .playerPhoto{
+  width:28%;
+  height:90%;
+ }
+
+ body.longFullscreen .playerDetails{
+  left:31%;
+  right:2%;
+  top:9%;
+  bottom:2%;
+ }
+
+ body.longFullscreen .playerName{
+  font-size:clamp(8px,1.5vw,23px);
+ }
+
+ body.longFullscreen .playerRuns{
+  font-size:clamp(15px,2.7vw,38px);
+ }
+
+ body.longFullscreen .playerStats{
+  gap:4px;
+  font-size:clamp(5px,.8vw,11px);
+ }
+
+ body.longFullscreen .mainScore{
+  font-size:clamp(35px,7vw,90px);
+ }
+
+ body.longFullscreen .teamName{
+  font-size:clamp(11px,2.2vw,30px);
+ }
+
+ body.longFullscreen .teamScoreSmall{
+  font-size:clamp(15px,2.8vw,38px);
+ }
+
+ body.longFullscreen .status{
+  margin-top:3px;
+  padding:2px 7px;
+ }
+
+ body.longFullscreen .overs{
+  font-size:clamp(8px,1.4vw,18px);
+  margin-top:3px;
+ }
+
+ body.longFullscreen .crr{
+  font-size:clamp(7px,1vw,15px);
+  margin-top:2px;
+ }
+
+ body.longFullscreen .eventText{
+  font-size:clamp(22px,4.5vw,65px);
+ }
+
+}
+
+/* VERY SHORT LANDSCAPE MOBILE */
+
+@media (orientation:landscape) and (max-height:500px){
+
+ body.longFullscreen .topArea{
+  top:.7%;
+  height:24%;
+ }
+
+ body.longFullscreen .eventArea{
+  top:27%;
+  height:11%;
+ }
+
+ body.longFullscreen .infoBar{
+  top:39%;
+  height:7%;
+ }
+
+ body.longFullscreen .recent{
+  top:47%;
+  height:7%;
+ }
+
+ body.longFullscreen .players{
+  top:55%;
+  height:37%;
+ }
+
+ body.longFullscreen .bottomBar{
+  height:8%;
+ }
+
+ body.longFullscreen .mainScore{
+  font-size:clamp(28px,6.5vw,70px);
+ }
+
+ body.longFullscreen .teamName{
+  font-size:clamp(9px,2vw,24px);
+ }
+
+ body.longFullscreen .teamScoreSmall{
+  font-size:clamp(12px,2.5vw,30px);
+ }
+
+ body.longFullscreen .eventText{
+  font-size:clamp(19px,4vw,55px);
+ }
+
+ body.longFullscreen .playerName{
+  font-size:clamp(7px,1.3vw,18px);
+ }
+
+ body.longFullscreen .playerRuns{
+  font-size:clamp(13px,2.3vw,30px);
+ }
+
 }
 
 /* ================= ANIMATIONS ================= */
@@ -1262,12 +1356,6 @@ body.longFullscreen .controls{
 
 @keyframes flagSpin{
  to{transform:rotate(360deg)}
-}
-
-@keyframes flagGlow{
- 0%{filter:hue-rotate(0deg) drop-shadow(0 0 4px #ff004c)}
- 50%{filter:hue-rotate(180deg) drop-shadow(0 0 12px #00eaff)}
- 100%{filter:hue-rotate(360deg) drop-shadow(0 0 4px #ff004c)}
 }
 
 @keyframes ballShine{
@@ -1304,24 +1392,16 @@ body.longFullscreen .controls{
 }
 
 @keyframes wicketPulse{
- 0%,100%{
-  transform:scale(1);
- }
- 50%{
-  transform:scale(1.06);
- }
+ 0%,100%{transform:scale(1)}
+ 50%{transform:scale(1.06)}
 }
 
 @keyframes playerPulse{
- 0%,100%{
-  filter:brightness(1);
- }
- 50%{
-  filter:brightness(1.12);
- }
+ 0%,100%{filter:brightness(1)}
+ 50%{filter:brightness(1.12)}
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE CONTROLS ================= */
 
 @media(max-width:800px){
 
@@ -1354,7 +1434,6 @@ body.longFullscreen .controls{
  }
 
 }
-
 </style>
 </head>
 
@@ -1387,17 +1466,13 @@ body.longFullscreen .controls{
 
 <div class="teamInfo">
 
-<div id="pkName" class="teamName">
-PAKISTAN
-</div>
+<div id="pkName" class="teamName">PAKISTAN</div>
 
 <div id="pkStatus" class="status battingStatus">
 🏏 BATTING
 </div>
 
-<div id="pkSmallScore" class="teamScoreSmall">
-0/0
-</div>
+<div id="pkSmallScore" class="teamScoreSmall">0/0</div>
 
 <div id="pkSmallOvers" class="teamSub">
 0.0 OVERS
@@ -1413,17 +1488,11 @@ PAKISTAN
 3RD TEST • DAY 1
 </div>
 
-<div id="mainScore" class="mainScore">
-0/0
-</div>
+<div id="mainScore" class="mainScore">0/0</div>
 
-<div id="mainOvers" class="overs">
-0.0 OVERS
-</div>
+<div id="mainOvers" class="overs">0.0 OVERS</div>
 
-<div id="crr" class="crr">
-CRR 0.00
-</div>
+<div id="crr" class="crr">CRR 0.00</div>
 
 </div>
 
@@ -1439,25 +1508,19 @@ CRR 0.00
 >
 </div>
 
-<div class="liveBadge">
-● LIVE
-</div>
+<div class="liveBadge">● LIVE</div>
 
 </div>
 
 <div class="teamInfo">
 
-<div id="engName" class="teamName">
-ENGLAND
-</div>
+<div id="engName" class="teamName">ENGLAND</div>
 
 <div id="engStatus" class="status bowlingStatus">
 ⚾ BOWLING
 </div>
 
-<div id="engSmallScore" class="teamScoreSmall">
-0/0
-</div>
+<div id="engSmallScore" class="teamScoreSmall">0/0</div>
 
 <div id="engSmallOvers" class="teamSub">
 0.0 OVERS
@@ -1501,9 +1564,7 @@ REVIEWS: <span id="reviews">ENG 0 | PAK 0</span>
 
 <div class="recent">
 
-<div class="recentTitle">
-RECENT
-</div>
+<div class="recentTitle">RECENT</div>
 
 <div id="balls"></div>
 
@@ -1515,9 +1576,7 @@ RECENT
 
 <div class="playerCard striker">
 
-<div class="strikerBadge">
-★ STRIKER
-</div>
+<div class="strikerBadge">★ STRIKER</div>
 
 <img
  id="p1Photo"
@@ -1537,17 +1596,9 @@ BATSMAN 1
 
 <div class="playerStats">
 
-<span id="p1Fours">
-4s: 0
-</span>
-
-<span id="p1Sixes">
-6s: 0
-</span>
-
-<span id="p1SR">
-SR: 0.00
-</span>
+<span id="p1Fours">4s: 0</span>
+<span id="p1Sixes">6s: 0</span>
+<span id="p1SR">SR: 0.00</span>
 
 </div>
 
@@ -1575,17 +1626,9 @@ BATSMAN 2
 
 <div class="playerStats">
 
-<span id="p2Fours">
-4s: 0
-</span>
-
-<span id="p2Sixes">
-6s: 0
-</span>
-
-<span id="p2SR">
-SR: 0.00
-</span>
+<span id="p2Fours">4s: 0</span>
+<span id="p2Sixes">6s: 0</span>
+<span id="p2SR">SR: 0.00</span>
 
 </div>
 
@@ -1632,9 +1675,7 @@ RIZWAN CRICKET LIVE
 <div class="subTarget">
 
 SUBSCRIBERS TARGET
-<span id="subText">
-0 / 100,000
-</span>
+<span id="subText">0 / 100,000</span>
 
 <div class="progress">
 <div id="progressFill" class="progressFill"></div>
@@ -1642,9 +1683,7 @@ SUBSCRIBERS TARGET
 
 </div>
 
-<div class="review">
-● LIVE
-</div>
+<div class="review">● LIVE</div>
 
 </div>
 
@@ -1664,9 +1703,7 @@ SUBSCRIBERS TARGET
 
 <div class="controlSection">
 
-<h3>
-📺 Broadcast
-</h3>
+<h3>📺 Broadcast</h3>
 
 <div class="btnGrid">
 
@@ -1702,59 +1739,22 @@ RESET 0/0
 
 <div class="controlSection">
 
-<h3>
-🏏 Score
-</h3>
+<h3>🏏 Score</h3>
 
 <div class="btnGrid">
 
-<button class="btn" onclick="addRuns(0)">
-DOT
-</button>
-
-<button class="btn" onclick="addRuns(1)">
-+1
-</button>
-
-<button class="btn" onclick="addRuns(2)">
-+2
-</button>
-
-<button class="btn green" onclick="addRuns(3)">
-+3
-</button>
-
-<button class="btn blue" onclick="addRuns(4)">
-FOUR
-</button>
-
-<button class="btn gold" onclick="addRuns(6)">
-SIX
-</button>
-
-<button class="btn red" onclick="wicket()">
-WICKET
-</button>
-
-<button class="btn gold" onclick="wide()">
-WIDE
-</button>
-
-<button class="btn gold" onclick="noBall()">
-NO BALL
-</button>
-
-<button class="btn" onclick="bye()">
-BYE
-</button>
-
-<button class="btn" onclick="legBye()">
-LEG BYE
-</button>
-
-<button class="btn dark" onclick="newOver()">
-NEW OVER
-</button>
+<button class="btn" onclick="addRuns(0)">DOT</button>
+<button class="btn" onclick="addRuns(1)">+1</button>
+<button class="btn" onclick="addRuns(2)">+2</button>
+<button class="btn green" onclick="addRuns(3)">+3</button>
+<button class="btn blue" onclick="addRuns(4)">FOUR</button>
+<button class="btn gold" onclick="addRuns(6)">SIX</button>
+<button class="btn red" onclick="wicket()">WICKET</button>
+<button class="btn gold" onclick="wide()">WIDE</button>
+<button class="btn gold" onclick="noBall()">NO BALL</button>
+<button class="btn" onclick="bye()">BYE</button>
+<button class="btn" onclick="legBye()">LEG BYE</button>
+<button class="btn dark" onclick="newOver()">NEW OVER</button>
 
 </div>
 
@@ -1764,9 +1764,7 @@ NEW OVER
 
 <div class="controlSection">
 
-<h3>
-⚡ Match Event
-</h3>
+<h3>⚡ Match Event</h3>
 
 <input
  id="eventInput"
@@ -1776,32 +1774,12 @@ NEW OVER
 
 <div class="btnGrid">
 
-<!-- اب یہ SIX واقعی +6 کرے گا -->
-<button class="btn green" onclick="eventSix()">
-SIX
-</button>
-
-<!-- اب یہ FOUR واقعی +4 کرے گا -->
-<button class="btn blue" onclick="eventFour()">
-FOUR
-</button>
-
-<!-- اب یہ WICKET واقعی +1 کرے گا -->
-<button class="btn red" onclick="wicket()">
-WICKET
-</button>
-
-<button class="btn gold" onclick="setEvent('DOT BALL')">
-DOT
-</button>
-
-<button class="btn dark" onclick="customEvent()">
-APPLY
-</button>
-
-<button class="btn dark" onclick="setEvent('')">
-CLEAR
-</button>
+<button class="btn green" onclick="eventSix()">SIX</button>
+<button class="btn blue" onclick="eventFour()">FOUR</button>
+<button class="btn red" onclick="wicket()">WICKET</button>
+<button class="btn gold" onclick="setEvent('DOT BALL')">DOT</button>
+<button class="btn dark" onclick="customEvent()">APPLY</button>
+<button class="btn dark" onclick="setEvent('')">CLEAR</button>
 
 </div>
 
@@ -1811,9 +1789,7 @@ CLEAR
 
 <div class="controlSection">
 
-<h3>
-👤 Players
-</h3>
+<h3>👤 Players</h3>
 
 <input
  id="p1NameInput"
@@ -1854,9 +1830,7 @@ APPLY PLAYERS
  onclick="toggleSettings()"
 >
 ⚙️ SETTINGS — TEAM / FLAG / BATTING / SCORE / SOUND / DESIGN
-<span style="float:right">
-▼
-</span>
+<span style="float:right">▼</span>
 </div>
 
 <div id="settingsBody" class="settingsBody">
@@ -1867,13 +1841,9 @@ APPLY PLAYERS
 
 <div class="settingBox">
 
-<h4>
-🇵🇰🇬🇧 Teams
-</h4>
+<h4>🇵🇰🇬🇧 Teams</h4>
 
-<label>
-Pakistan Team
-</label>
+<label>Pakistan Team</label>
 
 <input
  id="pkNameInput"
@@ -1881,9 +1851,7 @@ Pakistan Team
  value="PAKISTAN"
 >
 
-<label>
-England Team
-</label>
+<label>England Team</label>
 
 <input
  id="engNameInput"
@@ -1891,9 +1859,7 @@ England Team
  value="ENGLAND"
 >
 
-<label>
-Match Title
-</label>
+<label>Match Title</label>
 
 <input
  id="matchTitleInput"
@@ -1915,26 +1881,14 @@ APPLY TEAMS
 
 <div class="settingBox">
 
-<h4>
-🏏 Batting / Bowling Team
-</h4>
+<h4>🏏 Batting / Bowling Team</h4>
 
-<label>
-Batting Team
-</label>
+<label>Batting Team</label>
 
-<select
- id="battingSelect"
- class="fieldInput"
->
+<select id="battingSelect" class="fieldInput">
 
-<option value="PAK">
-PAKISTAN
-</option>
-
-<option value="ENG">
-ENGLAND
-</option>
+<option value="PAK">PAKISTAN</option>
+<option value="ENG">ENGLAND</option>
 
 </select>
 
@@ -1959,13 +1913,9 @@ Batting ٹیم کے اوپر 🏏 BATTING<br>
 
 <div class="settingBox">
 
-<h4>
-🏏 Score Settings
-</h4>
+<h4>🏏 Score Settings</h4>
 
-<label>
-Current Score
-</label>
+<label>Current Score</label>
 
 <input
  id="scoreInput"
@@ -1973,9 +1923,7 @@ Current Score
  placeholder="0/0"
 >
 
-<label>
-Overs
-</label>
+<label>Overs</label>
 
 <input
  id="oversInput"
@@ -1983,9 +1931,7 @@ Overs
  placeholder="0.0"
 >
 
-<label>
-Reviews
-</label>
+<label>Reviews</label>
 
 <input
  id="reviewsInput"
@@ -2007,13 +1953,9 @@ APPLY SCORE
 
 <div class="settingBox">
 
-<h4>
-📺 Channel / Subscribers
-</h4>
+<h4>📺 Channel / Subscribers</h4>
 
-<label>
-Channel Name
-</label>
+<label>Channel Name</label>
 
 <input
  id="channelInput"
@@ -2021,9 +1963,7 @@ Channel Name
  value="RIZWAN CRICKET LIVE"
 >
 
-<label>
-Subscribers Current
-</label>
+<label>Subscribers Current</label>
 
 <input
  id="subCurrentInput"
@@ -2031,9 +1971,7 @@ Subscribers Current
  value="0"
 >
 
-<label>
-Subscriber Target
-</label>
+<label>Subscriber Target</label>
 
 <input
  id="subTargetInput"
@@ -2055,9 +1993,7 @@ APPLY CHANNEL
 
 <div class="settingBox">
 
-<h4>
-🏳️ Team Flags
-</h4>
+<h4>🏳️ Team Flags</h4>
 
 <label class="uploadLabel">
 
@@ -2097,9 +2033,7 @@ RESTORE FLAGS
 
 <div class="settingBox">
 
-<h4>
-👤 Player Photos
-</h4>
+<h4>👤 Player Photos</h4>
 
 <label class="uploadLabel">
 
@@ -2139,13 +2073,11 @@ Bowler Photo
 
 </div>
 
-<!-- ================= SOUND ================= -->
+<!-- SOUND -->
 
 <div class="settingBox">
 
-<h4>
-🔊 Sound / Music
-</h4>
+<h4>🔊 Sound / Music</h4>
 
 <label class="uploadLabel">
 
@@ -2162,42 +2094,19 @@ Upload Sound / Music
 
 <div class="btnGrid">
 
-<button
- class="btn green"
- onclick="playMusic()"
->
-▶ PLAY
-</button>
-
-<button
- class="btn gold"
- onclick="pauseMusic()"
->
-⏸ PAUSE
-</button>
-
-<button
- class="btn red"
- onclick="stopMusic()"
->
-■ STOP
-</button>
+<button class="btn green" onclick="playMusic()">▶ PLAY</button>
+<button class="btn gold" onclick="pauseMusic()">⏸ PAUSE</button>
+<button class="btn red" onclick="stopMusic()">■ STOP</button>
 
 </div>
-
-<!-- VOLUME -->
 
 <div class="volumeBox">
 
 <div class="volumeTop">
 
-<span>
-🔊 MUSIC VOLUME
-</span>
+<span>🔊 MUSIC VOLUME</span>
 
-<span id="volumeValue">
-100%
-</span>
+<span id="volumeValue">100%</span>
 
 </div>
 
@@ -2212,71 +2121,23 @@ Upload Sound / Music
 
 </div>
 
-<!-- SPEED -->
-
 <div class="speedBox">
 
 <div class="speedTitle">
 
-<span>
-🎵 MUSIC SPEED
-</span>
-
-<span id="speedValue">
-1x
-</span>
+<span>🎵 MUSIC SPEED</span>
+<span id="speedValue">1x</span>
 
 </div>
 
 <div class="speedButtons">
 
-<button
- id="speed05"
- class="speedBtn"
- onclick="changeSpeed(.5)"
->
-0.5x
-</button>
-
-<button
- id="speed075"
- class="speedBtn"
- onclick="changeSpeed(.75)"
->
-0.75x
-</button>
-
-<button
- id="speed1"
- class="speedBtn active"
- onclick="changeSpeed(1)"
->
-1x
-</button>
-
-<button
- id="speed125"
- class="speedBtn"
- onclick="changeSpeed(1.25)"
->
-1.25x
-</button>
-
-<button
- id="speed15"
- class="speedBtn"
- onclick="changeSpeed(1.5)"
->
-1.5x
-</button>
-
-<button
- id="speed2"
- class="speedBtn"
- onclick="changeSpeed(2)"
->
-2x
-</button>
+<button id="speed05" class="speedBtn" onclick="changeSpeed(.5)">0.5x</button>
+<button id="speed075" class="speedBtn" onclick="changeSpeed(.75)">0.75x</button>
+<button id="speed1" class="speedBtn active" onclick="changeSpeed(1)">1x</button>
+<button id="speed125" class="speedBtn" onclick="changeSpeed(1.25)">1.25x</button>
+<button id="speed15" class="speedBtn" onclick="changeSpeed(1.5)">1.5x</button>
+<button id="speed2" class="speedBtn" onclick="changeSpeed(2)">2x</button>
 
 </div>
 
@@ -2293,64 +2154,32 @@ Upload Sound / Music
  style="margin-top:10px"
 >
 
-<h4>
-🎨 6 Professional Designs
-</h4>
+<h4>🎨 6 Professional Designs</h4>
 
 <div class="designGrid">
 
-<button
- id="design1"
- class="designBtn active"
- onclick="changeDesign(1)"
->
-DESIGN 1<br>
-BROADCAST
+<button id="design1" class="designBtn active" onclick="changeDesign(1)">
+DESIGN 1<br>BROADCAST
 </button>
 
-<button
- id="design2"
- class="designBtn"
- onclick="changeDesign(2)"
->
-DESIGN 2<br>
-GREEN
+<button id="design2" class="designBtn" onclick="changeDesign(2)">
+DESIGN 2<br>GREEN
 </button>
 
-<button
- id="design3"
- class="designBtn"
- onclick="changeDesign(3)"
->
-DESIGN 3<br>
-GOLD
+<button id="design3" class="designBtn" onclick="changeDesign(3)">
+DESIGN 3<br>GOLD
 </button>
 
-<button
- id="design4"
- class="designBtn"
- onclick="changeDesign(4)"
->
-DESIGN 4<br>
-CLASSIC
+<button id="design4" class="designBtn" onclick="changeDesign(4)">
+DESIGN 4<br>CLASSIC
 </button>
 
-<button
- id="design5"
- class="designBtn"
- onclick="changeDesign(5)"
->
-DESIGN 5<br>
-BLUE
+<button id="design5" class="designBtn" onclick="changeDesign(5)">
+DESIGN 5<br>BLUE
 </button>
 
-<button
- id="design6"
- class="designBtn"
- onclick="changeDesign(6)"
->
-DESIGN 6<br>
-GOLD PRO
+<button id="design6" class="designBtn" onclick="changeDesign(6)">
+DESIGN 6<br>GOLD PRO
 </button>
 
 </div>
@@ -2364,51 +2193,31 @@ GOLD PRO
  style="margin-top:10px"
 >
 
-<h4>
-⚙️ Extra Functions
-</h4>
+<h4>⚙️ Extra Functions</h4>
 
 <div class="btnGrid">
 
-<button
- class="btn blue"
- onclick="swapStrike()"
->
+<button class="btn blue" onclick="swapStrike()">
 ⇄ SWAP STRIKE
 </button>
 
-<button
- class="btn gold"
- onclick="eventSix()"
->
+<button class="btn gold" onclick="eventSix()">
 ⚡ SIX
 </button>
 
-<button
- class="btn green"
- onclick="eventFour()"
->
+<button class="btn green" onclick="eventFour()">
 🔥 FOUR
 </button>
 
-<button
- class="btn red"
- onclick="wicket()"
->
+<button class="btn red" onclick="wicket()">
 ❌ WICKET
 </button>
 
-<button
- class="btn dark"
- onclick="saveState()"
->
+<button class="btn dark" onclick="saveState()">
 💾 SAVE
 </button>
 
-<button
- class="btn dark"
- onclick="clearSaved()"
->
+<button class="btn dark" onclick="clearSaved()">
 CLEAR SAVE
 </button>
 
@@ -2521,8 +2330,7 @@ localStorage.getItem(
 
 if(saved){
 
-let parsed=
-JSON.parse(saved);
+let parsed=JSON.parse(saved);
 
 state={
  ...state,
@@ -2570,7 +2378,6 @@ function undo(){
 if(!undoStack.length){
 
 alert("Nothing to undo.");
-
 return;
 
 }
@@ -2589,28 +2396,22 @@ render();
 
 function render(){
 
-document.getElementById("pkName")
-.textContent=state.pkName;
+document.getElementById("pkName").textContent=state.pkName;
 
-document.getElementById("engName")
-.textContent=state.engName;
+document.getElementById("engName").textContent=state.engName;
 
-document.getElementById("matchTitle")
-.textContent=state.matchTitle;
+document.getElementById("matchTitle").textContent=state.matchTitle;
 
 
 /* SCORE */
 
-document.getElementById("mainScore")
-.textContent=
+document.getElementById("mainScore").textContent=
 state.score+"/"+state.wickets;
 
-document.getElementById("pkSmallScore")
-.textContent=
+document.getElementById("pkSmallScore").textContent=
 state.score+"/"+state.wickets;
 
-document.getElementById("engSmallScore")
-.textContent=
+document.getElementById("engSmallScore").textContent=
 state.engScore+"/"+state.engWickets;
 
 
@@ -2619,16 +2420,13 @@ state.engScore+"/"+state.engWickets;
 let overText=
 state.overs+"."+state.balls;
 
-document.getElementById("mainOvers")
-.textContent=
+document.getElementById("mainOvers").textContent=
 overText+" OVERS";
 
-document.getElementById("pkSmallOvers")
-.textContent=
+document.getElementById("pkSmallOvers").textContent=
 overText+" OVERS";
 
-document.getElementById("engSmallOvers")
-.textContent=
+document.getElementById("engSmallOvers").textContent=
 state.engOvers+" OVERS";
 
 
@@ -2644,37 +2442,30 @@ calculatedCRR=
 state.score/totalOvers;
 
 state.crr=
-Number(
-calculatedCRR.toFixed(2)
-);
+Number(calculatedCRR.toFixed(2));
 
-document.getElementById("crr")
-.textContent=
+document.getElementById("crr").textContent=
 "CRR "+state.crr;
 
-document.getElementById("infoCrr")
-.textContent=
+document.getElementById("infoCrr").textContent=
 state.crr;
 
 
 /* REVIEWS */
 
-document.getElementById("reviews")
-.textContent=
+document.getElementById("reviews").textContent=
 state.reviews;
 
 
 /* CHANNEL */
 
-document.getElementById("channel")
-.textContent=
+document.getElementById("channel").textContent=
 state.channel;
 
 
 /* SUBSCRIBERS */
 
-document.getElementById("subText")
-.textContent=
+document.getElementById("subText").textContent=
 numberFormat(state.subCurrent)
 +" / "+
 numberFormat(state.subTarget);
@@ -2691,8 +2482,7 @@ Math.min(
 
 }
 
-document.getElementById("progressFill")
-.style.width=
+document.getElementById("progressFill").style.width=
 percent+"%";
 
 
@@ -2706,14 +2496,12 @@ state.score===0 &&
 state.engScore===0
 ){
 
-document.getElementById("needText")
-.textContent=
+document.getElementById("needText").textContent=
 "MATCH STARTING";
 
 }else{
 
-document.getElementById("needText")
-.textContent=
+document.getElementById("needText").textContent=
 lead>=0
 ?state.pkName+" LEAD "+lead+" RUNS"
 :state.engName+" LEAD "+Math.abs(lead)+" RUNS";
@@ -2723,8 +2511,7 @@ lead>=0
 
 /* EVENT */
 
-document.getElementById("eventText")
-.textContent=
+document.getElementById("eventText").textContent=
 state.event||"";
 
 updateEventClass();
@@ -2740,28 +2527,24 @@ document.getElementById("engStatus");
 
 if(state.battingTeam==="PAK"){
 
-pkStatus.textContent=
-"🏏 BATTING";
+pkStatus.textContent="🏏 BATTING";
 
 pkStatus.className=
 "status battingStatus";
 
-engStatus.textContent=
-"⚾ BOWLING";
+engStatus.textContent="⚾ BOWLING";
 
 engStatus.className=
 "status bowlingStatus";
 
 }else{
 
-engStatus.textContent=
-"🏏 BATTING";
+engStatus.textContent="🏏 BATTING";
 
 engStatus.className=
 "status battingStatus";
 
-pkStatus.textContent=
-"⚾ BOWLING";
+pkStatus.textContent="⚾ BOWLING";
 
 pkStatus.className=
 "status bowlingStatus";
@@ -2771,64 +2554,52 @@ pkStatus.className=
 
 /* PLAYER 1 */
 
-document.getElementById("p1Name")
-.textContent=
+document.getElementById("p1Name").textContent=
 state.striker.name;
 
-document.getElementById("p1Score")
-.textContent=
+document.getElementById("p1Score").textContent=
 state.striker.runs+
 " ("+
 state.striker.balls+
 ")";
 
-document.getElementById("p1Fours")
-.textContent=
+document.getElementById("p1Fours").textContent=
 "4s: "+state.striker.fours;
 
-document.getElementById("p1Sixes")
-.textContent=
+document.getElementById("p1Sixes").textContent=
 "6s: "+state.striker.sixes;
 
-document.getElementById("p1SR")
-.textContent=
+document.getElementById("p1SR").textContent=
 "SR: "+strikeRate(state.striker);
 
 
 /* PLAYER 2 */
 
-document.getElementById("p2Name")
-.textContent=
+document.getElementById("p2Name").textContent=
 state.nonStriker.name;
 
-document.getElementById("p2Score")
-.textContent=
+document.getElementById("p2Score").textContent=
 state.nonStriker.runs+
 " ("+
 state.nonStriker.balls+
 ")";
 
-document.getElementById("p2Fours")
-.textContent=
+document.getElementById("p2Fours").textContent=
 "4s: "+state.nonStriker.fours;
 
-document.getElementById("p2Sixes")
-.textContent=
+document.getElementById("p2Sixes").textContent=
 "6s: "+state.nonStriker.sixes;
 
-document.getElementById("p2SR")
-.textContent=
+document.getElementById("p2SR").textContent=
 "SR: "+strikeRate(state.nonStriker);
 
 
 /* BOWLER */
 
-document.getElementById("bowlerName")
-.textContent=
+document.getElementById("bowlerName").textContent=
 state.bowler.name;
 
-document.getElementById("bowlerScore")
-.innerHTML=
+document.getElementById("bowlerScore").innerHTML=
 state.bowler.wickets+
 "-"+
 state.bowler.runs+
@@ -2848,16 +2619,12 @@ state.volume||0
 )
 );
 
-document.getElementById("volumeSlider")
-.value=
-vol;
+document.getElementById("volumeSlider").value=vol;
 
-document.getElementById("volumeValue")
-.textContent=
+document.getElementById("volumeValue").textContent=
 vol+"%";
 
-document.getElementById("music")
-.volume=
+document.getElementById("music").volume=
 vol/100;
 
 
@@ -2866,12 +2633,10 @@ vol/100;
 let speed=
 Number(state.speed)||1;
 
-document.getElementById("music")
-.playbackRate=
+document.getElementById("music").playbackRate=
 speed;
 
-document.getElementById("speedValue")
-.textContent=
+document.getElementById("speedValue").textContent=
 speed+"x";
 
 updateSpeedButtons();
@@ -2946,27 +2711,15 @@ render();
 
 /* ================= EVENT SIX ================= */
 
-/*
- Match Event کا SIX بھی اب score کرے گا
-*/
-
 function eventSix(){
-
 addRuns(6);
-
 }
 
 
 /* ================= EVENT FOUR ================= */
 
-/*
- Match Event کا FOUR بھی اب score کرے گا
-*/
-
 function eventFour(){
-
 addRuns(4);
-
 }
 
 
@@ -2975,14 +2728,6 @@ addRuns(4);
 function wicket(){
 
 snapshot();
-
-/*
- WICKET:
- رنز میں کوئی اضافہ نہیں
- صرف wicket +1
- legal ball +1
- bowler wicket +1
-*/
 
 state.wickets++;
 
@@ -2997,8 +2742,7 @@ addBall(
 "wicket"
 );
 
-state.event=
-"WICKET";
+state.event="WICKET";
 
 if(state.balls>=6)
 finishOver();
@@ -3015,16 +2759,11 @@ function wide(){
 snapshot();
 
 state.score++;
-
 state.bowler.runs++;
 
-addBall(
-"WD",
-"extra"
-);
+addBall("WD","extra");
 
-state.event=
-"WIDE";
+state.event="WIDE";
 
 render();
 
@@ -3038,18 +2777,12 @@ function noBall(){
 snapshot();
 
 state.score++;
-
 state.bowler.runs++;
-
 state.striker.runs++;
 
-addBall(
-"NB",
-"extra"
-);
+addBall("NB","extra");
 
-state.event=
-"NO BALL";
+state.event="NO BALL";
 
 render();
 
@@ -3063,16 +2796,11 @@ function bye(){
 snapshot();
 
 state.score++;
-
 state.balls++;
 
-addBall(
-"B",
-"extra"
-);
+addBall("B","extra");
 
-state.event=
-"BYE";
+state.event="BYE";
 
 if(state.balls>=6)
 finishOver();
@@ -3089,16 +2817,11 @@ function legBye(){
 snapshot();
 
 state.score++;
-
 state.balls++;
 
-addBall(
-"LB",
-"extra"
-);
+addBall("LB","extra");
 
-state.event=
-"LEG BYE";
+state.event="LEG BYE";
 
 if(state.balls>=6)
 finishOver();
@@ -3113,7 +2836,6 @@ render();
 function finishOver(){
 
 state.overs++;
-
 state.balls=0;
 
 state.bowler.overs++;
@@ -3139,8 +2861,7 @@ return;
 
 snapshot();
 
-state.event=
-"NEW OVER";
+state.event="NEW OVER";
 
 render();
 
@@ -3151,8 +2872,7 @@ render();
 
 function swapStrike(doRender=true){
 
-let temp=
-state.striker;
+let temp=state.striker;
 
 state.striker=
 state.nonStriker;
@@ -3168,16 +2888,11 @@ render();
 
 /* ================= BALL HISTORY ================= */
 
-function addBall(
-value,
-type=""
-){
+function addBall(value,type=""){
 
 state.ballsHistory.unshift({
-
-value:value,
-type:type
-
+ value:value,
+ type:type
 });
 
 if(state.ballsHistory.length>12)
@@ -3219,8 +2934,7 @@ function setEvent(text){
 
 snapshot();
 
-state.event=
-text;
+state.event=text;
 
 render();
 
@@ -3322,8 +3036,7 @@ function applyBatting(){
 snapshot();
 
 state.battingTeam=
-document.getElementById("battingSelect")
-.value;
+document.getElementById("battingSelect").value;
 
 render();
 
@@ -3350,30 +3063,19 @@ document.getElementById("reviewsInput")
 
 if(score){
 
-/*
- قبول:
- 56/2
- 56-2
-*/
-
 let parts=
 score.split(/[\/-]/);
 
 if(parts.length===2){
 
-let s=
-parseInt(parts[0]);
-
-let w=
-parseInt(parts[1]);
+let s=parseInt(parts[0]);
+let w=parseInt(parts[1]);
 
 if(!isNaN(s))
-state.score=
-Math.max(0,s);
+state.score=Math.max(0,s);
 
 if(!isNaN(w))
-state.wickets=
-Math.max(0,w);
+state.wickets=Math.max(0,w);
 
 }
 
@@ -3384,8 +3086,7 @@ if(overs){
 let parts=
 overs.split(".");
 
-let o=
-parseInt(parts[0]);
+let o=parseInt(parts[0]);
 
 let b=
 parts[1]
@@ -3393,8 +3094,7 @@ parts[1]
 :0;
 
 if(!isNaN(o))
-state.overs=
-Math.max(0,o);
+state.overs=Math.max(0,o);
 
 if(!isNaN(b))
 state.balls=
@@ -3406,8 +3106,7 @@ Math.max(0,b)
 }
 
 if(reviews)
-state.reviews=
-reviews;
+state.reviews=reviews;
 
 render();
 
@@ -3426,14 +3125,12 @@ document.getElementById("channelInput")
 
 let current=
 parseInt(
-document.getElementById("subCurrentInput")
-.value
+document.getElementById("subCurrentInput").value
 );
 
 let target=
 parseInt(
-document.getElementById("subTargetInput")
-.value
+document.getElementById("subTargetInput").value
 );
 
 if(channel)
@@ -3441,12 +3138,10 @@ state.channel=
 channel.toUpperCase();
 
 if(!isNaN(current))
-state.subCurrent=
-current;
+state.subCurrent=current;
 
 if(!isNaN(target))
-state.subTarget=
-target;
+state.subTarget=target;
 
 render();
 
@@ -3466,11 +3161,9 @@ return;
 let reader=
 new FileReader();
 
-reader.onload=
-function(e){
+reader.onload=function(e){
 
-document.getElementById(id)
-.src=
+document.getElementById(id).src=
 e.target.result;
 
 try{
@@ -3499,23 +3192,16 @@ reader.readAsDataURL(file);
 
 function restoreFlags(){
 
-document.getElementById("pkFlag")
-.src=
+document.getElementById("pkFlag").src=
 "https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg";
 
-document.getElementById("engFlag")
-.src=
+document.getElementById("engFlag").src=
 "https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg";
 
 try{
 
-localStorage.removeItem(
-"img_pkFlag"
-);
-
-localStorage.removeItem(
-"img_engFlag"
-);
+localStorage.removeItem("img_pkFlag");
+localStorage.removeItem("img_engFlag");
 
 }catch(e){}
 
@@ -3537,13 +3223,10 @@ function loadImages(){
 try{
 
 let img=
-localStorage.getItem(
-"img_"+id
-);
+localStorage.getItem("img_"+id);
 
 if(img)
-document.getElementById(id)
-.src=img;
+document.getElementById(id).src=img;
 
 }catch(e){}
 
@@ -3573,8 +3256,7 @@ URL.createObjectURL(file);
 let music=
 document.getElementById("music");
 
-music.src=
-musicURL;
+music.src=musicURL;
 
 music.volume=
 (state.volume||100)/100;
@@ -3608,9 +3290,7 @@ music.volume=
 music.playbackRate=
 Number(state.speed)||1;
 
-music.play().catch(
-()=>{}
-);
+music.play().catch(()=>{});
 
 }
 
@@ -3619,8 +3299,7 @@ music.play().catch(
 
 function pauseMusic(){
 
-document.getElementById("music")
-.pause();
+document.getElementById("music").pause();
 
 }
 
@@ -3633,7 +3312,6 @@ let music=
 document.getElementById("music");
 
 music.pause();
-
 music.currentTime=0;
 
 }
@@ -3671,14 +3349,6 @@ saveState();
 
 /* ================= SPEED ================= */
 
-/*
- Music کی speed:
- 0.5x = slow
- 1x   = normal
- 1.5x = fast
- 2x   = very fast
-*/
-
 function changeSpeed(value){
 
 let speed=
@@ -3696,14 +3366,12 @@ speed
 )
 );
 
-state.speed=
-speed;
+state.speed=speed;
 
 let music=
 document.getElementById("music");
 
-music.playbackRate=
-speed;
+music.playbackRate=speed;
 
 document.getElementById("speedValue")
 .textContent=
@@ -3725,12 +3393,12 @@ Number(state.speed)||1;
 
 let buttons={
 
-"speed05":.5,
-"speed075":.75,
-"speed1":1,
-"speed125":1.25,
-"speed15":1.5,
-"speed2":2
+speed05:.5,
+speed075:.75,
+speed1:1,
+speed125:1.25,
+speed15:1.5,
+speed2:2
 
 };
 
@@ -3774,21 +3442,15 @@ let broadcast=
 document.getElementById("broadcast");
 
 for(let i=1;i<=6;i++)
-broadcast.classList.remove(
-"design"+i
-);
+broadcast.classList.remove("design"+i);
 
 if(state.design>1)
-broadcast.classList.add(
-"design"+state.design
-);
+broadcast.classList.add("design"+state.design);
 
 for(let i=1;i<=6;i++){
 
 let b=
-document.getElementById(
-"design"+i
-);
+document.getElementById("design"+i);
 
 if(b)
 b.classList.toggle(
@@ -3806,9 +3468,7 @@ i===state.design
 function updateEventClass(){
 
 let area=
-document.getElementById(
-"eventArea"
-);
+document.getElementById("eventArea");
 
 area.classList.remove(
 "event-six",
@@ -3818,26 +3478,19 @@ area.classList.remove(
 );
 
 let e=
-(state.event||"")
-.toUpperCase();
+(state.event||"").toUpperCase();
 
 if(e.includes("SIX"))
 
-area.classList.add(
-"event-six"
-);
+area.classList.add("event-six");
 
 else if(e.includes("FOUR"))
 
-area.classList.add(
-"event-four"
-);
+area.classList.add("event-four");
 
 else if(e.includes("WICKET"))
 
-area.classList.add(
-"event-wicket"
-);
+area.classList.add("event-wicket");
 
 else if(
 e.includes("DOT")||
@@ -3845,9 +3498,7 @@ e.includes("WIDE")||
 e.includes("NO BALL")
 )
 
-area.classList.add(
-"event-dot"
-);
+area.classList.add("event-dot");
 
 }
 
@@ -3856,13 +3507,9 @@ area.classList.add(
 
 function broadcastMode(){
 
-document.body.classList.remove(
-"longFullscreen"
-);
+document.body.classList.remove("longFullscreen");
 
-document.body.classList.add(
-"broadcastOnly"
-);
+document.body.classList.add("broadcastOnly");
 
 }
 
@@ -3877,40 +3524,27 @@ document.body.classList.remove(
 );
 
 let b=
-document.getElementById(
-"broadcast"
-);
+document.getElementById("broadcast");
 
-b.classList.remove(
-"shortMode"
-);
+b.classList.remove("shortMode");
 
-b.style.aspectRatio=
-"16/9";
+b.style.aspectRatio="16/9";
 
 }
 
 
-/* ================= LONG ================= */
+/* ================= LONG 16:9 ================= */
 
 async function longMode(){
 
 let b=
-document.getElementById(
-"broadcast"
-);
+document.getElementById("broadcast");
 
-b.classList.remove(
-"shortMode"
-);
+b.classList.remove("shortMode");
 
-document.body.classList.remove(
-"broadcastOnly"
-);
+document.body.classList.remove("broadcastOnly");
 
-document.body.classList.add(
-"longFullscreen"
-);
+document.body.classList.add("longFullscreen");
 
 try{
 
@@ -3935,13 +3569,9 @@ document.body.classList.remove(
 );
 
 let b=
-document.getElementById(
-"broadcast"
-);
+document.getElementById("broadcast");
 
-b.classList.add(
-"shortMode"
-);
+b.classList.add("shortMode");
 
 }
 
@@ -4016,9 +3646,7 @@ speed:1
 
 };
 
-document.getElementById(
-"volumeSlider"
-).value=100;
+document.getElementById("volumeSlider").value=100;
 
 render();
 
@@ -4029,12 +3657,8 @@ render();
 
 function toggleSettings(){
 
-document.getElementById(
-"settingsBody"
-)
-.classList.toggle(
-"open"
-);
+document.getElementById("settingsBody")
+.classList.toggle("open");
 
 }
 
@@ -4128,9 +3752,7 @@ loadState();
 
 loadImages();
 
-document.getElementById(
-"battingSelect"
-).value=
+document.getElementById("battingSelect").value=
 state.battingTeam;
 
 render();
