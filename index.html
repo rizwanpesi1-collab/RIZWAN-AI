@@ -10,12 +10,20 @@ body{background:#020617;color:#fff;font-family:'Segoe UI',Arial,sans-serif;overf
 button,select,input{font-family:inherit}
 button{cursor:pointer}
 
-.app{width:100vw;max-width:1300px;margin:auto}
+.app{width:100vw;max-width:1300px;margin:auto;display:flex;flex-direction:column;align-items:center}
 
-/* 16:9 TV BROADCAST CONTAINER */
+/* BROADCAST CONTAINER - DYNAMIC ASPECT RATIO */
 .broadcast{
   position:relative;width:100%;aspect-ratio:16/9;background:#030712;
   overflow:hidden;border:2px solid #1e293b;box-shadow:0 10px 30px rgba(0,0,0,0.8);
+  transition:all 0.3s ease;
+}
+
+/* SHORTS MODE (9:16) */
+.broadcast.shorts-mode{
+  max-width:420px;
+  aspect-ratio:9/16;
+  border-radius:16px;
 }
 
 /* STADIUM & PITCH */
@@ -25,15 +33,18 @@ button{cursor:pointer}
              linear-gradient(to bottom, #020617, #0f172a);
 }
 .pitch{
-  position:absolute;left:25%;right:25%;top:42%;height:30%;
+  position:absolute;left:20%;right:20%;top:40%;height:30%;
   background:rgba(180,140,90,0.2);border-radius:50%;
   transform:rotateX(65deg);border:2px solid rgba(255,255,255,0.08);
 }
 
 /* TOP HEADER SCOREBAR */
 .topHeader{
-  position:absolute;top:2%;left:1.5%;right:1.5%;height:18%;
+  position:absolute;top:2%;left:2%;right:2%;height:18%;
   display:grid;grid-template-columns:31% 38% 31%;gap:6px;z-index:10;
+}
+.broadcast.shorts-mode .topHeader{
+  grid-template-columns:1fr;height:auto;gap:4px;
 }
 
 .teamCard{
@@ -57,30 +68,33 @@ button{cursor:pointer}
   display:flex;align-items:center;justify-content:center;
   font-size:clamp(20px,2.5vw,35px);background:#1e293b;overflow:hidden;flex-shrink:0;
 }
+.tFlag img{width:100%;height:100%;object-fit:cover}
 
 /* CENTER SCORE BOX */
 .centerCard{
   background:#000;border:2px solid #334155;border-radius:12px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 0 15px rgba(0,0,0,0.8);position:relative;
+  box-shadow:0 0 15px rgba(0,0,0,0.8);position:relative;padding:4px;
 }
 .mainNum{font-size:clamp(24px,3.8vw,50px);font-weight:1000;color:#fff;direction:ltr}
 
 /* MID INFO STRIP */
 .midStrip{
-  position:absolute;top:21.5%;left:1.5%;right:1.5%;height:5.5%;
+  position:absolute;top:22%;left:2%;right:2%;height:5.5%;
   display:flex;align-items:center;justify-content:space-between;
   background:#090d16;border:1px solid #1e293b;border-radius:6px;
   padding:0 12px;z-index:9;font-size:clamp(8px,1vw,13px);font-weight:800;
 }
+.broadcast.shorts-mode .midStrip{top:28%}
 .targetPill{background:#facc15;color:#000;padding:2px 8px;border-radius:4px;font-weight:900}
 
 /* BALL HISTORY STRIP */
 .ballStrip{
-  position:absolute;top:28.5%;left:1.5%;right:1.5%;height:6.5%;
+  position:absolute;top:29%;left:2%;right:2%;height:6.5%;
   display:flex;align-items:center;justify-content:center;gap:6px;
   z-index:9;
 }
+.broadcast.shorts-mode .ballStrip{top:35%}
 .ballCircle{
   width:clamp(18px,2.2vw,32px);height:clamp(18px,2.2vw,32px);
   border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -93,7 +107,7 @@ button{cursor:pointer}
 
 /* DRAMATIC URDU COMMENTARY BOX */
 .commBox{
-  position:absolute;bottom:26.5%;left:1.5%;right:1.5%;height:9.5%;
+  position:absolute;bottom:26.5%;left:2%;right:2%;height:9.5%;
   background:rgba(2,6,23,0.92);border:1.5px solid #22c55e;
   border-radius:8px;padding:0 12px;display:flex;align-items:center;gap:10px;
   z-index:10;direction:rtl;
@@ -103,9 +117,13 @@ button{cursor:pointer}
 
 /* PLAYERS CARDS AT BOTTOM */
 .bottomPlayers{
-  position:absolute;bottom:2%;left:1.5%;right:1.5%;height:22.5%;
+  position:absolute;bottom:2%;left:2%;right:2%;height:22.5%;
   display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;z-index:10;
 }
+.broadcast.shorts-mode .bottomPlayers{
+  grid-template-columns:1fr;height:auto;gap:6px;bottom:1%;
+}
+
 .pCard{
   background:linear-gradient(135deg,#7f1d1d,#450a0a);
   border:2px solid #ef4444;border-radius:10px;padding:6px 10px;
@@ -127,20 +145,20 @@ button{cursor:pointer}
 .pSub{font-size:clamp(8px,0.9vw,11px);color:#94a3b8;direction:ltr}
 
 /* CONTROLS PANEL */
-.controls{padding:15px;background:#0f172a;border-top:2px solid #1e293b}
+.controls{width:100%;padding:15px;background:#0f172a;border-top:2px solid #1e293b}
 .panel{background:#1e293b;padding:12px;border-radius:10px;margin-bottom:12px}
 .panelTitle{color:#22c55e;font-weight:900;margin-bottom:10px;font-size:15px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
 .btn{padding:10px;border-radius:8px;border:none;color:#fff;font-weight:900;cursor:pointer;background:#334155;font-size:12px}
-.btn.green{background:#16a34a}.btn.red{background:#dc2626}.btn.blue{background:#2563eb}.btn.orange{background:#d97706}.btn.purple{background:#9333ea}
+.btn.green{background:#16a34a}.btn.red{background:#dc2626}.btn.blue{background:#2563eb}.btn.orange{background:#d97706}.btn.purple{background:#9333ea}.btn.cyan{background:#0891b2}
 select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border:1px solid #334155;color:#fff;font-weight:800}
 </style>
 </head>
 <body>
 
 <div class="app">
-  <!-- BROADCAST DISPLAY (16:9) -->
-  <div class="broadcast">
+  <!-- BROADCAST DISPLAY -->
+  <div class="broadcast" id="broadcastContainer">
     <div class="stadium"><div class="pitch"></div></div>
 
     <!-- TOP HEADER SCOREBAR -->
@@ -225,14 +243,39 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
   <!-- CONTROLS PANEL -->
   <div class="controls">
     <div class="panel">
+      <div class="panelTitle">📱 SCREEN LAYOUT & MODE SELECTOR</div>
+      <div class="grid">
+        <button class="btn cyan" onclick="toggleLayout('16:9')">📺 LONG LIVE (16:9)</button>
+        <button class="btn cyan" onclick="toggleLayout('9:16')">📱 SHORTS LIVE (9:16)</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panelTitle">🎵 CUSTOM MUSIC & IMAGE UPLOAD</div>
+      <div class="grid">
+        <label class="btn purple" style="text-align:center">
+          🎵 UPLOAD MP3 MUSIC
+          <input type="file" id="audioFile" accept="audio/*" onchange="uploadAudio(event)" style="display:none">
+        </label>
+        <label class="btn cyan" style="text-align:center">
+          🖼 UPLOAD STRIKER PHOTO
+          <input type="file" accept="image/*" onchange="uploadPlayerPhoto(event, 'p1Img')" style="display:none">
+        </label>
+        <label class="btn cyan" style="text-align:center">
+          🖼 UPLOAD BOWLER PHOTO
+          <input type="file" accept="image/*" onchange="uploadPlayerPhoto(event, 'bImg')" style="display:none">
+        </label>
+      </div>
+      <audio id="customAudio" loop style="display:none"></audio>
+    </div>
+
+    <div class="panel">
       <div class="panelTitle">🌍 GLOBAL MATCH SELECTOR</div>
       <select id="presetSelect" onchange="loadPreset()">
         <option value="PAK_IND">🇵🇰 PAKISTAN VS 🇮🇳 INDIA</option>
         <option value="IND_AFG">🇮🇳 INDIA VS 🇦🇫 AFGHANISTAN</option>
         <option value="AUS_IND">🇦🇺 AUSTRALIA VS 🇮🇳 INDIA</option>
         <option value="ENG_AUS">🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENGLAND VS 🇦🇺 AUSTRALIA</option>
-        <option value="SA_IND">🇿🇦 SOUTH AFRICA VS 🇮🇳 INDIA</option>
-        <option value="NZ_PAK">🇳🇿 NEW ZEALAND VS 🇵🇰 PAKISTAN</option>
       </select>
     </div>
 
@@ -243,76 +286,55 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
         <button class="btn orange" onclick="pauseMatch()">⏸ PAUSE</button>
         <button class="btn blue" onclick="nextBall()">⚡ NEXT BALL</button>
         <button class="btn red" onclick="resetMatch()">↻ RESET (0/0)</button>
-        <button class="btn purple" onclick="toggleCricketMusic()">🎵 MUSIC ON/OFF</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-/* PRESETS DATA */
 const presets = {
   PAK_IND: {
     t1: "PAKISTAN", flag1: "🇵🇰",
     t2: "INDIA", flag2: "🇮🇳",
-    p1: ["Babar Azam", "M Rizwan", "Fakhar Zaman", "Saim Ayub", "Iftikhar Ahmed", "Shadab Khan"],
-    p2: ["Rohit Sharma", "Virat Kohli", "Suryakumar Yadav", "Hardik Pandya", "Rishabh Pant", "Jasprit Bumrah"],
-    b1: ["Shaheen Afridi", "Naseem Shah", "Haris Rauf"],
-    b2: ["Jasprit Bumrah", "Arshdeep Singh", "Kuldeep Yadav"]
+    p1: ["Babar Azam", "M Rizwan", "Fakhar Zaman"],
+    p2: ["Rohit Sharma", "Virat Kohli", "S Yadav"],
+    b1: ["Shaheen Afridi"], b2: ["Jasprit Bumrah"]
   },
   IND_AFG: {
     t1: "INDIA", flag1: "🇮🇳",
     t2: "AFGHANISTAN", flag2: "🇦🇫",
-    p1: ["Rohit Sharma", "Virat Kohli", "Suryakumar Yadav", "Hardik Pandya"],
-    p2: ["R Gurbaz", "I Zadran", "A Omarzai", "M Nabi"],
-    b1: ["Jasprit Bumrah", "Arshdeep Singh"],
-    b2: ["Rashid Khan", "F Farooqi"]
-  },
-  AUS_IND: {
-    t1: "AUSTRALIA", flag1: "🇦🇺",
-    t2: "INDIA", flag2: "🇮🇳",
-    p1: ["Travis Head", "David Warner", "M Stoinis", "G Maxwell"],
-    p2: ["Rohit Sharma", "Virat Kohli", "S Yadav", "H Pandya"],
-    b1: ["Pat Cummins", "Mitchell Starc"],
-    b2: ["Jasprit Bumrah", "Kuldeep Yadav"]
-  },
-  ENG_AUS: {
-    t1: "ENGLAND", flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    t2: "AUSTRALIA", flag2: "🇦🇺",
-    p1: ["Jos Buttler", "Phil Salt", "Liam Livingstone", "Moeen Ali"],
-    p2: ["Travis Head", "David Warner", "Mitchell Marsh", "G Maxwell"],
-    b1: ["Jofra Archer", "Adil Rashid"],
-    b2: ["Pat Cummins", "Adam Zampa"]
-  },
-  SA_IND: {
-    t1: "SOUTH AFRICA", flag1: "🇿🇦",
-    t2: "INDIA", flag2: "🇮🇳",
-    p1: ["Quinton de Kock", "A Markram", "H Klaasen", "D Miller"],
-    p2: ["Rohit Sharma", "Virat Kohli", "S Yadav", "R Pant"],
-    b1: ["K Rabada", "A Nortje"],
-    b2: ["Jasprit Bumrah", "Arshdeep Singh"]
-  },
-  NZ_PAK: {
-    t1: "NEW ZEALAND", flag1: "🇳🇿",
-    t2: "PAKISTAN", flag2: "🇵🇰",
-    p1: ["Finn Allen", "Devon Conway", "Kane Williamson", "D Mitchell"],
-    p2: ["Babar Azam", "M Rizwan", "Fakhar Zaman", "Saim Ayub"],
-    b1: ["Trent Boult", "Tim Southee"],
-    b2: ["Shaheen Afridi", "Naseem Shah"]
+    p1: ["Rohit Sharma", "Virat Kohli"],
+    p2: ["R Gurbaz", "I Zadran"],
+    b1: ["Jasprit Bumrah"], b2: ["Rashid Khan"]
   }
 };
 
 let currentMatch = presets.PAK_IND;
-let timer = null;
-let clockTimer = null;
-let musicPlaying = false;
-let audioCtx = null;
-let musicInterval = null;
+let timer = null, clockTimer = null;
+let state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
 
-let state = {
-  running: false, ball: 0, runs1: 0, wkts1: 0, runs2: 0, wkts2: 0,
-  striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0
-};
+function toggleLayout(mode){
+  let container = document.getElementById("broadcastContainer");
+  if(mode === '9:16') container.classList.add("shorts-mode");
+  else container.classList.remove("shorts-mode");
+}
+
+function uploadAudio(e){
+  let file = e.target.files[0];
+  if(file){
+    let audio = document.getElementById("customAudio");
+    audio.src = URL.createObjectURL(file);
+    audio.play();
+    document.getElementById("commText").textContent = "🎵 آپ کا کسٹم بیک گراؤنڈ میوزک پلے ہو رہا ہے۔";
+  }
+}
+
+function uploadPlayerPhoto(e, targetImgId){
+  let file = e.target.files[0];
+  if(file){
+    document.getElementById(targetImgId).src = URL.createObjectURL(file);
+  }
+}
 
 function loadPreset(){
   let val = document.getElementById("presetSelect").value;
@@ -327,52 +349,21 @@ function loadPreset(){
 function resetMatch(){
   if(timer) clearInterval(timer);
   if(clockTimer) clearInterval(clockTimer);
-  state = { running: false, ball: 0, runs1: 0, wkts1: 0, runs2: 0, wkts2: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
+  state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
   updateUI();
   document.getElementById("commText").textContent = "میچ ری سیٹ کر دیا گیا ہے۔ 0/0 سے نیا میچ شروع کریں۔";
 }
 
-/* COPYRIGHT FREE SYNTHESIZED CRICKET MUSIC */
-function toggleCricketMusic(){
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  musicPlaying = !musicPlaying;
-
-  if (musicPlaying) {
-    musicInterval = setInterval(() => {
-      if (!musicPlaying) return;
-      let osc = audioCtx.createOscillator();
-      let gain = audioCtx.createGain();
-      let notes = [261.63, 329.63, 392.00, 523.25];
-      let note = notes[Math.floor(Math.random() * notes.length)];
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(note, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
-      
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.9);
-    }, 1200);
-    document.getElementById("commText").textContent = "🎵 کاپی رائٹ فری بیک گراؤنڈ میوزک فعال ہے۔";
-  } else {
-    clearInterval(musicInterval);
-    document.getElementById("commText").textContent = "🔇 بیک گراؤنڈ میوزک بند کر دیا گیا ہے۔";
-  }
-}
-
-/* DRAMATIC URDU COMMENTARY */
 function generateCommentary(outcome, runs){
-  let sName = currentMatch.p1[state.striker];
-  let bName = currentMatch.b2[state.bowler];
+  let sName = currentMatch.p1[state.striker] || "بیٹر";
+  let bName = currentMatch.b2[state.bowler] || "باؤلر";
   
   let lines = {
-    six: [`${bName} نے گیند کرائی، اور ${sName} نے گیند کو ہوا میں اٹھا دیا! گیند باؤنڈری کے پار، زبردست چھکا!`],
-    four: [`${bName} کی گیند، ${sName} نے خوبصورت شاٹ کھیلا اور گیند تیزی سے باؤنڈری لائن کی طرف، چار رنز!`],
-    wicket: [`وکٹ! ${bName} کی بہترین بالنگ، ${sName} چُوک گئے اور آؤٹ ہو کر پویلین واپس!`],
-    dot: [`${bName} نے اچھی لائن پر بال ڈالی، ${sName} نے دفاع کیا، کوئی رن نہیں ملا۔`],
-    one: [`${bName} کی گیند، ${sName} نے ہلکے ہاتھ سے کھیل کر ایک رن مکمل کر لیا۔`]
+    six: [`${bName} نے گیند کرائی، اور ${sName} نے گیند کو ہوا میں اٹھا دیا! زبردست چھکا!`],
+    four: [`${bName} کی گیند، ${sName} نے خوبصورت شاٹ کھیلا اور چار رنز!`],
+    wicket: [`وکٹ! ${bName} کی بہترین بالنگ، ${sName} آؤٹ ہو گئے!`],
+    dot: [`${bName} نے اچھی لائن پر بال ڈالی، کوئی رن نہیں ملا۔`],
+    one: [`${bName} کی گیند، ${sName} نے ایک رن مکمل کر لیا۔`]
   };
 
   let textArr = lines[outcome] || lines.one;
@@ -393,7 +384,6 @@ function speakUrdu(text){
 
 function simulateBall(){
   if(state.ball >= 120) return;
-  
   let outcomes = ["dot", "one", "four", "six", "wicket"];
   let outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
   let runs = outcome === "four" ? 4 : (outcome === "six" ? 6 : (outcome === "one" ? 1 : 0));
@@ -411,12 +401,7 @@ function simulateBall(){
 function startMatch(){
   if(state.running) return;
   state.running = true;
-  
-  // 1 Hr 35 Min Timing (47.5 Sec / Ball)
-  timer = setInterval(() => {
-    if(state.running) simulateBall();
-  }, 47500);
-
+  timer = setInterval(() => { if(state.running) simulateBall(); }, 47500);
   clockTimer = setInterval(() => {
     if(state.running){
       state.secondsElapsed++;
@@ -426,7 +411,6 @@ function startMatch(){
       document.getElementById("matchClock").textContent = `${h}:${m}:${s} / 01:35:00`;
     }
   }, 1000);
-
   simulateBall();
 }
 
@@ -434,20 +418,17 @@ function pauseMatch(){
   state.running = false;
   if(timer) clearInterval(timer);
   if(clockTimer) clearInterval(clockTimer);
-  document.getElementById("commText").textContent = "میچ روک دیا گیا ہے۔";
 }
 
-function nextBall(){
-  simulateBall();
-}
+function nextBall(){ simulateBall(); }
 
 function updateUI(){
   document.getElementById("t1Score").textContent = `${state.runs1}/${state.wkts1}`;
   document.getElementById("t1Overs").textContent = `${Math.floor(state.ball/6)}.${state.ball%6} OVERS`;
   document.getElementById("centerScore").textContent = state.runs1;
-  document.getElementById("p1Name").textContent = currentMatch.p1[state.striker];
-  document.getElementById("p2Name").textContent = currentMatch.p1[state.nonStriker];
-  document.getElementById("bName").textContent = currentMatch.b2[state.bowler];
+  document.getElementById("p1Name").textContent = currentMatch.p1[state.striker] || "Babar Azam";
+  document.getElementById("p2Name").textContent = currentMatch.p1[state.nonStriker] || "M Rizwan";
+  document.getElementById("bName").textContent = currentMatch.b2[state.bowler] || "J Bumrah";
 
   let strip = document.getElementById("ballStrip");
   strip.innerHTML = "";
