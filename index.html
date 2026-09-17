@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRO TV CRICKET BROADCAST & SCOREBOARD</title>
+<title>IND vs AFG T20I SERIES STUDIO - LIVE ANALYSIS</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#020617;color:#fff;font-family:'Segoe UI',Arial,sans-serif;overflow-x:hidden}
@@ -12,34 +12,25 @@ button{cursor:pointer}
 
 .app{width:100vw;max-width:1300px;margin:auto;display:flex;flex-direction:column;align-items:center;transition:all 0.3s ease}
 
-/* BROADCAST CONTAINER WITH COLORFUL ANIMATED BORDER */
 .broadcast{
-  position:relative;width:100%;aspect-ratio:16/9;background:#030712;
+  position:relative;width:100%;aspect-ratio:16/9;
+  background: linear-gradient(rgba(3,7,18,0.8), rgba(3,7,18,0.92)), 
+              url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200') center/cover no-repeat;
   overflow:hidden;border:3px solid transparent;
   border-image: linear-gradient(45deg, #ff007f, #00f0ff, #7000ff, #ff0000) 1;
   box-shadow:0 0 25px rgba(0, 240, 255, 0.4);
-  transition:all 0.3s ease;
-  animation: rainbowBorder 6s infinite linear;
 }
 
-@keyframes rainbowBorder {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
-/* SHORTS MODE (9:16) */
 .broadcast.shorts-mode{
   max-width:420px !important;
   aspect-ratio:9/16 !important;
   border-radius:16px;
 }
 
-/* CLEAN LONG FULLSCREEN MODE */
 body.clean-long .controls { display: none !important; }
 body.clean-long .app { width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 0; justify-content: center; }
 body.clean-long .broadcast { width: 100vw; height: 100vh; max-height: 100vh; aspect-ratio: 16/9; border: none; border-radius: 0; box-shadow: none; }
 
-/* RESTORE CONTROLS BUTTON (VISIBLE ONLY IN CLEAN LONG MODE) */
 .restore-btn {
   position: fixed; top: 15px; right: 15px; z-index: 99999;
   background: rgba(15, 23, 42, 0.85); color: #22c55e; border: 2px solid #22c55e;
@@ -48,479 +39,187 @@ body.clean-long .broadcast { width: 100vw; height: 100vh; max-height: 100vh; asp
 }
 body.clean-long .restore-btn { display: block; }
 
-/* STADIUM & PITCH */
-.stadium{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 60%, rgba(22,101,52,0.65), rgba(3,7,18,0.98)),
-             linear-gradient(to bottom, #020617, #0f172a);
+.studio-desk {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
+  background: linear-gradient(to top, #0f172a, rgba(15,23,42,0.85));
+  border-top: 3px solid #38bdf8; display: flex; align-items: center; padding: 0 30px; gap: 20px; z-index: 8;
 }
-.pitch{
-  position:absolute;left:20%;right:20%;top:40%;height:30%;
-  background:rgba(180,140,90,0.2);border-radius:50%;
-  transform:rotateX(65deg);border:2px solid rgba(255,255,255,0.08);
+.anchor-avatar {
+  width: 110px; height: 110px; border-radius: 50%; border: 3px solid #f43f5e;
+  object-fit: cover; box-shadow: 0 0 15px rgba(244,63,94,0.6); background: #1e293b; flex-shrink: 0;
+  animation: pulseGlow 2s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 10px rgba(244,63,94,0.4); }
+  100% { box-shadow: 0 0 25px rgba(244,63,94,0.9); }
 }
 
-/* TOP HEADER SCOREBAR */
+.studio-laptop {
+  background: #1e293b; border: 2px solid #64748b; border-radius: 8px; padding: 10px 15px;
+  font-size: 12px; color: #38bdf8; font-weight: 800; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
 .topHeader{
   position:absolute;top:2%;left:2%;right:2%;height:18%;
   display:grid;grid-template-columns:31% 38% 31%;gap:6px;z-index:10;
 }
-.broadcast.shorts-mode .topHeader{
-  grid-template-columns:1fr;height:auto;gap:4px;
-}
+.broadcast.shorts-mode .topHeader{grid-template-columns:1fr;height:auto;gap:4px;}
 
 .teamCard{
-  background:linear-gradient(135deg,#7f1d1d,#450a0a);
-  border:2px solid #ef4444;border-radius:12px;padding:6px 12px;
+  background:linear-gradient(135deg,#1e3a8a,#172554);
+  border:2px solid #3b82f6;border-radius:12px;padding:6px 12px;
   display:flex;align-items:center;justify-content:space-between;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
 .teamCard.bowling{
-  background:linear-gradient(135deg,#1e3a8a,#172554);
-  border-color:#3b82f6;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  background:linear-gradient(135deg,#7f1d1d,#450a0a);
+  border-color:#ef4444;
 }
 
 .tInfo{display:flex;flex-direction:column}
 .tName{font-size:clamp(10px,1.4vw,18px);font-weight:900;color:#fff;text-transform:uppercase}
-.tScore{font-size:clamp(18px,2.5vw,34px);font-weight:1000;color:#fff;direction:ltr;text-shadow: 0 0 8px #fff;}
+.tScore{font-size:clamp(16px,2.2vw,30px);font-weight:1000;color:#fff;direction:ltr}
 .tOvers{font-size:clamp(9px,1vw,13px);color:#facc15;direction:ltr;font-weight:800}
 
-/* 3D ROTATING FLAG ANIMATION */
 .tFlag{
   width:clamp(36px,4.5vw,60px);height:clamp(36px,4.5vw,60px);
-  border-radius:50%;border:2px solid #fff;box-shadow:0 0 15px rgba(255,255,255,0.8);
-  display:flex;align-items:center;justify-content:center;
-  font-size:clamp(20px,2.5vw,35px);background:#1e293b;overflow:hidden;flex-shrink:0;
-  animation: rotate3d 8s infinite linear;
-}
-@keyframes rotate3d {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
+  border-radius:50%;border:2px solid #fff;display:flex;align-items:center;
+  justify-content:center;font-size:clamp(20px,2.5vw,35px);background:#1e293b;flex-shrink:0;
 }
 
-/* COLORFUL CENTER SCORE BOX */
 .centerCard{
   background:linear-gradient(135deg, #0f172a, #000);
   border:2px solid #22c55e;border-radius:12px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 0 20px rgba(34, 197, 94, 0.6);position:relative;padding:4px;
 }
-.mainNum{
-  font-size:clamp(24px,3.8vw,50px);font-weight:1000;color:#00f0ff;direction:ltr;
-  text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
-}
+.mainNum{font-size:clamp(20px,3.2vw,42px);font-weight:1000;color:#00f0ff;direction:ltr}
 
-/* MID INFO STRIP */
-.midStrip{
-  position:absolute;top:22%;left:2%;right:2%;height:5.5%;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(9, 13, 22, 0.9);border:1px solid #00f0ff;border-radius:6px;
-  padding:0 12px;z-index:9;font-size:clamp(8px,1vw,13px);font-weight:800;
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-}
-.broadcast.shorts-mode .midStrip{top:28%}
-.targetPill{background:#facc15;color:#000;padding:2px 8px;border-radius:4px;font-weight:900}
-
-/* BALL HISTORY STRIP */
-.ballStrip{
-  position:absolute;top:29%;left:2%;right:2%;height:6.5%;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  z-index:9;
-}
-.broadcast.shorts-mode .ballStrip{top:35%}
-.ballCircle{
-  width:clamp(18px,2.2vw,32px);height:clamp(18px,2.2vw,32px);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:clamp(8px,0.9vw,12px);font-weight:1000;direction:ltr;
-  background:#334155;border:1px solid rgba(255,255,255,0.2);
-}
-.ballCircle.b4{background:#16a34a;color:#fff;box-shadow:0 0 8px #16a34a}
-.ballCircle.b6{background:#2563eb;color:#fff;box-shadow:0 0 8px #2563eb}
-.ballCircle.bw{background:#dc2626;color:#fff;box-shadow:0 0 8px #dc2626}
-
-/* DRAMATIC URDU COMMENTARY BOX */
 .commBox{
-  position:absolute;bottom:26.5%;left:2%;right:2%;height:9.5%;
+  position:absolute;bottom:37%;left:2%;right:2%;height:11%;
   background:rgba(2,6,23,0.95);border:2px solid #ff007f;
   border-radius:8px;padding:0 12px;display:flex;align-items:center;gap:10px;
   z-index:10;direction:rtl;box-shadow:0 0 15px rgba(255,0,127,0.4);
 }
-.commIcon{background:#ef4444;color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap}
-.commText{color:#e2e8f0;font-size:clamp(10px,1.2vw,16px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.commIcon{background:#f43f5e;color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap}
+.commText{color:#e2e8f0;font-size:clamp(10px,1.2vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* PLAYERS CARDS AT BOTTOM */
-.bottomPlayers{
-  position:absolute;bottom:2%;left:2%;right:2%;height:22.5%;
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;z-index:10;
-}
-.broadcast.shorts-mode .bottomPlayers{
-  grid-template-columns:1fr;height:auto;gap:6px;bottom:1%;
-}
-
-.pCard{
-  background:linear-gradient(135deg,#7f1d1d,#450a0a);
-  border:2px solid #ef4444;border-radius:10px;padding:6px 10px;
-  display:flex;align-items:center;gap:10px;overflow:hidden;
-}
-.pCard.bowler{
-  background:linear-gradient(135deg,#1e3a8a,#172554);
-  border-color:#3b82f6;
-}
-.pImg{
-  width:clamp(40px,4.8vw,68px);height:clamp(40px,4.8vw,68px);
-  border-radius:50%;border:2px solid #fff;background:#0f172a;
-  object-fit:cover;flex-shrink:0;
-}
-.pData{min-width:0;display:flex;flex-direction:column}
-.pRole{font-size:9px;color:#cbd5e1;font-weight:800}
-.pName{font-size:clamp(10px,1.3vw,17px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pStats{font-size:clamp(12px,1.8vw,22px);font-weight:1000;direction:ltr}
-.pSub{font-size:clamp(8px,0.9vw,11px);color:#94a3b8;direction:ltr}
-
-/* CONTROLS PANEL */
 .controls{width:100%;padding:15px;background:#0f172a;border-top:2px solid #1e293b}
 .panel{background:#1e293b;padding:12px;border-radius:10px;margin-bottom:12px}
 .panelTitle{color:#22c55e;font-weight:900;margin-bottom:10px;font-size:15px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
 .btn{padding:10px;border-radius:8px;border:none;color:#fff;font-weight:900;cursor:pointer;background:#334155;font-size:12px}
 .btn.green{background:#16a34a}.btn.red{background:#dc2626}.btn.blue{background:#2563eb}.btn.orange{background:#d97706}.btn.purple{background:#9333ea}.btn.cyan{background:#0891b2}
-select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border:1px solid #334155;color:#fff;font-weight:800}
 </style>
 </head>
 <body>
 
-<!-- RESTORE CONTROLS BUTTON -->
 <button class="restore-btn" id="btnRestore">⚙️ کنٹرولز کھولیں</button>
 
 <div class="app">
-  <!-- BROADCAST DISPLAY -->
   <div class="broadcast" id="broadcastContainer">
-    <div class="stadium"><div class="pitch"></div></div>
-
-    <!-- TOP HEADER SCOREBAR -->
     <div class="topHeader">
       <div class="teamCard">
         <div class="tInfo">
-          <div id="t1Name" class="tName">PAKISTAN</div>
-          <div id="t1Score" class="tScore">0/0</div>
-          <div id="t1Overs" class="tOvers">0.0 OVERS</div>
+          <div class="tName">INDIA (SERIES WINNER)</div>
+          <div class="tScore">3 - 0</div>
+          <div class="tOvers">T20I SERIES</div>
         </div>
-        <div class="tFlag" id="t1Flag">🇵🇰</div>
+        <div class="tFlag">🇮🇳</div>
       </div>
 
       <div class="centerCard">
-        <div id="centerMatch" style="font-size:10px;color:#facc15;font-weight:800">LIVE T20 MATCH</div>
-        <div id="centerScore" class="mainNum">0</div>
-        <div id="matchClock" style="font-size:11px;color:#22c55e;font-weight:900;direction:ltr">00:00:00 / 01:35:00</div>
+        <div style="font-size:10px;color:#facc15;font-weight:800">FINAL T20I: IND WON BY 127 RUNS</div>
+        <div class="mainNum">STUDIO LIVE</div>
+        <div style="font-size:11px;color:#22c55e;font-weight:900;direction:ltr">6-HR ANALYSIS SHOW</div>
       </div>
 
       <div class="teamCard bowling">
-        <div class="tFlag" id="t2Flag">🇮🇳</div>
+        <div class="tFlag">🇦🇫</div>
         <div class="tInfo" style="text-align:left">
-          <div id="t2Name" class="tName">INDIA</div>
-          <div id="t2Score" class="tScore">0/0</div>
-          <div id="t2Overs" class="tOvers">BOWLING</div>
+          <div class="tName">AFGHANISTAN</div>
+          <div class="tScore">LOST SERIES</div>
+          <div class="tOvers">NEW DELHI</div>
         </div>
       </div>
     </div>
 
-    <!-- MID INFO STRIP -->
-    <div class="midStrip">
-      <div>P'ship: <span id="pship">0(0)</span></div>
-      <div>CRR: <span id="crr">0.00</span> | RRR: <span id="rrr">0.00</span></div>
-      <div class="targetPill" id="targetText">PAK Need 180 runs in 120 balls</div>
-    </div>
-
-    <!-- BALL HISTORY STRIP -->
-    <div class="ballStrip" id="ballStrip">
-      <div class="ballCircle">0</div>
-    </div>
-
-    <!-- DRAMATIC URDU COMMENTARY BOX -->
     <div class="commBox">
-      <div class="commIcon">🎙 لائیو کمنٹری</div>
-      <div class="commText" id="commText">میچ شروع کرنے کے لیے START MATCH دبائیں۔</div>
+      <div class="commIcon">🎙 آٹو اینکر وائس</div>
+      <div class="commText" id="commText">خوش آمدید! انڈیا اور افغانستان کی حالیہ ٹی ٹوئنٹی سیریز پر تفصیلی تجزیہ شروع ہو چکا ہے۔</div>
     </div>
 
-    <!-- PLAYER CARDS AT BOTTOM -->
-    <div class="bottomPlayers">
-      <div class="pCard">
-        <img id="p1Img" class="pImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" alt="p1">
-        <div class="pData">
-          <div class="pRole">BATSMAN (STRIKER)</div>
-          <div id="p1Name" class="pName">Babar Azam</div>
-          <div id="p1Stats" class="pStats">0 (0)</div>
-          <div id="p1Sub" class="pSub">4s: 0 • 6s: 0 • SR: 0.0</div>
-        </div>
-      </div>
-
-      <div class="pCard">
-        <img id="p2Img" class="pImg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120" alt="p2">
-        <div class="pData">
-          <div class="pRole">BATSMAN</div>
-          <div id="p2Name" class="pName">M Rizwan</div>
-          <div id="p2Stats" class="pStats">0 (0)</div>
-          <div id="p2Sub" class="pSub">4s: 0 • 6s: 0 • SR: 0.0</div>
-        </div>
-      </div>
-
-      <div class="pCard bowler">
-        <img id="bImg" class="pImg" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120" alt="b">
-        <div class="pData">
-          <div class="pRole" style="color:#93c5fd">BOWLER</div>
-          <div id="bName" class="pName">J Bumrah</div>
-          <div id="bStats" class="pStats">0-0</div>
-          <div id="bSub" class="pSub">0.0 OV • ECON: 0.00</div>
-        </div>
+    <div class="studio-desk">
+      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150" alt="Anchor" class="anchor-avatar" id="anchorImg">
+      <div class="studio-laptop">
+        💻 لائیو اسٹوڈیو تجزیہ (انڈیا بمقابلہ افغانستان سیریز)<br>
+        <span style="color:#22c55e; font-size:11px;">• عورت خود بخود بول رہی ہے اور تمام کھلاڑیوں پر تبصرہ کر رہی ہے</span>
       </div>
     </div>
   </div>
 
-  <!-- CONTROLS PANEL -->
   <div class="controls">
     <div class="panel">
-      <div class="panelTitle">🔊 AUDIO VOLUME CONTROLS (سلو اور تیز آواز)</div>
-      <div style="display:flex;align-items:center;gap:15px">
-        <span style="font-size:12px;font-weight:900">میوزک / کمنٹری آواز:</span>
-        <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.8" oninput="adjustVolume(this.value)">
+      <div class="panelTitle">🎙 6 گھنٹے لائیو اسٹریم کے لیے خودکار تبصرے اور موضوعات</div>
+      <div class="grid">
+        <button class="btn blue" onclick="autoSpeak('ind_praise')">⭐ انڈیا کی شاندار تعریفیں</button>
+        <button class="btn red" onclick="autoSpeak('ind_mistakes')">⚠️ انڈیا کی غلطیاں</button>
+        <button class="btn orange" onclick="autoSpeak('afg_mistakes')">❌ افغانستان کی خامیوز/غلطیاں</button>
+        <button class="btn purple" onclick="autoSpeak('player_review')">🏏 کھلاڑیوں کا تفصیلی ریویو</button>
       </div>
     </div>
 
     <div class="panel">
-      <div class="panelTitle">📱 SCREEN LAYOUT SELECTOR</div>
+      <div class="panelTitle">📱 اسکرین موڈ</div>
       <div class="grid">
-        <button class="btn cyan" id="btnLong">📺 LONG LIVE (16:9)</button>
-        <button class="btn cyan" id="btnShorts">📱 SHORTS LIVE (9:16)</button>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panelTitle">🎵 CUSTOM MUSIC & IMAGE UPLOAD</div>
-      <div class="grid">
-        <label class="btn purple" style="text-align:center;cursor:pointer">
-          🎵 UPLOAD SONG (AUTO LOOP)
-          <input type="file" id="audioFile" accept="audio/*" style="display:none">
-        </label>
-        <label class="btn cyan" style="text-align:center;cursor:pointer">
-          🖼 UPLOAD STRIKER PHOTO
-          <input type="file" id="p1File" accept="image/*" style="display:none">
-        </label>
-        <label class="btn cyan" style="text-align:center;cursor:pointer">
-          🖼 UPLOAD BOWLER PHOTO
-          <input type="file" id="bFile" accept="image/*" style="display:none">
-        </label>
-      </div>
-      <audio id="customAudio" loop style="display:none"></audio>
-    </div>
-
-    <div class="panel">
-      <div class="panelTitle">🌍 GLOBAL MATCH SELECTOR</div>
-      <select id="presetSelect">
-        <option value="PAK_IND">🇵🇰 PAKISTAN VS 🇮🇳 INDIA</option>
-        <option value="IND_AFG">🇮🇳 INDIA VS 🇦🇫 AFGHANISTAN</option>
-        <option value="AUS_IND">🇦🇺 AUSTRALIA VS 🇮🇳 INDIA</option>
-        <option value="ENG_AUS">🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENGLAND VS 🇦🇺 AUSTRALIA</option>
-      </select>
-    </div>
-
-    <div class="panel">
-      <div class="panelTitle">⚡ MATCH CONTROLS & TIMING (1 HR 35 MIN)</div>
-      <div class="grid">
-        <button class="btn green" id="btnStart">▶ START MATCH</button>
-        <button class="btn orange" id="btnPause">⏸ PAUSE</button>
-        <button class="btn blue" id="btnNext">⚡ NEXT BALL</button>
-        <button class="btn red" id="btnReset">↻ RESET (0/0)</button>
+        <button class="btn cyan" id="btnLong">📺 لانگ اسکرین (فُل ویو)</button>
+        <button class="btn cyan" id="btnShorts">📱 شارٹس موڈ (9:16)</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const presets = {
-  PAK_IND: {
-    t1: "PAKISTAN", flag1: "🇵🇰",
-    t2: "INDIA", flag2: "🇮🇳",
-    p1: ["Babar Azam", "M Rizwan", "Fakhar Zaman"],
-    p2: ["Rohit Sharma", "Virat Kohli", "S Yadav"],
-    b1: ["Shaheen Afridi"], b2: ["Jasprit Bumrah"]
-  },
-  IND_AFG: {
-    t1: "INDIA", flag1: "🇮🇳",
-    t2: "AFGHANISTAN", flag2: "🇦🇫",
-    p1: ["Rohit Sharma", "Virat Kohli"],
-    p2: ["R Gurbaz", "I Zadran"],
-    b1: ["Jasprit Bumrah"], b2: ["Rashid Khan"]
-  }
-};
-
-let currentMatch = presets.PAK_IND;
-let timer = null, clockTimer = null;
-let currentVolume = 0.8;
-let state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
-
-function adjustVolume(val){
-  currentVolume = parseFloat(val);
-  let audio = document.getElementById("customAudio");
-  if(audio) audio.volume = currentVolume;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Long View Click - Hides controls and makes broadcast fullscreen landscape
-  document.getElementById("btnLong").addEventListener("click", () => {
-    document.getElementById("broadcastContainer").classList.remove("shorts-mode");
-    document.body.classList.add("clean-long");
-  });
-
-  // Restore Controls Button Click
-  document.getElementById("btnRestore").addEventListener("click", () => {
-    document.body.classList.remove("clean-long");
-  });
-
-  document.getElementById("btnShorts").addEventListener("click", () => {
-    document.getElementById("broadcastContainer").classList.add("shorts-mode");
-    document.body.classList.remove("clean-long");
-  });
-
-  document.getElementById("audioFile").addEventListener("change", (e) => {
-    let file = e.target.files[0];
-    if(file){
-      let audio = document.getElementById("customAudio");
-      audio.src = URL.createObjectURL(file);
-      audio.loop = true;
-      audio.volume = currentVolume;
-      audio.play();
-      document.getElementById("commText").textContent = "🎵 سونگ لوپ پر لگ گیا ہے!";
-    }
-  });
-
-  document.getElementById("p1File").addEventListener("change", (e) => {
-    let file = e.target.files[0];
-    if(file) document.getElementById("p1Img").src = URL.createObjectURL(file);
-  });
-
-  document.getElementById("bFile").addEventListener("change", (e) => {
-    let file = e.target.files[0];
-    if(file) document.getElementById("bImg").src = URL.createObjectURL(file);
-  });
-
-  document.getElementById("presetSelect").addEventListener("change", loadPreset);
-  document.getElementById("btnStart").addEventListener("click", startMatch);
-  document.getElementById("btnPause").addEventListener("click", pauseMatch);
-  document.getElementById("btnNext").addEventListener("click", nextBall);
-  document.getElementById("btnReset").addEventListener("click", resetMatch);
-
-  loadPreset();
+document.getElementById("btnLong").addEventListener("click", () => {
+  document.getElementById("broadcastContainer").classList.remove("shorts-mode");
+  document.body.classList.add("clean-long");
 });
 
-function loadPreset(){
-  let val = document.getElementById("presetSelect").value;
-  currentMatch = presets[val] || presets.PAK_IND;
-  document.getElementById("t1Name").textContent = currentMatch.t1;
-  document.getElementById("t1Flag").textContent = currentMatch.flag1;
-  document.getElementById("t2Name").textContent = currentMatch.t2;
-  document.getElementById("t2Flag").textContent = currentMatch.flag2;
-  resetMatch();
-}
+document.getElementById("btnRestore").addEventListener("click", () => {
+  document.body.classList.remove("clean-long");
+});
 
-function resetMatch(){
-  if(timer) clearInterval(timer);
-  if(clockTimer) clearInterval(clockTimer);
-  state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
-  updateUI();
-  document.getElementById("commText").textContent = "میچ ری سیٹ ہو گیا ہے۔";
-}
+document.getElementById("btnShorts").addEventListener("click", () => {
+  document.getElementById("broadcastContainer").classList.add("shorts-mode");
+  document.body.classList.remove("clean-long");
+});
 
-function generateCommentary(outcome, runs){
-  let sName = currentMatch.p1[state.striker] || "بیٹر";
-  let bName = currentMatch.b2[state.bowler] || "باؤلر";
-  
-  let lines = {
-    six: [`${bName} نے گیند کرائی، اور ${sName} نے شاندار چھکا لگا دیا!`],
-    four: [`${bName} کی گیند پر ${sName} کا خوبصورت چوکا!`],
-    wicket: [`وکٹ! ${bName} کی بہترین بالنگ، کھلاڑی آؤٹ!`],
-    dot: [`${bName} کی اچھی بال، کوئی رن نہیں۔`],
-    one: [`${bName} کی گیند، ایک رن مکمل کر لیا۔`]
+// Auto Speech and Content for IND vs AFG Series
+function autoSpeak(type) {
+  let scripts = {
+    ind_praise: "انڈیا نے اس پوری ٹی ٹوئنٹی سیریز میں ناقابل یقین کرکٹ کھیلی ہے! آخری میچ میں ابهيشیک شرما کی شاندار سنچری اور نیتیش کمار ریڈی کی زبردست بولنگ نے یہ ثابت کر دیا کہ ان کی ٹیم کتنی متوازن ہے۔ تگڑی فتح مبارک ہو!",
+    ind_mistakes: "البتہ اگر تجزیہ کیا جائے تو سیریز کے شروع کے میچوں میں انڈیا کی فیلڈنگ میں کچھ معمولی خامیاں نظر آئیں اور پاور پلے میں وکٹیں گنوانے کی جو غلطی ہوئی، کوچنگ اسٹاف کو اس پر ضرور نظرثانی کرنی چاہئے۔",
+    afg_mistakes: "جہاں تک افغانستان کا تعلق ہے، انہوں نے فائٹ کرنے کی کوشش کی لیکن آخری میچ میں ان کا بیٹنگ آرڈر بری طرح فلاپ ہو گیا۔ پریشر میں آ کر خراب شاٹ سلیکشن ان کی سب سے بڑی کمزوری بنی جس کی وجہ سے وہ بڑے مارجن سے ہار گئے۔",
+    player_review: "سیریز کے تمام کھلاڑیوں کی پرفارمنس کا جائزہ لیں تو ابهیشیک شرما سب سے نمایاں رہے، جب کہ راشد خان اور عمرزئی نے بھی فائٹ کی۔ آئیے دیکھتے ہیں کس نے کون سی بڑی غلطیاں کی اور کس نے دل جیتے۔"
   };
 
-  let textArr = lines[outcome] || lines.one;
-  let text = textArr[Math.floor(Math.random() * textArr.length)];
+  let text = scripts[type] || "لائیو تجزیہ جاری ہے...";
   document.getElementById("commText").textContent = text;
-  speakUrdu(text);
-}
 
-function speakUrdu(text){
-  if('speechSynthesis' in window){
+  if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-    let utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "ur-PK";
-    utter.rate = 0.9;
-    utter.volume = currentVolume;
+    let utterance = new SpeechSynthesisUtterance(text);
+    utter.lang = "ur-PK"; 
+    utter.rate = 0.9;     
+    utter.pitch = 1.1;    // زنانہ آواز کے لیے
     window.speechSynthesis.speak(utter);
   }
 }
 
-function simulateBall(){
-  if(state.ball >= 120) return;
-  let outcomes = ["dot", "one", "four", "six", "wicket"];
-  let outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
-  let runs = outcome === "four" ? 4 : (outcome === "six" ? 6 : (outcome === "one" ? 1 : 0));
-
-  if(outcome === "wicket") state.wkts1++;
-  else state.runs1 += runs;
-
-  state.ball++;
-  state.history.push({type: outcome, label: outcome === "wicket" ? "W" : runs});
-
-  generateCommentary(outcome, runs);
-  updateUI();
-}
-
-function startMatch(){
-  if(state.running) return;
-  state.running = true;
-  
-  let audio = document.getElementById("customAudio");
-  if(audio.src && audio.paused) audio.play();
-
-  timer = setInterval(() => { if(state.running) simulateBall(); }, 47500);
-  clockTimer = setInterval(() => {
-    if(state.running){
-      state.secondsElapsed++;
-      let h = String(Math.floor(state.secondsElapsed/3600)).padStart(2,'0');
-      let m = String(Math.floor((state.secondsElapsed%3600)/60)).padStart(2,'0');
-      let s = String(state.secondsElapsed%60).padStart(2,'0');
-      document.getElementById("matchClock").textContent = `${h}:${m}:${s} / 01:35:00`;
-    }
+// Automatically start speaking when page loads
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    autoSpeak('ind_praise');
   }, 1000);
-  simulateBall();
-}
-
-function pauseMatch(){
-  state.running = false;
-  if(timer) clearInterval(timer);
-  if(clockTimer) clearInterval(clockTimer);
-}
-
-function nextBall(){ simulateBall(); }
-
-function updateUI(){
-  document.getElementById("t1Score").textContent = `${state.runs1}/${state.wkts1}`;
-  document.getElementById("t1Overs").textContent = `${Math.floor(state.ball/6)}.${state.ball%6} OVERS`;
-  document.getElementById("centerScore").textContent = state.runs1;
-  document.getElementById("p1Name").textContent = currentMatch.p1[state.striker] || "Babar Azam";
-  document.getElementById("p2Name").textContent = currentMatch.p1[state.nonStriker] || "M Rizwan";
-  document.getElementById("bName").textContent = currentMatch.b2[state.bowler] || "J Bumrah";
-
-  let strip = document.getElementById("ballStrip");
-  strip.innerHTML = "";
-  state.history.slice(-8).forEach(b => {
-    let div = document.createElement("div");
-    div.className = `ballCircle b${b.type === "four"? "4" : (b.type === "six"? "6" : (b.type === "wicket"? "w":""))}`;
-    div.textContent = b.label;
-    strip.appendChild(div);
-  });
-}
+});
 </script>
 </body>
 </html>
