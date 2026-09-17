@@ -29,8 +29,8 @@ button{cursor:pointer}
 
 /* SHORTS MODE (9:16) */
 .broadcast.shorts-mode{
-  max-width:420px;
-  aspect-ratio:9/16;
+  max-width:420px !important;
+  aspect-ratio:9/16 !important;
   border-radius:16px;
 }
 
@@ -273,25 +273,25 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
     <div class="panel">
       <div class="panelTitle">📱 SCREEN LAYOUT SELECTOR</div>
       <div class="grid">
-        <button class="btn cyan" onclick="toggleLayout('16:9')">📺 LONG LIVE (16:9)</button>
-        <button class="btn cyan" onclick="toggleLayout('9:16')">📱 SHORTS LIVE (9:16)</button>
+        <button class="btn cyan" id="btnLong">📺 LONG LIVE (16:9)</button>
+        <button class="btn cyan" id="btnShorts">📱 SHORTS LIVE (9:16)</button>
       </div>
     </div>
 
     <div class="panel">
       <div class="panelTitle">🎵 CUSTOM MUSIC & IMAGE UPLOAD</div>
       <div class="grid">
-        <label class="btn purple" style="text-align:center">
+        <label class="btn purple" style="text-align:center;cursor:pointer">
           🎵 UPLOAD SONG (AUTO LOOP)
-          <input type="file" id="audioFile" accept="audio/*" onchange="uploadAudio(event)" style="display:none">
+          <input type="file" id="audioFile" accept="audio/*" style="display:none">
         </label>
-        <label class="btn cyan" style="text-align:center">
+        <label class="btn cyan" style="text-align:center;cursor:pointer">
           🖼 UPLOAD STRIKER PHOTO
-          <input type="file" accept="image/*" onchange="uploadPlayerPhoto(event, 'p1Img')" style="display:none">
+          <input type="file" id="p1File" accept="image/*" style="display:none">
         </label>
-        <label class="btn cyan" style="text-align:center">
+        <label class="btn cyan" style="text-align:center;cursor:pointer">
           🖼 UPLOAD BOWLER PHOTO
-          <input type="file" accept="image/*" onchange="uploadPlayerPhoto(event, 'bImg')" style="display:none">
+          <input type="file" id="bFile" accept="image/*" style="display:none">
         </label>
       </div>
       <audio id="customAudio" loop style="display:none"></audio>
@@ -299,7 +299,7 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
 
     <div class="panel">
       <div class="panelTitle">🌍 GLOBAL MATCH SELECTOR</div>
-      <select id="presetSelect" onchange="loadPreset()">
+      <select id="presetSelect">
         <option value="PAK_IND">🇵🇰 PAKISTAN VS 🇮🇳 INDIA</option>
         <option value="IND_AFG">🇮🇳 INDIA VS 🇦🇫 AFGHANISTAN</option>
         <option value="AUS_IND">🇦🇺 AUSTRALIA VS 🇮🇳 INDIA</option>
@@ -310,10 +310,10 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
     <div class="panel">
       <div class="panelTitle">⚡ MATCH CONTROLS & TIMING (1 HR 35 MIN)</div>
       <div class="grid">
-        <button class="btn green" onclick="startMatch()">▶ START MATCH</button>
-        <button class="btn orange" onclick="pauseMatch()">⏸ PAUSE</button>
-        <button class="btn blue" onclick="nextBall()">⚡ NEXT BALL</button>
-        <button class="btn red" onclick="resetMatch()">↻ RESET (0/0)</button>
+        <button class="btn green" id="btnStart">▶ START MATCH</button>
+        <button class="btn orange" id="btnPause">⏸ PAUSE</button>
+        <button class="btn blue" id="btnNext">⚡ NEXT BALL</button>
+        <button class="btn red" id="btnReset">↻ RESET (0/0)</button>
       </div>
     </div>
   </div>
@@ -348,30 +348,46 @@ function adjustVolume(val){
   if(audio) audio.volume = currentVolume;
 }
 
-function toggleLayout(mode){
-  let container = document.getElementById("broadcastContainer");
-  if(mode === '9:16') container.classList.add("shorts-mode");
-  else container.classList.remove("shorts-mode");
-}
+// Event Listeners for safe DOM execution
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("btnLong").addEventListener("click", () => {
+    document.getElementById("broadcastContainer").classList.remove("shorts-mode");
+  });
 
-function uploadAudio(e){
-  let file = e.target.files[0];
-  if(file){
-    let audio = document.getElementById("customAudio");
-    audio.src = URL.createObjectURL(file);
-    audio.loop = true; // Repeat music automatically
-    audio.volume = currentVolume;
-    audio.play();
-    document.getElementById("commText").textContent = "🎵 میوزک خودکار لوپ پر آن کر دیا گیا ہے۔";
-  }
-}
+  document.getElementById("btnShorts").addEventListener("click", () => {
+    document.getElementById("broadcastContainer").classList.add("shorts-mode");
+  });
 
-function uploadPlayerPhoto(e, targetImgId){
-  let file = e.target.files[0];
-  if(file){
-    document.getElementById(targetImgId).src = URL.createObjectURL(file);
-  }
-}
+  document.getElementById("audioFile").addEventListener("change", (e) => {
+    let file = e.target.files[0];
+    if(file){
+      let audio = document.getElementById("customAudio");
+      audio.src = URL.createObjectURL(file);
+      audio.loop = true;
+      audio.volume = currentVolume;
+      audio.play();
+      document.getElementById("commText").textContent = "🎵 آپ کا سونگ لوپ پر لگ گیا ہے، اب یہ رکنے والا نہیں!";
+    }
+  });
+
+  document.getElementById("p1File").addEventListener("change", (e) => {
+    let file = e.target.files[0];
+    if(file) document.getElementById("p1Img").src = URL.createObjectURL(file);
+  });
+
+  document.getElementById("bFile").addEventListener("change", (e) => {
+    let file = e.target.files[0];
+    if(file) document.getElementById("bImg").src = URL.createObjectURL(file);
+  });
+
+  document.getElementById("presetSelect").addEventListener("change", loadPreset);
+  document.getElementById("btnStart").addEventListener("click", startMatch);
+  document.getElementById("btnPause").addEventListener("click", pauseMatch);
+  document.getElementById("btnNext").addEventListener("click", nextBall);
+  document.getElementById("btnReset").addEventListener("click", resetMatch);
+
+  loadPreset();
+});
 
 function loadPreset(){
   let val = document.getElementById("presetSelect").value;
@@ -388,7 +404,7 @@ function resetMatch(){
   if(clockTimer) clearInterval(clockTimer);
   state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
   updateUI();
-  document.getElementById("commText").textContent = "میچ ری سیٹ کر دیا گیا ہے۔ 0/0 سے نیا میچ شروع کریں۔";
+  document.getElementById("commText").textContent = "میچ ری سیٹ ہو گیا ہے۔ START MATCH دبائیں۔";
 }
 
 function generateCommentary(outcome, runs){
@@ -396,11 +412,11 @@ function generateCommentary(outcome, runs){
   let bName = currentMatch.b2[state.bowler] || "باؤلر";
   
   let lines = {
-    six: [`${bName} نے گیند کرائی، اور ${sName} نے گیند کو ہوا میں اٹھا دیا! زبردست چھکا!`],
-    four: [`${bName} کی گیند، ${sName} نے خوبصورت شاٹ کھیلا اور چار رنز!`],
-    wicket: [`وکٹ! ${bName} کی بہترین بالنگ، ${sName} آؤٹ ہو گئے!`],
-    dot: [`${bName} نے اچھی لائن پر بال ڈالی، کوئی رن نہیں ملا۔`],
-    one: [`${bName} کی گیند، ${sName} نے ایک رن مکمل کر لیا۔`]
+    six: [`${bName} نے گیند کرائی، اور ${sName} نے چھکا لگا دیا!`],
+    four: [`${bName} کی گیند پر ${sName} کا شاندار چوک!` ],
+    wicket: [`وکٹ! ${bName} کی بہترین بالنگ، کھلاڑی آؤٹ!`],
+    dot: [`${bName} کی اچھی بال، کوئی رن نہیں۔`],
+    one: [`${bName} کی گیند، ایک رن بن گیا۔`]
   };
 
   let textArr = lines[outcome] || lines.one;
@@ -439,6 +455,11 @@ function simulateBall(){
 function startMatch(){
   if(state.running) return;
   state.running = true;
+  
+  // Ensure background music also plays if loaded
+  let audio = document.getElementById("customAudio");
+  if(audio.src && audio.paused) audio.play();
+
   timer = setInterval(() => { if(state.running) simulateBall(); }, 47500);
   clockTimer = setInterval(() => {
     if(state.running){
@@ -477,8 +498,6 @@ function updateUI(){
     strip.appendChild(div);
   });
 }
-
-loadPreset();
 </script>
 </body>
 </html>
