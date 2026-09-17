@@ -12,11 +12,19 @@ button{cursor:pointer}
 
 .app{width:100vw;max-width:1300px;margin:auto;display:flex;flex-direction:column;align-items:center}
 
-/* BROADCAST CONTAINER - DYNAMIC ASPECT RATIO */
+/* BROADCAST CONTAINER WITH COLORFUL ANIMATED BORDER */
 .broadcast{
   position:relative;width:100%;aspect-ratio:16/9;background:#030712;
-  overflow:hidden;border:2px solid #1e293b;box-shadow:0 10px 30px rgba(0,0,0,0.8);
+  overflow:hidden;border:3px solid transparent;
+  border-image: linear-gradient(45deg, #ff007f, #00f0ff, #7000ff, #ff0000) 1;
+  box-shadow:0 0 25px rgba(0, 240, 255, 0.4);
   transition:all 0.3s ease;
+  animation: rainbowBorder 6s infinite linear;
+}
+
+@keyframes rainbowBorder {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* SHORTS MODE (9:16) */
@@ -51,39 +59,51 @@ button{cursor:pointer}
   background:linear-gradient(135deg,#7f1d1d,#450a0a);
   border:2px solid #ef4444;border-radius:12px;padding:6px 12px;
   display:flex;align-items:center;justify-content:space-between;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
 .teamCard.bowling{
   background:linear-gradient(135deg,#1e3a8a,#172554);
   border-color:#3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
 .tInfo{display:flex;flex-direction:column}
 .tName{font-size:clamp(10px,1.4vw,18px);font-weight:900;color:#fff;text-transform:uppercase}
-.tScore{font-size:clamp(18px,2.5vw,34px);font-weight:1000;color:#fff;direction:ltr}
+.tScore{font-size:clamp(18px,2.5vw,34px);font-weight:1000;color:#fff;direction:ltr;text-shadow: 0 0 8px #fff;}
 .tOvers{font-size:clamp(9px,1vw,13px);color:#facc15;direction:ltr;font-weight:800}
 
+/* 3D ROTATING FLAG ANIMATION */
 .tFlag{
   width:clamp(36px,4.5vw,60px);height:clamp(36px,4.5vw,60px);
-  border-radius:50%;border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.5);
+  border-radius:50%;border:2px solid #fff;box-shadow:0 0 15px rgba(255,255,255,0.8);
   display:flex;align-items:center;justify-content:center;
   font-size:clamp(20px,2.5vw,35px);background:#1e293b;overflow:hidden;flex-shrink:0;
+  animation: rotate3d 8s infinite linear;
 }
-.tFlag img{width:100%;height:100%;object-fit:cover}
+@keyframes rotate3d {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
 
-/* CENTER SCORE BOX */
+/* COLORFUL CENTER SCORE BOX */
 .centerCard{
-  background:#000;border:2px solid #334155;border-radius:12px;
+  background:linear-gradient(135deg, #0f172a, #000);
+  border:2px solid #22c55e;border-radius:12px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 0 15px rgba(0,0,0,0.8);position:relative;padding:4px;
+  box-shadow:0 0 20px rgba(34, 197, 94, 0.6);position:relative;padding:4px;
 }
-.mainNum{font-size:clamp(24px,3.8vw,50px);font-weight:1000;color:#fff;direction:ltr}
+.mainNum{
+  font-size:clamp(24px,3.8vw,50px);font-weight:1000;color:#00f0ff;direction:ltr;
+  text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+}
 
 /* MID INFO STRIP */
 .midStrip{
   position:absolute;top:22%;left:2%;right:2%;height:5.5%;
   display:flex;align-items:center;justify-content:space-between;
-  background:#090d16;border:1px solid #1e293b;border-radius:6px;
+  background:rgba(9, 13, 22, 0.9);border:1px solid #00f0ff;border-radius:6px;
   padding:0 12px;z-index:9;font-size:clamp(8px,1vw,13px);font-weight:800;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
 }
 .broadcast.shorts-mode .midStrip{top:28%}
 .targetPill{background:#facc15;color:#000;padding:2px 8px;border-radius:4px;font-weight:900}
@@ -101,16 +121,16 @@ button{cursor:pointer}
   font-size:clamp(8px,0.9vw,12px);font-weight:1000;direction:ltr;
   background:#334155;border:1px solid rgba(255,255,255,0.2);
 }
-.ballCircle.b4{background:#16a34a;color:#fff}
-.ballCircle.b6{background:#2563eb;color:#fff}
-.ballCircle.bw{background:#dc2626;color:#fff}
+.ballCircle.b4{background:#16a34a;color:#fff;box-shadow:0 0 8px #16a34a}
+.ballCircle.b6{background:#2563eb;color:#fff;box-shadow:0 0 8px #2563eb}
+.ballCircle.bw{background:#dc2626;color:#fff;box-shadow:0 0 8px #dc2626}
 
 /* DRAMATIC URDU COMMENTARY BOX */
 .commBox{
   position:absolute;bottom:26.5%;left:2%;right:2%;height:9.5%;
-  background:rgba(2,6,23,0.92);border:1.5px solid #22c55e;
+  background:rgba(2,6,23,0.95);border:2px solid #ff007f;
   border-radius:8px;padding:0 12px;display:flex;align-items:center;gap:10px;
-  z-index:10;direction:rtl;
+  z-index:10;direction:rtl;box-shadow:0 0 15px rgba(255,0,127,0.4);
 }
 .commIcon{background:#ef4444;color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap}
 .commText{color:#e2e8f0;font-size:clamp(10px,1.2vw,16px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -173,7 +193,7 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
       </div>
 
       <div class="centerCard">
-        <div id="centerMatch" style="font-size:10px;color:#94a3b8;font-weight:800">T20 MATCH</div>
+        <div id="centerMatch" style="font-size:10px;color:#facc15;font-weight:800">LIVE T20 MATCH</div>
         <div id="centerScore" class="mainNum">0</div>
         <div id="matchClock" style="font-size:11px;color:#22c55e;font-weight:900;direction:ltr">00:00:00 / 01:35:00</div>
       </div>
@@ -243,7 +263,15 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
   <!-- CONTROLS PANEL -->
   <div class="controls">
     <div class="panel">
-      <div class="panelTitle">📱 SCREEN LAYOUT & MODE SELECTOR</div>
+      <div class="panelTitle">🔊 AUDIO VOLUME CONTROLS (سلو اور تیز آواز)</div>
+      <div style="display:flex;align-items:center;gap:15px">
+        <span style="font-size:12px;font-weight:900">میوزک / کمنٹری آواز:</span>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.8" oninput="adjustVolume(this.value)">
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panelTitle">📱 SCREEN LAYOUT SELECTOR</div>
       <div class="grid">
         <button class="btn cyan" onclick="toggleLayout('16:9')">📺 LONG LIVE (16:9)</button>
         <button class="btn cyan" onclick="toggleLayout('9:16')">📱 SHORTS LIVE (9:16)</button>
@@ -254,7 +282,7 @@ select,input{width:100%;padding:10px;border-radius:8px;background:#0f172a;border
       <div class="panelTitle">🎵 CUSTOM MUSIC & IMAGE UPLOAD</div>
       <div class="grid">
         <label class="btn purple" style="text-align:center">
-          🎵 UPLOAD MP3 MUSIC
+          🎵 UPLOAD SONG (AUTO LOOP)
           <input type="file" id="audioFile" accept="audio/*" onchange="uploadAudio(event)" style="display:none">
         </label>
         <label class="btn cyan" style="text-align:center">
@@ -311,7 +339,14 @@ const presets = {
 
 let currentMatch = presets.PAK_IND;
 let timer = null, clockTimer = null;
+let currentVolume = 0.8;
 let state = { running: false, ball: 0, runs1: 0, wkts1: 0, striker: 0, nonStriker: 1, bowler: 0, history: [], secondsElapsed: 0 };
+
+function adjustVolume(val){
+  currentVolume = parseFloat(val);
+  let audio = document.getElementById("customAudio");
+  if(audio) audio.volume = currentVolume;
+}
 
 function toggleLayout(mode){
   let container = document.getElementById("broadcastContainer");
@@ -324,8 +359,10 @@ function uploadAudio(e){
   if(file){
     let audio = document.getElementById("customAudio");
     audio.src = URL.createObjectURL(file);
+    audio.loop = true; // Repeat music automatically
+    audio.volume = currentVolume;
     audio.play();
-    document.getElementById("commText").textContent = "🎵 آپ کا کسٹم بیک گراؤنڈ میوزک پلے ہو رہا ہے۔";
+    document.getElementById("commText").textContent = "🎵 میوزک خودکار لوپ پر آن کر دیا گیا ہے۔";
   }
 }
 
@@ -378,6 +415,7 @@ function speakUrdu(text){
     let utter = new SpeechSynthesisUtterance(text);
     utter.lang = "ur-PK";
     utter.rate = 0.9;
+    utter.volume = currentVolume;
     window.speechSynthesis.speak(utter);
   }
 }
