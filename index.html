@@ -64,7 +64,6 @@ button,input{
     background:#020611;
 }
 
-/* Stadium background */
 .stadium{
     width:100%;
     aspect-ratio:16/9;
@@ -274,22 +273,10 @@ button,input{
     font-weight:1000;
 }
 
-.ball-run{
-    background:#155de0;
-}
-
-.ball-four{
-    background:#08a74d;
-}
-
-.ball-six{
-    background:#e5ca00;
-    color:#111;
-}
-
-.ball-wicket{
-    background:#df1720;
-}
+.ball-run{ background:#155de0; }
+.ball-four{ background:#08a74d; }
+.ball-six{ background:#e5ca00; color:#111; }
+.ball-wicket{ background:#df1720; }
 
 /* ================= PLAYER CARDS ================= */
 
@@ -418,26 +405,11 @@ button,input{
     cursor:pointer;
 }
 
-.score-buttons button:nth-child(3){
-    background:#0a9d4b;
-}
-
-.score-buttons button:nth-child(4){
-    background:#d8bc00;
-    color:#111;
-}
-
-.score-buttons button:nth-child(5){
-    background:#e01820;
-}
-
-.score-buttons button:nth-child(6){
-    background:#444b55;
-}
-
-.score-buttons button:nth-child(7){
-    background:#76259b;
-}
+.score-buttons button:nth-child(3){ background:#0a9d4b; }
+.score-buttons button:nth-child(4){ background:#d8bc00; color:#111; }
+.score-buttons button:nth-child(5){ background:#e01820; }
+.score-buttons button:nth-child(6){ background:#444b55; }
+.score-buttons button:nth-child(7){ background:#76259b; }
 
 .undo-button{
     width:100%;
@@ -492,65 +464,28 @@ button,input{
 
 /* ================= FULLSCREEN ================= */
 
-body.broadcast-fullscreen{
-    overflow:hidden;
-}
-
+body.broadcast-fullscreen{ overflow:hidden; }
 body.broadcast-fullscreen .top-controls,
-body.broadcast-fullscreen .control-panel{
-    display:none;
-}
-
-body.broadcast-fullscreen .broadcast{
-    width:100vw;
-    height:100vh;
-    max-width:none;
-}
-
-body.broadcast-fullscreen .stadium{
-    width:100%;
-    height:100%;
-    aspect-ratio:auto;
-    object-fit:cover;
-}
-
-/* ================= MOBILE ================= */
+body.broadcast-fullscreen .control-panel{ display:none; }
+body.broadcast-fullscreen .broadcast{ width:100vw; height:100vh; max-width:none; }
+body.broadcast-fullscreen .stadium{ width:100%; height:100%; aspect-ratio:auto; object-fit:cover; }
 
 @media(max-width:700px){
-    .score-buttons{
-        grid-template-columns:repeat(4,1fr);
-    }
-    .name-edit{
-        grid-template-columns:1fr;
-    }
-    .player-card{
-        min-height:100px;
-    }
-    .control-panel{
-        margin:7px;
-    }
+    .score-buttons{ grid-template-columns:repeat(4,1fr); }
+    .name-edit{ grid-template-columns:1fr; }
+    .player-card{ min-height:100px; }
+    .control-panel{ margin:7px; }
 }
 
 @media(max-width:900px) and (orientation:landscape){
-    .top-controls{
-        position:relative;
-        z-index:100;
-    }
-    .broadcast{
-        min-height:100vh;
-    }
-    .stadium{
-        min-height:100vh;
-        aspect-ratio:auto;
-        object-fit:cover;
-    }
+    .top-controls{ position:relative; z-index:100; }
+    .broadcast{ min-height:100vh; }
+    .stadium{ min-height:100vh; aspect-ratio:auto; object-fit:cover; }
 }
 </style>
 </head>
 
 <body>
-
-<!-- ================= TOP BUTTONS ================= -->
 
 <div class="top-controls">
 <button onclick="broadcastFullscreen()">⛶ BROADCAST FULLSCREEN</button>
@@ -558,19 +493,11 @@ body.broadcast-fullscreen .stadium{
 <button onclick="resetZimbabwe()">🔄 RESET</button>
 </div>
 
-<!-- ================= BROADCAST SCREEN ================= -->
-
 <div class="broadcast" id="broadcast">
-
 <img class="stadium" alt="Cricket Stadium" src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=2000&q=90">
 
 <div class="score-overlay">
-
-<!-- ================= TEAMS ================= -->
-
 <div class="teams-row">
-
-<!-- AUSTRALIA -->
 <div class="team australia">
 <div class="team-inner">
 <img class="flag" src="https://flagcdn.com/w320/au.png" alt="Australia">
@@ -583,7 +510,6 @@ body.broadcast-fullscreen .stadium{
 </div>
 </div>
 
-<!-- CENTER -->
 <div class="center-score">
 <div>
 <div class="center-title">ODI • 2ND INNINGS</div>
@@ -593,7 +519,6 @@ body.broadcast-fullscreen .stadium{
 </div>
 </div>
 
-<!-- ZIMBABWE -->
 <div class="team zimbabwe">
 <div class="team-inner">
 <div>
@@ -605,10 +530,7 @@ body.broadcast-fullscreen .stadium{
 <img class="flag" src="https://flagcdn.com/w320/zw.png" alt="Zimbabwe">
 </div>
 </div>
-
 </div>
-
-<!-- ================= INFO ================= -->
 
 <div class="info-row">
 <div class="info-box">CRR: <strong id="crr2">0.00</strong></div>
@@ -618,18 +540,12 @@ body.broadcast-fullscreen .stadium{
 <div class="info-box">LAST WKT: <strong id="lastWicket">-</strong></div>
 </div>
 
-<!-- ================= RECENT BALLS ================= -->
-
 <div class="recent-row">
 <span>🔴 RECENT BALLS:</span>
 <div class="recent-balls" id="recentBalls"></div>
 </div>
 
-<!-- ================= PLAYER CARDS ================= -->
-
 <div class="players-row">
-
-<!-- BATTER 1 -->
 <div class="player-card">
 <div class="card-role">BATTER</div>
 <div class="player-main">
@@ -646,7 +562,6 @@ body.broadcast-fullscreen .stadium{
 </div>
 </div>
 
-<!-- BATTER 2 -->
 <div class="player-card">
 <div class="card-role">BATTER</div>
 <div class="player-main">
@@ -663,7 +578,6 @@ body.broadcast-fullscreen .stadium{
 </div>
 </div>
 
-<!-- BOWLER -->
 <div class="player-card bowler-card">
 <div class="card-role">BOWLER</div>
 <div class="player-main">
@@ -677,16 +591,11 @@ body.broadcast-fullscreen .stadium{
 <span>ECON: <b id="economy">0.00</b></span>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
-<!-- ================= CONTROL PANEL ================= -->
+</div>
 
 <div class="control-panel">
-
 <div class="control-title">🇿🇼 ZIMBABWE LIVE ODI SCORE CONTROL</div>
 
 <div class="score-buttons">
@@ -709,175 +618,138 @@ body.broadcast-fullscreen .stadium{
 </div>
 
 <button class="auto-button" id="autoButton" onclick="toggleAuto()">▶ AUTO SIMULATE — 48 SEC / BALL — 4 HOURS</button>
-
 </div>
 
 <script>
-/* =========================================================
-   MATCH SETTINGS
-========================================================= */
-
 const TARGET = 357;
 const BALL_INTERVAL = 48000;
 const MAX_BALLS = 300;
 
-/* =========================================================
-   MATCH STATE
-========================================================= */
-
 let match = {
-    score:0,
-    wickets:0,
-    balls:0,
-    runs1:0,
-    balls1:0,
-    fours1:0,
-    sixes1:0,
-    runs2:0,
-    balls2:0,
-    fours2:0,
-    sixes2:0,
-    partnershipRuns:0,
-    partnershipBalls:0,
-    bowlerRuns:0,
-    bowlerWickets:0,
-    bowlerBalls:0,
-    lastWicket:"-",
-    recent:[]
+    score:0, wickets:0, balls:0,
+    runs1:0, balls1:0, fours1:0, sixes1:0,
+    runs2:0, balls2:0, fours2:0, sixes2:0,
+    partnershipRuns:0, partnershipBalls:0,
+    bowlerRuns:0, bowlerWickets:0, bowlerBalls:0,
+    lastWicket:"-", recent:[]
 };
 
 let history = [];
 let autoTimer = null;
 
 /* =========================================================
-   NON-STOP MULTI-LANGUAGE COMMENTARY SYSTEM
+   URDU-PUNJABI MIX COMMENTARY ENGINE
 ========================================================= */
 
 const synth = window.speechSynthesis;
+let speechQueue = [];
+let isSpeaking = false;
+let currentUtterance = null;
 
+// صرف اردو اور پنجابی مکس جملے
 const commentaryDatabase = {
-    ur: {
-        dot: ["کیا خوبصورت ڈاٹ بال ہے!", "بہت ہی شاندار گیند، بلے باز بالکل بے بس۔", "کوئی رن نہیں ملے گا، بہترین لائن اور لینتھ۔"],
-        run1: ["ایک رن مکمل کیا، اچھی رننگ بٹوین دی وکٹس۔", "سنگل حاصل کیا، اسٹرائیک روٹیٹ کی۔"],
-        run2: ["دو رنز کے لیے شاندار ڈرائیو! دونوں بلے بازوں کی تیز رفتار دوڑ۔", "گیپ میں کھیلا اور آسانی سے دو رنز بنا لیے۔"],
-        run3: ["بہترین فیلڈنگ لیکن بلے بازوں نے تیز دوڑ کر تین رنز مکمل کر لیے۔"],
-        four: ["چوکا! کیا خوبصورت کور ڈرائیو ہے، گیند باؤنڈری لائن سے باہر!", "چار رنز! بلے کے بیچوں بیچ لگی اور چوکے کے لیے چلی گئی۔"],
-        six: ["چھکا! گیند ہوا میں اور تماشائیوں کے بیچ جا گری!", "کیا شاندار ہٹ ہے! سیدھا اسٹیڈیم سے باہر، 6 رنز!"],
-        wicket: ["وکٹ! آؤٹ ہو گئے! زبردست گیند بازی، آسٹریلیا کو بڑی کامیابی!", "گیند سیدھی وکٹوں میں! بلے باز کو جانا ہوگا۔"]
-    },
-    en: {
-        dot: ["Dot ball! Excellent line and length from the bowler.", "No run offered, brilliant defensive play."],
-        run1: ["Tucked away nicely for a single.", "Quick single taken, good communication between the batters."],
-        run2: ["Pushed into the gap, they will come back for two easily.", "Great placement, two runs added to the total."],
-        run3: ["Superb running! They push hard and complete three runs."],
-        four: ["FOUR! That crashed through the covers for a boundary!", "Shot! Pure class, driven beautifully for four runs!"],
-        six: ["SIX! That is massive! Swept away high into the stands!", "HUGE SIX! Out of the middle of the bat!"],
-        wicket: ["WICKET! Got him! What a sensational delivery!", "OUT! Massive break-through for Australia! Clean bowled!"]
-    },
-    hi: {
-        dot: ["शानदार गेंद! कोई रन नहीं मिलेगा।", "बेहतरीन गेंदबाजी, बल्लेबाज पूरी तरह से चूके।"],
-        run1: ["एक रन आसानी से पूरा किया।", "सिंगल के साथ स्ट्राइक रोटेट की।"],
-        run2: ["गैप में खेला और दो रन चुरा लिए।", "बढ़िया रनिंग, आसानी से दो रन पूरे किए।"],
-        run3: ["तेज रनिंग! तीन रन आसानी से पूरे कर लिए।"],
-        four: ["चौका! क्या लाजवाब शॉट है, गेंद बाउंड्री के बाहर!", "चार रन! करारा प्रहार और गेंद सीधे सीमा रेखा पार!"],
-        six: ["छक्का! गगनचुंबी छक्का! गेंद दर्शकों के बीच!", "शानदार शॉट! 6 रन के लिए स्टैंड्स में!"],
-        wicket: ["विकेट! आउट! ऑस्ट्रेलिया को मिली बड़ी सफलता!", "क्लीन बोल्ड! बल्लेबाज को वापस जाना होगा।"]
-    },
-    pa: {
-        dot: ["کوئی رن نہیں جی، زبردست بالنگ!", "کیا بات ہے جی، بلے باز نوں سمجھ ہی نہیں آئی۔"],
-        run1: ["نسی کے ایک رن پورا کیتا۔", "اک رن مل گیا جی۔"],
-        run2: ["کیا دوڑ لگائی ہے، دو رنز مکمل!", "شاندار شاٹ، دو رنز بنا لیے۔"],
-        run3: ["تیز بھجے تے تن رنز بنا لے۔"],
-        four: ["چوکا! چار رنز ہو گئے جی، کی زبردست شاٹ ہے!", "گیند گئی باؤنڈری توں باہر، چار رنز!"],
-        six: ["چھکا! گیند گئی ڈائریکٹ تماشائیاں وچ، 6 رنز!", "چک کے ماریا جی، لمبا 6 رن!"],
-        wicket: ["وکٹ ڈگ گئی! اؤٹ ہو گیا جی، کمال دی بال!", "آؤٹ! زبردست بالنگ آسٹریلیا ولوں!"]
-    }
+    dot: [
+        "کوئی رن نہیں ملے گا جی، زبردست لائن تے لینتھ!",
+        "بہت ہی شاندار گیند، بلے باز نوں بالکل سمجھ نہیں آئی۔",
+        "ڈاٹ بال! آسٹریلوی بالر ولوں بہترین بالنگ دا مظاہرہ۔",
+        "کوئی رن نہیں جی، بلے باز بالکل بیالنس کھو بیٹھے۔"
+    ],
+    run1: [
+        "نسی کے ایک رن پورا کیتا، اچھی رننگ بٹوین دی وکٹس۔",
+        "سنگل حاصل کیتا جی، اسٹرائیک روٹیٹ کر لی۔",
+        "ایک رن مل گیا، بلے بازوں نے تیز دوڑ لگائی۔"
+    ],
+    run2: [
+        "دو رنز کے لیے شاندار ڈرائیو! دونوں بلے بازاں نے تیز دوڑ لگائی۔",
+        "گیپ میں کھیلا اور آسانی نال دو رنز بنا لیے جی۔",
+        "شاندار شاٹ، دو رنز مکمل کر لیے۔"
+    ],
+    run3: [
+        "بہترین فیلڈنگ لیکن بلے بازاں نے بھج کے تین رنز مکمل کر لیے!"
+    ],
+    four: [
+        "چوکا! کیا خوبصورت شاٹ ہے جی، گیند گئی باؤنڈری لائن توں باہر!",
+        "چار رنز! بلے کے بیچوں بیچ لگی تے چلی گئی چوکے کے لیے!",
+        "واہ جی واہ! کی زبردست کور ڈرائیو ہے، 4 رنز مل گئے!"
+    ],
+    six: [
+        "چھکا! گیند گئی ڈائریکٹ تماشائیاں وچ، 6 رنز!",
+        "کیا شاندار ہٹ ہے جی! چک کے ماریا، سیدھا اسٹیڈیم توں باہر!",
+        "گگن چومبی چھکا! بلے باز نے تباہی مچا دتی جی!"
+    ],
+    wicket: [
+        "وکٹ ڈگ گئی! اؤٹ ہو گیا جی، کمال دی بالنگ!",
+        "وکٹ! زبردست بالنگ آسٹریلیا ولوں، بلے باز نوں جانا پڑے گا۔",
+        "گیند سیدھی وکٹاں وچ! آسٹریلیا نوں وڈی کامیابی مل گئی جی!"
+    ]
 };
 
-const languages = ['ur', 'en', 'hi', 'pa'];
-let currentLangIndex = 0;
+function queueSpeech(text) {
+    speechQueue.push(text);
+    processQueue();
+}
 
-function speakText(text, langCode) {
-    if (!synth) return;
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    if (langCode === 'ur') utterance.lang = 'ur-PK';
-    else if (langCode === 'en') utterance.lang = 'en-US';
-    else if (langCode === 'hi') utterance.lang = 'hi-IN';
-    else if (langCode === 'pa') utterance.lang = 'pa-IN';
+function processQueue() {
+    if (isSpeaking || speechQueue.length === 0 || !synth) return;
 
-    utterance.rate = 1.05;
-    utterance.pitch = 1.1;
+    isSpeaking = true;
+    const text = speechQueue.shift();
+    currentUtterance = new SpeechSynthesisUtterance(text);
 
-    utterance.onend = function () {
-        if (autoTimer) {
-            setTimeout(playBackgroundFiller, 2000);
+    // اردو/پاکستانی ایکسنٹ سیٹ
+    currentUtterance.lang = 'ur-PK';
+    currentUtterance.rate = 1.02;
+    currentUtterance.pitch = 1.05;
+
+    currentUtterance.onend = function () {
+        isSpeaking = false;
+        currentUtterance = null;
+        if (speechQueue.length > 0) {
+            processQueue();
+        } else if (autoTimer) {
+            playBackgroundFiller();
         }
     };
 
-    synth.speak(utterance);
+    currentUtterance.onerror = function() {
+        isSpeaking = false;
+        currentUtterance = null;
+        processQueue();
+    };
+
+    synth.speak(currentUtterance);
 }
 
 function playBackgroundFiller() {
-    if (!autoTimer || synth.speaking) return;
+    if (!autoTimer || speechQueue.length > 0) return;
 
     const fillers = [
-        "Zimbabwe strictly needs a big partnership here to chase 357.",
+        "زمبابوے نوں میچ جتن لئی تگڑی پارٹنرشپ دی لوڑ ہے جی۔",
         "آسٹریلوی بالرز کا زبردست دباؤ، میچ کافی سنسنی خیز مرحلے میں داخل۔",
-        "मैच काफी रोमांचक मोड़ पर है, जिम्बाब्वे को तेजी से रन बनाने होंगे।",
-        "تگڑا مقابلہ چل رہیا ہے جی، دونوں ٹیماں زور لگا رہیاں نے۔",
-        "Required Run Rate continues to climb up in this ODI match."
+        "تگڑا مقابلہ چل رہیا ہے جی، دونوں ٹیماں پورا زور لگا رہیاں نے۔",
+        "رن ریٹ لگاتار اوپر جا رہیا ہے، رنز بنانے ہوں گے جی۔"
     ];
 
     const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
-    speakText(randomFiller, 'en');
+    queueSpeech(randomFiller);
 }
 
 function triggerCommentary(eventType) {
-    const currentLang = languages[currentLangIndex];
-    currentLangIndex = (currentLangIndex + 1) % languages.length;
-
-    const phrases = commentaryDatabase[currentLang][eventType];
+    const phrases = commentaryDatabase[eventType];
     const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-
-    if (synth.speaking) {
-        synth.cancel();
-    }
-
-    speakText(randomPhrase, currentLang);
+    queueSpeech(randomPhrase);
 }
 
 /* =========================================================
-   HELPER FUNCTIONS
+   HELPER & MATCH LOGIC
 ========================================================= */
 
-function saveState(){
-    history.push(JSON.parse(JSON.stringify(match)));
-}
-
-function getOvers(){
-    return Math.floor(match.balls / 6) + "." + (match.balls % 6);
-}
-
-function getCRR(){
-    if(match.balls === 0) return "0.00";
-    return (match.score / (match.balls / 6)).toFixed(2);
-}
-
-function getSR(runs,balls){
-    if(balls === 0) return "0.00";
-    return (runs / balls * 100).toFixed(2);
-}
-
-function getBowlerOvers(){
-    return Math.floor(match.bowlerBalls / 6) + "." + (match.bowlerBalls % 6);
-}
-
-function getEconomy(){
-    if(match.bowlerBalls === 0) return "0.00";
-    return (match.bowlerRuns / (match.bowlerBalls / 6)).toFixed(2);
-}
+function saveState(){ history.push(JSON.parse(JSON.stringify(match))); }
+function getOvers(){ return Math.floor(match.balls / 6) + "." + (match.balls % 6); }
+function getCRR(){ return match.balls === 0 ? "0.00" : (match.score / (match.balls / 6)).toFixed(2); }
+function getSR(runs,balls){ return balls === 0 ? "0.00" : (runs / balls * 100).toFixed(2); }
+function getBowlerOvers(){ return Math.floor(match.bowlerBalls / 6) + "." + (match.bowlerBalls % 6); }
+function getEconomy(){ return match.bowlerBalls === 0 ? "0.00" : (match.bowlerRuns / (match.bowlerBalls / 6)).toFixed(2); }
 
 function addRecent(text,type){
     match.recent.push({text:text, type:type});
@@ -895,10 +767,6 @@ function checkInnings(){
     return false;
 }
 
-/* =========================================================
-   GAME CONTROLS
-========================================================= */
-
 function addRuns(runs){
     if(checkInnings()) return;
     saveState();
@@ -911,24 +779,18 @@ function addRuns(runs){
     match.bowlerBalls++;
 
     if(match.balls % 2 === 1){
-        match.runs1 += runs;
-        match.balls1++;
+        match.runs1 += runs; match.balls1++;
         if(runs === 4) match.fours1++;
         if(runs === 6) match.sixes1++;
     } else {
-        match.runs2 += runs;
-        match.balls2++;
+        match.runs2 += runs; match.balls2++;
         if(runs === 4) match.fours2++;
         if(runs === 6) match.sixes2++;
     }
 
-    if(runs === 4){
-        addRecent("4","four");
-        triggerCommentary("four");
-    } else if(runs === 6){
-        addRecent("6","six");
-        triggerCommentary("six");
-    } else {
+    if(runs === 4){ addRecent("4","four"); triggerCommentary("four"); }
+    else if(runs === 6){ addRecent("6","six"); triggerCommentary("six"); }
+    else {
         addRecent(String(runs),"run");
         if(runs === 1) triggerCommentary("run1");
         else if(runs === 2) triggerCommentary("run2");
@@ -942,17 +804,10 @@ function addRuns(runs){
 function dotBall(){
     if(checkInnings()) return;
     saveState();
-
-    match.balls++;
-    match.partnershipBalls++;
-    match.bowlerBalls++;
-
-    if(match.balls % 2 === 1) match.balls1++;
-    else match.balls2++;
-
+    match.balls++; match.partnershipBalls++; match.bowlerBalls++;
+    if(match.balls % 2 === 1) match.balls1++; else match.balls2++;
     addRecent("•","dot");
     triggerCommentary("dot");
-
     render();
     checkInnings();
 }
@@ -960,23 +815,14 @@ function dotBall(){
 function wicket(){
     if(checkInnings()) return;
     saveState();
-
-    match.wickets++;
-    match.balls++;
-    match.partnershipBalls++;
-    match.bowlerBalls++;
-    match.bowlerWickets++;
+    match.wickets++; match.balls++; match.partnershipBalls++; match.bowlerBalls++; match.bowlerWickets++;
     match.lastWicket = match.wickets + " down";
 
-    if(match.balls % 2 === 1){
-        match.runs1 = 0; match.balls1 = 0; match.fours1 = 0; match.sixes1 = 0;
-    } else {
-        match.runs2 = 0; match.balls2 = 0; match.fours2 = 0; match.sixes2 = 0;
-    }
+    if(match.balls % 2 === 1){ match.runs1 = 0; match.balls1 = 0; match.fours1 = 0; match.sixes1 = 0; }
+    else { match.runs2 = 0; match.balls2 = 0; match.fours2 = 0; match.sixes2 = 0; }
 
     addRecent("W","wicket");
     triggerCommentary("wicket");
-
     render();
     checkInnings();
 }
@@ -984,7 +830,9 @@ function wicket(){
 function undoBall(){
     if(history.length === 0) return;
     stopAuto();
-    if(synth.speaking) synth.cancel();
+    speechQueue = [];
+    if(synth) synth.cancel();
+    isSpeaking = false;
     match = history.pop();
     render();
 }
@@ -1000,34 +848,29 @@ function render(){
     document.getElementById("partnership").textContent = match.partnershipRuns + " (" + match.partnershipBalls + ")";
     document.getElementById("lastWicket").textContent = match.lastWicket;
 
-    /* Batter 1 */
     document.getElementById("runs1").textContent = match.runs1;
     document.getElementById("balls1").textContent = match.balls1;
     document.getElementById("fours1").textContent = match.fours1;
     document.getElementById("sixes1").textContent = match.sixes1;
     document.getElementById("sr1").textContent = getSR(match.runs1, match.balls1);
 
-    /* Batter 2 */
     document.getElementById("runs2").textContent = match.runs2;
     document.getElementById("balls2").textContent = match.balls2;
     document.getElementById("fours2").textContent = match.fours2;
     document.getElementById("sixes2").textContent = match.sixes2;
     document.getElementById("sr2").textContent = getSR(match.runs2, match.balls2);
 
-    /* Bowler */
     document.getElementById("bowlerRuns").textContent = match.bowlerRuns;
     document.getElementById("bowlerWickets").textContent = match.bowlerWickets;
     document.getElementById("bowlerOvers").textContent = getBowlerOvers();
     document.getElementById("economy").textContent = getEconomy();
 
-    /* Recent balls */
     let recent = document.getElementById("recentBalls");
     recent.innerHTML = "";
 
     match.recent.forEach(function(ball){
         let div = document.createElement("div");
         div.className = "ball ";
-
         if(ball.type === "four") div.className += "ball-four";
         else if(ball.type === "six") div.className += "ball-six";
         else if(ball.type === "wicket") div.className += "ball-wicket";
@@ -1040,7 +883,9 @@ function render(){
 
 function resetZimbabwe(){
     stopAuto();
-    if(synth.speaking) synth.cancel();
+    speechQueue = [];
+    if(synth) synth.cancel();
+    isSpeaking = false;
     history = [];
     match = {
         score:0, wickets:0, balls:0,
@@ -1068,7 +913,6 @@ function startAuto(){
         }
 
         let random = Math.random();
-
         if(random < 0.06) wicket();
         else if(random < 0.20) dotBall();
         else if(random < 0.50) addRuns(1);
@@ -1088,7 +932,9 @@ function stopAuto(){
         clearInterval(autoTimer);
         autoTimer = null;
     }
-    if(synth.speaking) synth.cancel();
+    speechQueue = [];
+    if(synth) synth.cancel();
+    isSpeaking = false;
     let button = document.getElementById("autoButton");
     if(button) button.textContent = "▶ AUTO SIMULATE — 48 SEC / BALL — 4 HOURS";
 }
@@ -1099,9 +945,7 @@ function broadcastFullscreen(){
 
 function landscapeMode(){
     if(screen.orientation && screen.orientation.lock){
-        screen.orientation.lock("landscape").catch(function(){
-            alert("Please rotate your phone horizontally.");
-        });
+        screen.orientation.lock("landscape").catch(function(){ alert("Please rotate your phone horizontally."); });
     } else {
         alert("Please rotate your phone horizontally.");
     }
