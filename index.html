@@ -1,328 +1,1124 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Broadcast Cricket Studio - With Live Preview</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { margin: 0; padding: 0; background-color: #030712; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        
-        /* براڈکاسٹ اسکرین کنٹینر (16:9 Landscape / 9:16 Vertical) */
-        .broadcast-viewport {
-            width: 100%;
-            max-width: 1920px;
-            aspect-ratio: 16/9;
-            position: relative;
-            background: #000;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 0 auto;
-            transition: all 0.3s ease;
-        }
-        .broadcast-viewport.vertical-mode {
-            max-width: 608px;
-            aspect-ratio: 9/16;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        .broadcast-scaler {
-            position: absolute;
-            top: 0; left: 0;
-            width: 1920px; height: 1080px;
-            transform-origin: top left;
-            transform: scale(calc(100vw / 1920));
-            background: radial-gradient(circle at center, #0a192f 0%, #02060d 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 35px;
-            box-sizing: border-box;
-        }
-        .vertical-mode .broadcast-scaler {
-            transform: scale(calc(608px / 1920));
-        }
-        @media (min-width: 1920px) {
-            .broadcast-scaler { transform: scale(1); }
-            .vertical-mode .broadcast-scaler { transform: scale(calc(608px / 1920)); }
-        }
+<title>Australia vs Zimbabwe ODI Live Scoreboard</title>
 
-        .glass-panel {
-            background: rgba(10, 20, 35, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(56, 189, 248, 0.35);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .batsman-box {
-            background: linear-gradient(135deg, #7f1d1d 0%, #180505 100%);
-            border: 2px solid #ef4444;
-        }
-        .bowler-box {
-            background: linear-gradient(135deg, #0c4a6e 0%, #030b14 100%);
-            border: 2px solid #0ea5e9;
-        }
-    </style>
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+    background:#02050b;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button,input{
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* ================= TOP CONTROL ================= */
+
+.top-controls{
+    width:100%;
+    background:#050b16;
+    padding:8px;
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #284d7e;
+}
+
+.top-controls button{
+    border:1px solid #477bb7;
+    border-radius:7px;
+    background:linear-gradient(#173b6d,#07162e);
+    color:white;
+    padding:10px 14px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ================= BROADCAST ================= */
+
+.broadcast{
+    width:100%;
+    max-width:1800px;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+    background:#020611;
+}
+
+/* Stadium background */
+.stadium{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    display:block;
+    background:
+    radial-gradient(circle at 50% 55%,#355b42 0,#14251d 25%,#071019 55%,#02040a 100%);
+}
+
+/* ================= MAIN OVERLAY ================= */
+
+.score-overlay{
+    position:absolute;
+    inset:0;
+    padding:1%;
+    display:grid;
+    grid-template-rows:31% 11% 10% 48%;
+}
+
+/* ================= TEAMS ================= */
+
+.teams-row{
+    display:grid;
+    grid-template-columns:1fr .75fr 1fr;
+    gap:.7%;
+}
+
+.team{
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    padding:1%;
+    overflow:hidden;
+    border:2px solid;
+}
+
+.australia{
+    background:linear-gradient(
+        135deg,
+        rgba(4,84,190,.92),
+        rgba(0,8,31,.88)
+    );
+    border-color:#159cff;
+}
+
+.zimbabwe{
+    background:linear-gradient(
+        135deg,
+        rgba(175,8,18,.92),
+        rgba(40,0,5,.9)
+    );
+    border-color:#ff252d;
+    justify-content:flex-end;
+}
+
+.team-inner{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:1vw;
+}
+
+.zimbabwe .team-inner{
+    justify-content:flex-end;
+}
+
+.flag{
+    width:17%;
+    max-width:120px;
+    min-width:48px;
+    aspect-ratio:1.55;
+    object-fit:cover;
+    border:2px solid white;
+    border-radius:6px;
+    box-shadow:0 3px 10px #000;
+}
+
+.team-name{
+    font-size:clamp(14px,2.5vw,42px);
+    font-weight:1000;
+    white-space:nowrap;
+}
+
+.team-status{
+    font-size:clamp(8px,1.15vw,18px);
+    font-weight:bold;
+    margin-top:3px;
+}
+
+.batting{
+    color:#ffe000;
+}
+
+.team-score{
+    font-size:clamp(35px,5.5vw,82px);
+    line-height:1;
+    font-weight:1000;
+    margin-top:2px;
+}
+
+.small-info{
+    font-size:clamp(7px,1vw,16px);
+    font-weight:bold;
+    margin-top:4px;
+}
+
+/* ================= CENTER ================= */
+
+.center-score{
+    border:2px solid #159aff;
+    border-radius:15px;
+    background:
+    linear-gradient(
+        145deg,
+        rgba(4,24,57,.96),
+        rgba(0,3,12,.94)
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.center-title{
+    font-size:clamp(8px,1.2vw,18px);
+    font-weight:bold;
+}
+
+.center-subtitle{
+    font-size:clamp(8px,1vw,16px);
+    margin-top:3px;
+}
+
+.center-main-score{
+    font-size:clamp(34px,5vw,76px);
+    font-weight:1000;
+    line-height:1;
+    margin:2px 0;
+}
+
+.center-overs{
+    font-size:clamp(8px,1vw,16px);
+    font-weight:bold;
+}
+
+/* ================= INFO ================= */
+
+.info-row{
+    display:grid;
+    grid-template-columns:1fr 1.25fr 1fr 1fr 1.7fr;
+    gap:.25%;
+}
+
+.info-box{
+    background:rgba(2,15,42,.93);
+    border:1px solid #3978c0;
+    border-radius:5px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:clamp(7px,1.05vw,17px);
+    font-weight:bold;
+}
+
+.info-box strong{
+    color:#ffe000;
+    margin-left:4px;
+}
+
+.info-aus{
+    background:rgba(10,70,170,.9);
+}
+
+.info-zim{
+    background:rgba(145,8,18,.9);
+}
+
+/* ================= RECENT ================= */
+
+.recent-row{
+    display:flex;
+    align-items:center;
+    gap:.7%;
+    overflow:hidden;
+    font-size:clamp(7px,1vw,16px);
+    font-weight:bold;
+}
+
+.recent-balls{
+    display:flex;
+    gap:4px;
+    overflow:hidden;
+}
+
+.ball{
+    width:clamp(19px,2.5vw,42px);
+    height:clamp(19px,2.5vw,42px);
+    min-width:clamp(19px,2.5vw,42px);
+    border-radius:6px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#4b535f;
+    border:1px solid #8994a5;
+    font-size:clamp(8px,1vw,16px);
+    font-weight:1000;
+}
+
+.ball-run{
+    background:#155de0;
+}
+
+.ball-four{
+    background:#08a74d;
+}
+
+.ball-six{
+    background:#e5ca00;
+    color:#111;
+}
+
+.ball-wicket{
+    background:#df1720;
+}
+
+/* ================= PLAYER CARDS ================= */
+
+.players-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:.8%;
+    align-items:end;
+}
+
+.player-card{
+    height:72%;
+    min-height:130px;
+    border:2px solid #00a4ff;
+    border-radius:13px;
+    overflow:hidden;
+    background:
+    linear-gradient(
+        145deg,
+        rgba(7,67,170,.94),
+        rgba(1,13,40,.96)
+    );
+    display:flex;
+    flex-direction:column;
+}
+
+.bowler-card{
+    border-color:#ff292f;
+    background:
+    linear-gradient(
+        145deg,
+        rgba(170,7,18,.94),
+        rgba(43,1,5,.96)
+    );
+}
+
+.card-role{
+    text-align:right;
+    padding:1.5% 3%;
+    font-size:clamp(8px,1vw,16px);
+    font-weight:1000;
+}
+
+.player-main{
+    display:flex;
+    align-items:center;
+    flex:1;
+    min-height:0;
+}
+
+.player-photo{
+    width:43%;
+    height:100%;
+    object-fit:contain;
+    object-position:bottom;
+    filter:drop-shadow(0 5px 5px #000);
+}
+
+.player-information{
+    flex:1;
+    text-align:center;
+    min-width:0;
+}
+
+.player-name{
+    font-size:clamp(8px,1.2vw,20px);
+    font-weight:1000;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.player-runs{
+    font-size:clamp(23px,3.4vw,54px);
+    font-weight:1000;
+}
+
+.player-runs small{
+    color:#ffe000;
+    font-size:clamp(8px,1vw,17px);
+}
+
+.player-stats{
+    display:flex;
+    justify-content:space-around;
+    background:rgba(0,0,0,.5);
+    padding:2%;
+    font-size:clamp(7px,1vw,14px);
+    font-weight:bold;
+}
+
+.player-stats b{
+    color:#ffe000;
+}
+
+/* ================= CONTROL PANEL ================= */
+
+.control-panel{
+    max-width:1100px;
+    margin:12px auto;
+    padding:12px;
+    background:#070d18;
+    border:1px solid #315b8d;
+    border-radius:11px;
+}
+
+.control-title{
+    text-align:center;
+    font-weight:1000;
+    margin-bottom:8px;
+}
+
+.score-buttons{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
+}
+
+.score-buttons button{
+    padding:13px 5px;
+    border:1px solid #5578ad;
+    border-radius:7px;
+    background:linear-gradient(#1b4078,#07152e);
+    color:white;
+    font-weight:1000;
+    cursor:pointer;
+}
+
+.score-buttons button:nth-child(3){
+    background:#0a9d4b;
+}
+
+.score-buttons button:nth-child(4){
+    background:#d8bc00;
+    color:#111;
+}
+
+.score-buttons button:nth-child(5){
+    background:#e01820;
+}
+
+.score-buttons button:nth-child(6){
+    background:#444b55;
+}
+
+.score-buttons button:nth-child(7){
+    background:#76259b;
+}
+
+.undo-button{
+    width:100%;
+    margin-top:7px;
+    padding:12px;
+    border:0;
+    border-radius:7px;
+    background:#70299b;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.auto-button{
+    width:100%;
+    margin-top:7px;
+    padding:13px;
+    border:0;
+    border-radius:7px;
+    background:#087e3c;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.name-edit{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr auto;
+    gap:6px;
+    margin-top:8px;
+}
+
+.name-edit input{
+    width:100%;
+    padding:11px;
+    background:#020710;
+    border:1px solid #385d94;
+    border-radius:6px;
+    color:white;
+    outline:none;
+}
+
+.name-edit button{
+    padding:10px;
+    background:#0b2c5b;
+    border:1px solid #477bb7;
+    color:white;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ================= FULLSCREEN ================= */
+
+body.broadcast-fullscreen{
+    overflow:hidden;
+}
+
+body.broadcast-fullscreen .top-controls,
+body.broadcast-fullscreen .control-panel{
+    display:none;
+}
+
+body.broadcast-fullscreen .broadcast{
+    width:100vw;
+    height:100vh;
+    max-width:none;
+}
+
+body.broadcast-fullscreen .stadium{
+    width:100%;
+    height:100%;
+    aspect-ratio:auto;
+    object-fit:cover;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+    .score-buttons{
+        grid-template-columns:repeat(4,1fr);
+    }
+    .name-edit{
+        grid-template-columns:1fr;
+    }
+    .player-card{
+        min-height:100px;
+    }
+    .control-panel{
+        margin:7px;
+    }
+}
+
+@media(max-width:900px) and (orientation:landscape){
+    .top-controls{
+        position:relative;
+        z-index:100;
+    }
+    .broadcast{
+        min-height:100vh;
+    }
+    .stadium{
+        min-height:100vh;
+        aspect-ratio:auto;
+        object-fit:cover;
+    }
+}
+</style>
 </head>
-<body class="bg-slate-950 p-4 flex flex-col items-center min-h-screen">
 
-    <!-- کنٹرول پینل (لانگ/شارٹ، ریویو ٹوگل اور لائیو بٹن) -->
-    <div class="w-full max-w-7xl bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-4 shadow-2xl flex flex-wrap items-center justify-between gap-4 text-white">
-        <div class="flex items-center gap-3">
-            <div class="bg-red-600 p-3 rounded-xl shadow">
-                <i class="fa-solid fa-tv text-lg"></i>
-            </div>
-            <div>
-                <h1 class="text-base font-black tracking-wider">CRICKET BROADCAST STUDIO</h1>
-                <p class="text-xs text-slate-400">مکمل نام، لائیو پریویو اور پنجابی/اردو نان اسٹاپ کمنٹری</p>
-            </div>
-        </div>
+<body>
 
-        <div class="flex flex-wrap items-center gap-3">
-            <div>
-                <label class="block text-[10px] text-slate-400 mb-1">یوٹیوب فارمیٹ:</label>
-                <div class="flex bg-slate-950 border border-slate-700 rounded-xl p-0.5">
-                    <button onclick="setMode('long')" id="btn-long" class="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition">Long (16:9)</button>
-                    <button onclick="setMode('short')" id="btn-short" class="text-slate-400 font-bold text-xs px-3 py-1.5 rounded-lg transition">Short (9:16)</button>
-                </div>
-            </div>
+<!-- ================= TOP BUTTONS ================= -->
 
-            <div>
-                <label class="block text-[10px] text-slate-400 mb-1">میچ منتخب کریں:</label>
-                <select id="match-select" onchange="updateMatchTeams()" class="bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2 text-white font-bold focus:outline-none">
-                    <option value="pak-ind">🇵🇰 Pakistan vs India</option>
-                    <option value="afg-ind">🇦🇫 Afghanistan vs India</option>
-                    <option value="lah-kar">🏆 Lahore Qalandars vs Karachi Kings</option>
-                    <option value="csk-mi">🏏 CSK vs Mumbai Indians</option>
-                </select>
-            </div>
+<div class="top-controls">
+<button onclick="broadcastFullscreen()">⛶ BROADCAST FULLSCREEN</button>
+<button onclick="landscapeMode()">📱 LANDSCAPE</button>
+<button onclick="resetZimbabwe()">🔄 RESET</button>
+</div>
 
-            <div class="flex items-center gap-2 pt-4">
-                <button onclick="togglePreviewModal()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition flex items-center gap-2">
-                    <i class="fa-solid fa-eye"></i> لائیو پریویو (Review)
-                </button>
-                <button onclick="startLiveBroadcast()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition flex items-center gap-2">
-                    <i class="fa-solid fa-play"></i> لائیو شروع
-                </button>
-                <button onclick="stopLiveBroadcast()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
-                    <i class="fa-solid fa-stop"></i> روکیں
-                </button>
-            </div>
-        </div>
-    </div>
+<!-- ================= BROADCAST SCREEN ================= -->
 
-    <!-- براڈکاسٹ اسکرین -->
-    <div id="viewport-box" class="broadcast-viewport">
-        <div class="broadcast-scaler">
-            
-            <!-- پس منظر گراؤنڈ -->
-            <div class="absolute inset-0 z-0 opacity-45 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=1920');"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/70 z-0"></div>
+<div class="broadcast" id="broadcast">
 
-            <!-- 1. اوپری سکور بار (بائیں بیٹنگ ٹیم، دائیں بولنگ ٹیم) -->
-            <div class="relative z-20 flex justify-between items-center w-full">
-                <div class="flex items-center bg-gradient-to-r from-red-900 to-red-950 border-2 border-amber-400 rounded-2xl px-6 py-3 shadow-2xl text-white">
-                    <span id="batting-team-name" class="text-2xl font-black tracking-wider ml-4">PAKISTAN</span>
-                    <span id="main-score" class="text-5xl font-black text-yellow-300 ml-6">0/0</span>
-                    <span id="main-overs" class="text-xl font-bold text-slate-200 bg-black/50 px-3 py-1 rounded-xl">0.1 Ov</span>
-                    <div class="w-11 h-11 rounded-full bg-red-700 border-2 border-amber-300 ml-4 flex items-center justify-center font-bold text-xs shadow">PAK</div>
-                </div>
+<img class="stadium" alt="Cricket Stadium" src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=2000&q=90">
 
-                <div class="glass-panel border-2 border-cyan-400 px-8 py-2.5 rounded-2xl shadow-2xl text-center">
-                    <div class="text-[11px] text-cyan-300 font-bold uppercase tracking-widest">LIVE MATCH</div>
-                    <div class="text-3xl font-black text-white tracking-widest">TARGET: <span class="text-yellow-300">222</span></div>
-                </div>
+<div class="score-overlay">
 
-                <div class="flex items-center bg-gradient-to-l from-blue-900 to-blue-950 border-2 border-cyan-400 rounded-2xl px-6 py-3 shadow-2xl text-white">
-                    <div class="w-11 h-11 rounded-full bg-blue-700 border-2 border-cyan-300 mr-4 flex items-center justify-center font-bold text-xs shadow">IND</div>
-                    <span class="text-xl font-bold text-slate-200 bg-black/50 px-3 py-1 rounded-xl mr-6">BOWL</span>
-                    <span class="text-4xl font-black text-cyan-300 mr-4">0/0</span>
-                    <span id="bowling-team-name" class="text-2xl font-black tracking-wider">INDIA</span>
-                </div>
-            </div>
+<!-- ================= TEAMS ================= -->
 
-            <!-- 2. پارٹنرشپ بار -->
-            <div class="relative z-20 flex justify-between items-center bg-blue-950/95 border border-blue-600/60 rounded-xl px-6 py-2 text-white font-bold text-lg shadow-xl">
-                <div>Partnership: <span id="partnership-text" class="text-yellow-300">0 (0)</span></div>
-                <div class="flex gap-8">
-                    <div>CRR: <span id="crr-text" class="text-green-400">0.00</span></div>
-                    <div>RRR: <span class="text-red-400">12.50</span></div>
-                </div>
-                <div id="equation-target">Need <span class="text-yellow-300">222 runs</span> in 120 balls</div>
-            </div>
+<div class="teams-row">
 
-            <!-- 3. بال بائی بال ہسٹری رو -->
-            <div class="relative z-20 bg-black/85 border border-slate-700 rounded-xl px-6 py-2.5 flex items-center justify-between text-white shadow-xl">
-                <span class="font-bold text-sm text-yellow-400">Last Over:</span>
-                <div id="ball-history-row" class="flex gap-3">
-                    <span class="w-8 h-8 rounded-full bg-slate-700 text-white font-black flex items-center justify-center text-sm shadow">0</span>
-                </div>
-                <span id="live-action-msg" class="font-bold text-sm text-green-400">میچ کا لائیو آغاز ہو چکا ہے۔</span>
-            </div>
+<!-- AUSTRALIA -->
+<div class="team australia">
+<div class="team-inner">
+<img class="flag" src="https://flagcdn.com/w320/au.png" alt="Australia">
+<div>
+<div class="team-name">AUSTRALIA</div>
+<div class="team-status">⚾ BOWLING</div>
+<div class="team-score">356/6</div>
+<div class="small-info">50.0 OVERS • INNINGS COMPLETED</div>
+</div>
+</div>
+</div>
 
-            <!-- 4. کھلاڑیوں کے تین کارڈز (مکمل ناموں کے ساتھ) -->
-            <div class="relative z-20 grid grid-cols-3 gap-6 w-full">
-                
-                <div class="batsman-box rounded-2xl p-4 flex items-center shadow-2xl">
-                    <div class="w-24 h-28 bg-slate-800 rounded-xl overflow-hidden border-2 border-amber-400 shrink-0 ml-4 shadow-inner">
-                        <img id="b1-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300" class="w-full h-full object-cover">
-                    </div>
-                    <div class="text-white flex-1 overflow-hidden">
-                        <span class="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">BATSMAN</span>
-                        <h3 id="b1-name" class="text-lg font-black mt-1 tracking-wide truncate">BABAR AZAM</h3>
-                        <div class="text-3xl font-black text-yellow-300 mt-0.5"><span id="b1-runs">0</span> <span class="text-xs text-slate-300 font-semibold">(0)</span></div>
-                        <div class="text-xs text-slate-300 mt-1 font-bold">4s: <span id="b1-4">0</span> | 6s: <span id="b1-6">0</span> | SR: <span id="b1-sr">0.0</span></div>
-                    </div>
-                </div>
+<!-- CENTER -->
+<div class="center-score">
+<div>
+<div class="center-title">ODI • 2ND INNINGS</div>
+<div class="center-subtitle">ZIMBABWE CHASING 357</div>
+<div class="center-main-score" id="centerScore">0/0</div>
+<div class="center-overs">OVERS: <span id="overs">0.0</span> &nbsp; • &nbsp; CRR: <span id="crr">0.00</span></div>
+</div>
+</div>
 
-                <div class="batsman-box rounded-2xl p-4 flex items-center shadow-2xl">
-                    <div class="w-24 h-28 bg-slate-800 rounded-xl overflow-hidden border-2 border-amber-400 shrink-0 ml-4 shadow-inner">
-                        <img id="b2-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300" class="w-full h-full object-cover">
-                    </div>
-                    <div class="text-white flex-1 overflow-hidden">
-                        <span class="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">BATSMAN</span>
-                        <h3 id="b2-name" class="text-lg font-black mt-1 tracking-wide truncate">M RIZWAN</h3>
-                        <div class="text-3xl font-black text-yellow-300 mt-0.5"><span id="b2-runs">0</span> <span class="text-xs text-slate-300 font-semibold">(0)</span></div>
-                        <div class="text-xs text-slate-300 mt-1 font-bold">4s: <span id="b2-4">0</span> | 6s: <span id="b2-6">0</span> | SR: <span id="b2-sr">0.0</span></div>
-                    </div>
-                </div>
+<!-- ZIMBABWE -->
+<div class="team zimbabwe">
+<div class="team-inner">
+<div>
+<div class="team-name">ZIMBABWE</div>
+<div class="team-status batting">🏏 BATTING</div>
+<div class="team-score" id="teamScore">0/0</div>
+<div class="small-info">TARGET 357</div>
+</div>
+<img class="flag" src="https://flagcdn.com/w320/zw.png" alt="Zimbabwe">
+</div>
+</div>
 
-                <div class="bowler-box rounded-2xl p-4 flex items-center shadow-2xl">
-                    <div class="w-24 h-28 bg-slate-800 rounded-xl overflow-hidden border-2 border-cyan-400 shrink-0 ml-4 shadow-inner">
-                        <img id="bowler-img" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300" class="w-full h-full object-cover">
-                    </div>
-                    <div class="text-white flex-1 overflow-hidden">
-                        <span class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">BOWLER</span>
-                        <h3 id="bowler-name" class="text-lg font-black mt-1 tracking-wide truncate">J BUMRAH</h3>
-                        <div class="text-3xl font-black text-cyan-300 mt-0.5"><span id="bowler-wkt">0</span>-<span id="bowler-runs">0</span> <span class="text-xs text-slate-300 font-semibold">(0.0)</span></div>
-                        <div class="text-xs text-slate-300 mt-1 font-bold">ECON: <span id="bowler-econ">0.00</span></div>
-                    </div>
-                </div>
+</div>
 
-            </div>
+<!-- ================= INFO ================= -->
 
-        </div>
-    </div>
+<div class="info-row">
+<div class="info-box">CRR: <strong id="crr2">0.00</strong></div>
+<div class="info-box">P'SHIP: <strong id="partnership">0 (0)</strong></div>
+<div class="info-box info-aus">AUS 100%</div>
+<div class="info-box info-zim">ZIM 0%</div>
+<div class="info-box">LAST WKT: <strong id="lastWicket">-</strong></div>
+</div>
 
-    <!-- ریویو ماڈل (Live Review Modal) -->
-    <div id="review-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 w-full max-w-4xl rounded-3xl p-6 text-white shadow-2xl relative">
-            <button onclick="togglePreviewModal()" class="absolute top-4 left-4 text-red-400 font-bold text-xl hover:text-red-300"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-xl font-black mb-4 text-amber-400 flex items-center gap-2"><i class="fa-solid fa-chart-line"></i> لائیو میچ اسٹیٹس اینڈ ریویو (Live Match Review)</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-                    <div class="text-xs text-slate-400">مجموعی سکور</div>
-                    <div id="rev-score" class="text-2xl font-black text-yellow-300 mt-1">0/0</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-                    <div class="text-xs text-slate-400">اورز</div>
-                    <div id="rev-overs" class="text-2xl font-black text-cyan-300 mt-1">0.0</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-                    <div class="text-xs text-slate-400">رن ریٹ (CRR)</div>
-                    <div id="rev-crr" class="text-2xl font-black text-green-400 mt-1">0.00</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-                    <div class="text-xs text-slate-400">موجودہ بیٹسمین سٹرائیک</div>
-                    <div id="rev-batsman" class="text-lg font-black text-white mt-1 truncate">BABAR AZAM</div>
-                </div>
-            </div>
+<!-- ================= RECENT BALLS ================= -->
 
-            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                <h3 class="text-sm font-bold text-slate-300 mb-2">حالیہ کمنٹری وائس لاگ:</h3>
-                <p id="rev-commentary" class="text-sm text-green-400 font-medium">کمنٹری سسٹم فعال ہے۔</p>
-            </div>
-        </div>
-    </div>
+<div class="recent-row">
+<span>🔴 RECENT BALLS:</span>
+<div class="recent-balls" id="recentBalls"></div>
+</div>
 
-    <script>
-        let isLive = false;
-        let matchState = {
-            runs: 0, wickets: 0, balls: 0,
-            b1Name: "BABAR AZAM", b1Runs: 0, b1Balls: 0, b1Fours: 0, b1Sixes: 0,
-            b2Name: "M RIZWAN", b2Runs: 0, b2Balls: 0, b2Fours: 0, b2Sixes: 0,
-            bowlerName: "J BUMRAH", bowlerWkts: 0, bowlerRuns: 0, bowlerBalls: 0
-        };
+<!-- ================= PLAYER CARDS ================= -->
 
-        const teamData = {
-            'pak-ind': { bat: "PAKISTAN", bowl: "INDIA", b1: "BABAR AZAM", b2: "M RIZWAN", bowler: "J BUMRAH" },
-            'afg-ind': { bat: "AFGHANISTAN", bowl: "INDIA", b1: "IBRAHIM ZADRAN", b2: "RAHMANULLAH GURBAZ", bowler: "J BUMRAH" },
-            'lah-kar': { bat: "LAHORE QALANDARS", bowl: "KARACHI KINGS", b1: "FAKHAR ZAMAN", b2: "SHAHIN AFRIDI", bowler: "HASAN ALI" },
-            'csk-mi': { bat: "CHENNAI SUPER KINGS", bowl: "MUMBAI INDIANS", b1: "MS DHONI", b2: "RUTURAJ GAIKWAD", bowler: "JASPIR BUMRAH" }
-        };
+<div class="players-row">
 
-        function setMode(mode) {
-            const viewport = document.getElementById('viewport-box');
-            if(mode === 'short') {
-                viewport.classList.add('vertical-mode');
-                document.getElementById('btn-short').className = "bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition";
-                document.getElementById('btn-long').className = "text-slate-400 font-bold text-xs px-3 py-1.5 rounded-lg transition";
-            } else {
-                viewport.classList.remove('vertical-mode');
-                document.getElementById('btn-long').className = "bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition";
-                document.getElementById('btn-short').className = "text-slate-400 font-bold text-xs px-3 py-1.5 rounded-lg transition";
-            }
+<!-- BATTER 1 -->
+<div class="player-card">
+<div class="card-role">BATTER</div>
+<div class="player-main">
+<img class="player-photo" src="https://ui-avatars.com/api/?name=ZW+BATTER+1&background=1685ff&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="batterName1">ZW BATTER 1</div>
+<div class="player-runs"><span id="runs1">0</span> <small>(<span id="balls1">0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats">
+<span>4s: <b id="fours1">0</b></span>
+<span>6s: <b id="sixes1">0</b></span>
+<span>SR: <b id="sr1">0.00</b></span>
+</div>
+</div>
+
+<!-- BATTER 2 -->
+<div class="player-card">
+<div class="card-role">BATTER</div>
+<div class="player-main">
+<img class="player-photo" src="https://ui-avatars.com/api/?name=ZW+BATTER+2&background=1685ff&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="batterName2">ZW BATTER 2</div>
+<div class="player-runs"><span id="runs2">0</span> <small>(<span id="balls2">0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats">
+<span>4s: <b id="fours2">0</b></span>
+<span>6s: <b id="sixes2">0</b></span>
+<span>SR: <b id="sr2">0.00</b></span>
+</div>
+</div>
+
+<!-- BOWLER -->
+<div class="player-card bowler-card">
+<div class="card-role">BOWLER</div>
+<div class="player-main">
+<img class="player-photo" src="https://ui-avatars.com/api/?name=AUS+BOWLER&background=e01921&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="bowlerName">AUS BOWLER</div>
+<div class="player-runs"><span id="bowlerRuns">0</span>-<span id="bowlerWickets">0</span> <small>(<span id="bowlerOvers">0.0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats">
+<span>ECON: <b id="economy">0.00</b></span>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- ================= CONTROL PANEL ================= -->
+
+<div class="control-panel">
+
+<div class="control-title">🇿🇼 ZIMBABWE LIVE ODI SCORE CONTROL</div>
+
+<div class="score-buttons">
+<button onclick="addRuns(1)">+1 RUN</button>
+<button onclick="addRuns(2)">+2 RUNS</button>
+<button onclick="addRuns(3)">+3 RUNS</button>
+<button onclick="addRuns(4)">FOUR</button>
+<button onclick="addRuns(6)">SIX</button>
+<button onclick="dotBall()">DOT</button>
+<button onclick="wicket()">WICKET</button>
+</div>
+
+<button class="undo-button" onclick="undoBall()">↩ UNDO LAST BALL</button>
+
+<div class="name-edit">
+<input id="inputBatter1" placeholder="Batter 1 name">
+<input id="inputBatter2" placeholder="Batter 2 name">
+<input id="inputBowler" placeholder="Bowler name">
+<button onclick="applyNames()">APPLY NAMES</button>
+</div>
+
+<button class="auto-button" id="autoButton" onclick="toggleAuto()">▶ AUTO SIMULATE — 48 SEC / BALL — 4 HOURS</button>
+
+</div>
+
+<script>
+/* =========================================================
+   MATCH SETTINGS
+========================================================= */
+
+const TARGET = 357;
+const BALL_INTERVAL = 48000;
+const MAX_BALLS = 300;
+
+/* =========================================================
+   MATCH STATE
+========================================================= */
+
+let match = {
+    score:0,
+    wickets:0,
+    balls:0,
+    runs1:0,
+    balls1:0,
+    fours1:0,
+    sixes1:0,
+    runs2:0,
+    balls2:0,
+    fours2:0,
+    sixes2:0,
+    partnershipRuns:0,
+    partnershipBalls:0,
+    bowlerRuns:0,
+    bowlerWickets:0,
+    bowlerBalls:0,
+    lastWicket:"-",
+    recent:[]
+};
+
+let history = [];
+let autoTimer = null;
+
+/* =========================================================
+   NON-STOP MULTI-LANGUAGE COMMENTARY SYSTEM
+========================================================= */
+
+const synth = window.speechSynthesis;
+
+const commentaryDatabase = {
+    ur: {
+        dot: ["کیا خوبصورت ڈاٹ بال ہے!", "بہت ہی شاندار گیند، بلے باز بالکل بے بس۔", "کوئی رن نہیں ملے گا، بہترین لائن اور لینتھ۔"],
+        run1: ["ایک رن مکمل کیا، اچھی رننگ بٹوین دی وکٹس۔", "سنگل حاصل کیا، اسٹرائیک روٹیٹ کی۔"],
+        run2: ["دو رنز کے لیے شاندار ڈرائیو! دونوں بلے بازوں کی تیز رفتار دوڑ۔", "گیپ میں کھیلا اور آسانی سے دو رنز بنا لیے۔"],
+        run3: ["بہترین فیلڈنگ لیکن بلے بازوں نے تیز دوڑ کر تین رنز مکمل کر لیے۔"],
+        four: ["چوکا! کیا خوبصورت کور ڈرائیو ہے، گیند باؤنڈری لائن سے باہر!", "چار رنز! بلے کے بیچوں بیچ لگی اور چوکے کے لیے چلی گئی۔"],
+        six: ["چھکا! گیند ہوا میں اور تماشائیوں کے بیچ جا گری!", "کیا شاندار ہٹ ہے! سیدھا اسٹیڈیم سے باہر، 6 رنز!"],
+        wicket: ["وکٹ! آؤٹ ہو گئے! زبردست گیند بازی، آسٹریلیا کو بڑی کامیابی!", "گیند سیدھی وکٹوں میں! بلے باز کو جانا ہوگا۔"]
+    },
+    en: {
+        dot: ["Dot ball! Excellent line and length from the bowler.", "No run offered, brilliant defensive play."],
+        run1: ["Tucked away nicely for a single.", "Quick single taken, good communication between the batters."],
+        run2: ["Pushed into the gap, they will come back for two easily.", "Great placement, two runs added to the total."],
+        run3: ["Superb running! They push hard and complete three runs."],
+        four: ["FOUR! That crashed through the covers for a boundary!", "Shot! Pure class, driven beautifully for four runs!"],
+        six: ["SIX! That is massive! Swept away high into the stands!", "HUGE SIX! Out of the middle of the bat!"],
+        wicket: ["WICKET! Got him! What a sensational delivery!", "OUT! Massive break-through for Australia! Clean bowled!"]
+    },
+    hi: {
+        dot: ["शानदार गेंद! कोई रन नहीं मिलेगा।", "बेहतरीन गेंदबाजी, बल्लेबाज पूरी तरह से चूके।"],
+        run1: ["एक रन आसानी से पूरा किया।", "सिंगल के साथ स्ट्राइक रोटेट की।"],
+        run2: ["गैप में खेला और दो रन चुरा लिए।", "बढ़िया रनिंग, आसानी से दो रन पूरे किए।"],
+        run3: ["तेज रनिंग! तीन रन आसानी से पूरे कर लिए।"],
+        four: ["चौका! क्या लाजवाब शॉट है, गेंद बाउंड्री के बाहर!", "चार रन! करारा प्रहार और गेंद सीधे सीमा रेखा पार!"],
+        six: ["छक्का! गगनचुंबी छक्का! गेंद दर्शकों के बीच!", "शानदार शॉट! 6 रन के लिए स्टैंड्स में!"],
+        wicket: ["विकेट! आउट! ऑस्ट्रेलिया को मिली बड़ी सफलता!", "क्लीन बोल्ड! बल्लेबाज को वापस जाना होगा।"]
+    },
+    pa: {
+        dot: ["کوئی رن نہیں جی، زبردست بالنگ!", "کیا بات ہے جی، بلے باز نوں سمجھ ہی نہیں آئی۔"],
+        run1: ["نسی کے ایک رن پورا کیتا۔", "اک رن مل گیا جی۔"],
+        run2: ["کیا دوڑ لگائی ہے، دو رنز مکمل!", "شاندار شاٹ، دو رنز بنا لیے۔"],
+        run3: ["تیز بھجے تے تن رنز بنا لے۔"],
+        four: ["چوکا! چار رنز ہو گئے جی، کی زبردست شاٹ ہے!", "گیند گئی باؤنڈری توں باہر، چار رنز!"],
+        six: ["چھکا! گیند گئی ڈائریکٹ تماشائیاں وچ، 6 رنز!", "چک کے ماریا جی، لمبا 6 رن!"],
+        wicket: ["وکٹ ڈگ گئی! اؤٹ ہو گیا جی، کمال دی بال!", "آؤٹ! زبردست بالنگ آسٹریلیا ولوں!"]
+    }
+};
+
+const languages = ['ur', 'en', 'hi', 'pa'];
+let currentLangIndex = 0;
+
+function speakText(text, langCode) {
+    if (!synth) return;
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    if (langCode === 'ur') utterance.lang = 'ur-PK';
+    else if (langCode === 'en') utterance.lang = 'en-US';
+    else if (langCode === 'hi') utterance.lang = 'hi-IN';
+    else if (langCode === 'pa') utterance.lang = 'pa-IN';
+
+    utterance.rate = 1.05;
+    utterance.pitch = 1.1;
+
+    utterance.onend = function () {
+        if (autoTimer) {
+            setTimeout(playBackgroundFiller, 2000);
+        }
+    };
+
+    synth.speak(utterance);
+}
+
+function playBackgroundFiller() {
+    if (!autoTimer || synth.speaking) return;
+
+    const fillers = [
+        "Zimbabwe strictly needs a big partnership here to chase 357.",
+        "آسٹریلوی بالرز کا زبردست دباؤ، میچ کافی سنسنی خیز مرحلے میں داخل۔",
+        "मैच काफी रोमांचक मोड़ पर है, जिम्बाब्वे को तेजी से रन बनाने होंगे।",
+        "تگڑا مقابلہ چل رہیا ہے جی، دونوں ٹیماں زور لگا رہیاں نے۔",
+        "Required Run Rate continues to climb up in this ODI match."
+    ];
+
+    const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
+    speakText(randomFiller, 'en');
+}
+
+function triggerCommentary(eventType) {
+    const currentLang = languages[currentLangIndex];
+    currentLangIndex = (currentLangIndex + 1) % languages.length;
+
+    const phrases = commentaryDatabase[currentLang][eventType];
+    const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+    if (synth.speaking) {
+        synth.cancel();
+    }
+
+    speakText(randomPhrase, currentLang);
+}
+
+/* =========================================================
+   HELPER FUNCTIONS
+========================================================= */
+
+function saveState(){
+    history.push(JSON.parse(JSON.stringify(match)));
+}
+
+function getOvers(){
+    return Math.floor(match.balls / 6) + "." + (match.balls % 6);
+}
+
+function getCRR(){
+    if(match.balls === 0) return "0.00";
+    return (match.score / (match.balls / 6)).toFixed(2);
+}
+
+function getSR(runs,balls){
+    if(balls === 0) return "0.00";
+    return (runs / balls * 100).toFixed(2);
+}
+
+function getBowlerOvers(){
+    return Math.floor(match.bowlerBalls / 6) + "." + (match.bowlerBalls % 6);
+}
+
+function getEconomy(){
+    if(match.bowlerBalls === 0) return "0.00";
+    return (match.bowlerRuns / (match.bowlerBalls / 6)).toFixed(2);
+}
+
+function addRecent(text,type){
+    match.recent.push({text:text, type:type});
+    if(match.recent.length > 10) match.recent.shift();
+}
+
+function checkInnings(){
+    if(match.score >= TARGET || match.wickets >= 10 || match.balls >= MAX_BALLS){
+        stopAuto();
+        if(match.score >= TARGET) alert("Zimbabwe reached the target of 357!");
+        else if(match.wickets >= 10) alert("Zimbabwe innings completed — all out.");
+        else if(match.balls >= MAX_BALLS) alert("Zimbabwe innings completed — 50 overs.");
+        return true;
+    }
+    return false;
+}
+
+/* =========================================================
+   GAME CONTROLS
+========================================================= */
+
+function addRuns(runs){
+    if(checkInnings()) return;
+    saveState();
+
+    match.score += runs;
+    match.balls++;
+    match.partnershipRuns += runs;
+    match.partnershipBalls++;
+    match.bowlerRuns += runs;
+    match.bowlerBalls++;
+
+    if(match.balls % 2 === 1){
+        match.runs1 += runs;
+        match.balls1++;
+        if(runs === 4) match.fours1++;
+        if(runs === 6) match.sixes1++;
+    } else {
+        match.runs2 += runs;
+        match.balls2++;
+        if(runs === 4) match.fours2++;
+        if(runs === 6) match.sixes2++;
+    }
+
+    if(runs === 4){
+        addRecent("4","four");
+        triggerCommentary("four");
+    } else if(runs === 6){
+        addRecent("6","six");
+        triggerCommentary("six");
+    } else {
+        addRecent(String(runs),"run");
+        if(runs === 1) triggerCommentary("run1");
+        else if(runs === 2) triggerCommentary("run2");
+        else if(runs === 3) triggerCommentary("run3");
+    }
+
+    render();
+    checkInnings();
+}
+
+function dotBall(){
+    if(checkInnings()) return;
+    saveState();
+
+    match.balls++;
+    match.partnershipBalls++;
+    match.bowlerBalls++;
+
+    if(match.balls % 2 === 1) match.balls1++;
+    else match.balls2++;
+
+    addRecent("•","dot");
+    triggerCommentary("dot");
+
+    render();
+    checkInnings();
+}
+
+function wicket(){
+    if(checkInnings()) return;
+    saveState();
+
+    match.wickets++;
+    match.balls++;
+    match.partnershipBalls++;
+    match.bowlerBalls++;
+    match.bowlerWickets++;
+    match.lastWicket = match.wickets + " down";
+
+    if(match.balls % 2 === 1){
+        match.runs1 = 0; match.balls1 = 0; match.fours1 = 0; match.sixes1 = 0;
+    } else {
+        match.runs2 = 0; match.balls2 = 0; match.fours2 = 0; match.sixes2 = 0;
+    }
+
+    addRecent("W","wicket");
+    triggerCommentary("wicket");
+
+    render();
+    checkInnings();
+}
+
+function undoBall(){
+    if(history.length === 0) return;
+    stopAuto();
+    if(synth.speaking) synth.cancel();
+    match = history.pop();
+    render();
+}
+
+function render(){
+    let scoreText = match.score + "/" + match.wickets;
+
+    document.getElementById("teamScore").textContent = scoreText;
+    document.getElementById("centerScore").textContent = scoreText;
+    document.getElementById("overs").textContent = getOvers();
+    document.getElementById("crr").textContent = getCRR();
+    document.getElementById("crr2").textContent = getCRR();
+    document.getElementById("partnership").textContent = match.partnershipRuns + " (" + match.partnershipBalls + ")";
+    document.getElementById("lastWicket").textContent = match.lastWicket;
+
+    /* Batter 1 */
+    document.getElementById("runs1").textContent = match.runs1;
+    document.getElementById("balls1").textContent = match.balls1;
+    document.getElementById("fours1").textContent = match.fours1;
+    document.getElementById("sixes1").textContent = match.sixes1;
+    document.getElementById("sr1").textContent = getSR(match.runs1, match.balls1);
+
+    /* Batter 2 */
+    document.getElementById("runs2").textContent = match.runs2;
+    document.getElementById("balls2").textContent = match.balls2;
+    document.getElementById("fours2").textContent = match.fours2;
+    document.getElementById("sixes2").textContent = match.sixes2;
+    document.getElementById("sr2").textContent = getSR(match.runs2, match.balls2);
+
+    /* Bowler */
+    document.getElementById("bowlerRuns").textContent = match.bowlerRuns;
+    document.getElementById("bowlerWickets").textContent = match.bowlerWickets;
+    document.getElementById("bowlerOvers").textContent = getBowlerOvers();
+    document.getElementById("economy").textContent = getEconomy();
+
+    /* Recent balls */
+    let recent = document.getElementById("recentBalls");
+    recent.innerHTML = "";
+
+    match.recent.forEach(function(ball){
+        let div = document.createElement("div");
+        div.className = "ball ";
+
+        if(ball.type === "four") div.className += "ball-four";
+        else if(ball.type === "six") div.className += "ball-six";
+        else if(ball.type === "wicket") div.className += "ball-wicket";
+        else if(ball.type === "run") div.className += "ball-run";
+
+        div.textContent = ball.text;
+        recent.appendChild(div);
+    });
+}
+
+function resetZimbabwe(){
+    stopAuto();
+    if(synth.speaking) synth.cancel();
+    history = [];
+    match = {
+        score:0, wickets:0, balls:0,
+        runs1:0, balls1:0, fours1:0, sixes1:0,
+        runs2:0, balls2:0, fours2:0, sixes2:0,
+        partnershipRuns:0, partnershipBalls:0,
+        bowlerRuns:0, bowlerWickets:0, bowlerBalls:0,
+        lastWicket:"-", recent:[]
+    };
+    render();
+}
+
+function toggleAuto(){
+    if(autoTimer) stopAuto();
+    else startAuto();
+}
+
+function startAuto(){
+    if(match.score >= TARGET || match.wickets >= 10 || match.balls >= MAX_BALLS) return;
+
+    autoTimer = setInterval(function(){
+        if(match.balls >= MAX_BALLS || match.wickets >= 10 || match.score >= TARGET){
+            stopAuto();
+            return;
         }
 
-        function updateMatchTeams() {
-            let val = document.getElementById('match-select').value;
-            let t = teamData[val];
-            document.getElementById('batting-team-name').textContent = t.bat;
-            document.getElementById('bowling-team-name').textContent = t.bowl;
-            document.getElementById('b1-name').textContent = t.b1;
-            document.getElementById('b2-name').textContent = t.b2;
-            document.getElementById('bowler-name').textContent = t.bowler;
-            matchState.b1Name = t.b1;
-            matchState.b2Name = t.b2;
-            matchState.bowlerName = t.bowler;
-        }
+        let random = Math.random();
 
-        function togglePreviewModal() {
-            const modal = document.getElementById('review-modal');
-            modal.classList.toggle('hidden');
-            if(!modal.classList.contains('hidden')) {
-                document.getElementById('rev-score').textContent = `${matchState.runs}/${matchState.wickets}`;
-                document.getElementById('rev-overs').textContent = Math.floor(matchState.balls / 6) + "." + (matchState.balls % 6);
-                document.getElementById('rev-crr').textContent = matchState.balls > 0 ? (matchState.runs / (matchState.balls / 6)).toFixed(2) : "0.00";
-                document.getElementById('rev-batsman').textContent = matchState.b1Name;
-            }
-        }
+        if(random < 0.06) wicket();
+        else if(random < 0.20) dotBall();
+        else if(random < 0.50) addRuns(1);
+        else if(random < 0.64) addRuns(2);
+        else if(random < 0.69) addRuns(3);
+        else if(random < 0.90) addRuns(4);
+        else addRuns(6);
 
-        const commentaryList = [
-            "واہ بھئی واہ! کیا کمال دا شاٹ ماریا اے بلے باز نے، گیند سیدھا باؤنڈری توں باہر چار رنز واسطے۔",
-            "اگلی گیند اتے شاندار سنگل حاصل کر لیا گیا ہے، کھلاڑی بڑی تیزی نال دوڑے نیں۔",
-            "اوہو! کمال دی یارکر گیند سی، بلے باز بالکل دفاعی انداز وچ کھیڈیا، کوئی رن نہیں بن سکیا۔",
-            "یار کیا زبردست میچ چل رہا ہے! شائقین دا شور آسمان نوں چھو رہا ہے، ہر بال اتے نیا سنسنی۔",
-            "گیند ہوا دے وچ اتے اے بہت لمبا چھکا! شاندار بیٹنگ دا مظاہرہ جاری ہے پویلین توں تالیاں وج رہیاں نیں۔"
-        ];
-        let comIndex = 0;
+    }, BALL_INTERVAL);
 
-        function startLiveBroadcast() {
-            if (isLive) return;
-            isLive = true;
+    document.getElementById("autoButton").textContent = "⏸ AUTO SIMULATION RUNNING — 48 SEC / BALL";
+    playBackgroundFiller();
+}
 
-            setInterval(() => {
-                if (!isLive) return;
+function stopAuto(){
+    if(autoTimer){
+        clearInterval(autoTimer);
+        autoTimer = null;
+    }
+    if(synth.speaking) synth.cancel();
+    let button = document.getElementById("autoButton");
+    if(button) button.textContent = "▶ AUTO SIMULATE — 48 SEC / BALL — 4 HOURS";
+}
 
-                let runScored = [0, 1, 1, 2, 4, 6][Math.floor(Math.random() * 6)];
-                matchState.runs += runScored;
-                matchState.balls++;
-                matchState.b1Runs += runScored;
-                matchState.b1Balls++;
-                matchState.bowlerRuns += runScored;
-                matchState.bowlerBalls++;
+function broadcastFullscreen(){
+    document.body.classList.toggle("broadcast-fullscreen");
+}
 
-                if (runScored === 4) matchState.b1Fours++;
-                if (runScored === 6) matchState.b1Sixes++;
+function landscapeMode(){
+    if(screen.orientation && screen.orientation.lock){
+        screen.orientation.lock("landscape").catch(function(){
+            alert("Please rotate your phone horizontally.");
+        });
+    } else {
+        alert("Please rotate your phone horizontally.");
+    }
+}
 
-                let oversVal = Math.floor(matchState.balls / 6) + "." + (matchState.balls % 6);
-                let crrVal = (matchState.runs / (matchState.balls / 6)).toFixed(2);
+function applyNames(){
+    let n1 = document.getElementById("inputBatter1").value.trim();
+    let n2 = document.getElementById("inputBatter2").value.trim();
+    let bowler = document.getElementById("inputBowler").value.trim();
 
-                document.getElementById('main-score').textContent = `${matchState.runs}/${matchState.wickets}`;
-                document.getElementById('main-overs').textContent = `${oversVal} Ov`;
-                document.getElementById('crr-text').textContent = isNaN(crrVal) ? "0.00" : crrVal;
-                
-                document.getElementById('b1-runs').textContent = matchState.b1Runs;
-                document.getElementById('b1-4').textContent = matchState.b1Fours;
-                document.getElementById('b1-6').textContent = matchStat
+    if(n1) document.getElementById("batterName1").textContent = n1;
+    if(n2) document.getElementById("batterName2").textContent = n2;
+    if(bowler) document.getElementById("bowlerName").textContent = bowler;
+}
+
+render();
+</script>
+
+</body>
+</html>
