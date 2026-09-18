@@ -1,225 +1,207 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IND vs AFG T20I SERIES STUDIO - LIVE ANALYSIS</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#020617;color:#fff;font-family:'Segoe UI',Arial,sans-serif;overflow-x:hidden}
-button,select,input{font-family:inherit}
-button{cursor:pointer}
-
-.app{width:100vw;max-width:1300px;margin:auto;display:flex;flex-direction:column;align-items:center;transition:all 0.3s ease}
-
-.broadcast{
-  position:relative;width:100%;aspect-ratio:16/9;
-  background: linear-gradient(rgba(3,7,18,0.8), rgba(3,7,18,0.92)), 
-              url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200') center/cover no-repeat;
-  overflow:hidden;border:3px solid transparent;
-  border-image: linear-gradient(45deg, #ff007f, #00f0ff, #7000ff, #ff0000) 1;
-  box-shadow:0 0 25px rgba(0, 240, 255, 0.4);
-}
-
-.broadcast.shorts-mode{
-  max-width:420px !important;
-  aspect-ratio:9/16 !important;
-  border-radius:16px;
-}
-
-body.clean-long .controls { display: none !important; }
-body.clean-long .app { width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 0; justify-content: center; }
-body.clean-long .broadcast { width: 100vw; height: 100vh; max-height: 100vh; aspect-ratio: 16/9; border: none; border-radius: 0; box-shadow: none; }
-
-.restore-btn {
-  position: fixed; top: 15px; right: 15px; z-index: 99999;
-  background: rgba(15, 23, 42, 0.85); color: #22c55e; border: 2px solid #22c55e;
-  padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 900; font-size: 13px;
-  display: none; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
-}
-body.clean-long .restore-btn { display: block; }
-
-.studio-desk {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
-  background: linear-gradient(to top, #0f172a, rgba(15,23,42,0.85));
-  border-top: 3px solid #38bdf8; display: flex; align-items: center; padding: 0 30px; gap: 20px; z-index: 8;
-}
-.anchor-avatar {
-  width: 110px; height: 110px; border-radius: 50%; border: 3px solid #f43f5e;
-  object-fit: cover; box-shadow: 0 0 15px rgba(244,63,94,0.6); background: #1e293b; flex-shrink: 0;
-  animation: pulseGlow 2s infinite alternate;
-}
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 10px rgba(244,63,94,0.4); }
-  100% { box-shadow: 0 0 25px rgba(244,63,94,0.9); }
-}
-
-.studio-laptop {
-  background: #1e293b; border: 2px solid #64748b; border-radius: 8px; padding: 10px 15px;
-  font-size: 12px; color: #38bdf8; font-weight: 800; box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.topHeader{
-  position:absolute;top:2%;left:2%;right:2%;height:18%;
-  display:grid;grid-template-columns:31% 38% 31%;gap:6px;z-index:10;
-}
-.broadcast.shorts-mode .topHeader{grid-template-columns:1fr;height:auto;gap:4px;}
-
-.teamCard{
-  background:linear-gradient(135deg,#1e3a8a,#172554);
-  border:2px solid #3b82f6;border-radius:12px;padding:6px 12px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.teamCard.bowling{
-  background:linear-gradient(135deg,#7f1d1d,#450a0a);
-  border-color:#ef4444;
-}
-
-.tInfo{display:flex;flex-direction:column}
-.tName{font-size:clamp(10px,1.4vw,18px);font-weight:900;color:#fff;text-transform:uppercase}
-.tScore{font-size:clamp(16px,2.2vw,30px);font-weight:1000;color:#fff;direction:ltr}
-.tOvers{font-size:clamp(9px,1vw,13px);color:#facc15;direction:ltr;font-weight:800}
-
-.tFlag{
-  width:clamp(36px,4.5vw,60px);height:clamp(36px,4.5vw,60px);
-  border-radius:50%;border:2px solid #fff;display:flex;align-items:center;
-  justify-content:center;font-size:clamp(20px,2.5vw,35px);background:#1e293b;flex-shrink:0;
-}
-
-.centerCard{
-  background:linear-gradient(135deg, #0f172a, #000);
-  border:2px solid #22c55e;border-radius:12px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.mainNum{font-size:clamp(20px,3.2vw,42px);font-weight:1000;color:#00f0ff;direction:ltr}
-
-.commBox{
-  position:absolute;bottom:37%;left:2%;right:2%;height:11%;
-  background:rgba(2,6,23,0.95);border:2px solid #ff007f;
-  border-radius:8px;padding:0 12px;display:flex;align-items:center;gap:10px;
-  z-index:10;direction:rtl;box-shadow:0 0 15px rgba(255,0,127,0.4);
-}
-.commIcon{background:#f43f5e;color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:900;white-space:nowrap}
-.commText{color:#e2e8f0;font-size:clamp(10px,1.2vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.controls{width:100%;padding:15px;background:#0f172a;border-top:2px solid #1e293b}
-.panel{background:#1e293b;padding:12px;border-radius:10px;margin-bottom:12px}
-.panelTitle{color:#22c55e;font-weight:900;margin-bottom:10px;font-size:15px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
-.btn{padding:10px;border-radius:8px;border:none;color:#fff;font-weight:900;cursor:pointer;background:#334155;font-size:12px}
-.btn.green{background:#16a34a}.btn.red{background:#dc2626}.btn.blue{background:#2563eb}.btn.orange{background:#d97706}.btn.purple{background:#9333ea}.btn.cyan{background:#0891b2}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Cricket News Slideshow Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0f19; color: #f8fafc; }
+        .slideshow-img { opacity: 0; transition: opacity 0.5s ease-in-out; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .slideshow-img.active { opacity: 1; }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-6">
 
-<button class="restore-btn" id="btnRestore">⚙️ کنٹرولز کھولیں</button>
-
-<div class="app">
-  <div class="broadcast" id="broadcastContainer">
-    <div class="topHeader">
-      <div class="teamCard">
-        <div class="tInfo">
-          <div class="tName">INDIA (SERIES WINNER)</div>
-          <div class="tScore">3 - 0</div>
-          <div class="tOvers">T20I SERIES</div>
+    <header class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-4 flex items-center justify-between shadow-xl">
+        <div class="flex items-center space-x-3 space-x-reverse">
+            <div class="bg-red-600 text-white p-2.5 rounded-xl shadow">
+                <i class="fa-solid fa-clapperboard text-lg"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-black uppercase tracking-wider text-white">Latest Cricket News Update</h1>
+                <p class="text-xs text-slate-400">آٹومیٹک کرکٹ سلائیڈ شو اور وائس اسٹوڈیو</p>
+            </div>
         </div>
-        <div class="tFlag">🇮🇳</div>
-      </div>
+        <span id="live-badge" class="hidden bg-red-600 text-white text-xs px-3 py-1 rounded-full font-bold animate-pulse">● LIVE</span>
+    </header>
 
-      <div class="centerCard">
-        <div style="font-size:10px;color:#facc15;font-weight:800">FINAL T20I: IND WON BY 127 RUNS</div>
-        <div class="mainNum">STUDIO LIVE</div>
-        <div style="font-size:11px;color:#22c55e;font-weight:900;direction:ltr">6-HR ANALYSIS SHOW</div>
-      </div>
+    <main class="w-full max-w-4xl flex flex-col gap-4">
+        
+        <!-- اسکرین اور سلائیڈ شو پلیئر -->
+        <div class="relative w-full aspect-video rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-slate-950 flex items-center justify-center">
+            
+            <!-- بیک گراؤنڈ تصاویر سلائیڈ شو کنٹینر -->
+            <div id="slideshow-container" class="absolute inset-0 w-full h-full bg-slate-900 flex items-center justify-center">
+                <div id="placeholder-text" class="text-slate-500 text-sm font-semibold text-center p-4">
+                    <i class="fa-solid fa-images text-3xl mb-2 block"></i>
+                    براہ کرم نیچے دیئے گئے بٹن سے 40 سے 100 کرکٹ تصاویر منتخب کریں
+                </div>
+            </div>
 
-      <div class="teamCard bowling">
-        <div class="tFlag">🇦🇫</div>
-        <div class="tInfo" style="text-align:left">
-          <div class="tName">AFGHANISTAN</div>
-          <div class="tScore">LOST SERIES</div>
-          <div class="tOvers">NEW DELHI</div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/40 pointer-events-none"></div>
+
+            <!-- برانڈنگ لوگو اور ٹائٹل -->
+            <div class="absolute top-4 right-4 bg-red-600 text-white font-black text-xs px-3 py-1 rounded-md shadow-lg z-20">
+                LATEST CRICKET NEWS UPDATE
+            </div>
+
+            <!-- نیچے چلنے والی نیوز ٹِکر -->
+            <div class="absolute bottom-0 left-0 right-0 bg-slate-950/90 backdrop-blur-md border-t border-slate-700 px-4 py-2.5 z-20 flex items-center">
+                <span class="bg-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase tracking-wider ml-3 shrink-0">NEWS</span>
+                <p id="ticker-text" class="text-xs font-semibold text-slate-100 truncate">خوش آمدید! تازہ ترین کرکٹ خبریں یہاں شو ہوں گی۔</p>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="commBox">
-      <div class="commIcon">🎙 آٹو اینکر وائس</div>
-      <div class="commText" id="commText">خوش آمدید! انڈیا اور افغانستان کی حالیہ ٹی ٹوئنٹی سیریز پر تفصیلی تجزیہ شروع ہو چکا ہے۔</div>
-    </div>
+        <!-- کنٹرول پینل -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-6 shadow-xl space-y-4">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">زبان منتخب کریں</label>
+                    <select id="lang-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
+                        <option value="ur-PK">اردو (Urdu)</option>
+                        <option value="hi-IN">ہندی (Hindi)</option>
+                        <option value="en-US">انگلش (English)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">اسکرپٹ کا سائز</label>
+                    <select id="script-type" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-white" onchange="loadPresetScript()">
+                        <option value="short">شارٹ اسکرپٹ (Short)</option>
+                        <option value="long">لانگ اسکرپٹ (Long)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">کرکٹ تصاویر (40-100+)</label>
+                    <input type="file" id="image-upload" accept="image/*" multiple class="w-full text-xs text-slate-400 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
+                </div>
+            </div>
 
-    <div class="studio-desk">
-      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150" alt="Anchor" class="anchor-avatar" id="anchorImg">
-      <div class="studio-laptop">
-        💻 لائیو اسٹوڈیو تجزیہ (انڈیا بمقابلہ افغانستان سیریز)<br>
-        <span style="color:#22c55e; font-size:11px;">• عورت خود بخود بول رہی ہے اور تمام کھلاڑیوں پر تبصرہ کر رہی ہے</span>
-      </div>
-    </div>
-  </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">نیوز اسکرپٹ (آپ خود بھی لکھ سکتے ہیں):</label>
+                <textarea id="user-script" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-blue-500 resize-none" placeholder="خبر یہاں درج کریں..."></textarea>
+            </div>
 
-  <div class="controls">
-    <div class="panel">
-      <div class="panelTitle">🎙 6 گھنٹے لائیو اسٹریم کے لیے خودکار تبصرے اور موضوعات</div>
-      <div class="grid">
-        <button class="btn blue" onclick="autoSpeak('ind_praise')">⭐ انڈیا کی شاندار تعریفیں</button>
-        <button class="btn red" onclick="autoSpeak('ind_mistakes')">⚠️ انڈیا کی غلطیاں</button>
-        <button class="btn orange" onclick="autoSpeak('afg_mistakes')">❌ افغانستان کی خامیوز/غلطیاں</button>
-        <button class="btn purple" onclick="autoSpeak('player_review')">🏏 کھلاڑیوں کا تفصیلی ریویو</button>
-      </div>
-    </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                <div class="flex gap-2">
+                    <button onclick="startBroadcast()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-5 rounded-xl text-xs shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> خبر شروع کریں
+                    </button>
+                    <button onclick="stopBroadcast()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-stop"></i> روکیں
+                    </button>
+                </div>
+                <span id="status-text" class="text-xs text-slate-400 font-medium">تیار ہے</span>
+            </div>
 
-    <div class="panel">
-      <div class="panelTitle">📱 اسکرین موڈ</div>
-      <div class="grid">
-        <button class="btn cyan" id="btnLong">📺 لانگ اسکرین (فُل ویو)</button>
-        <button class="btn cyan" id="btnShorts">📱 شارٹس موڈ (9:16)</button>
-      </div>
-    </div>
-  </div>
-</div>
+        </section>
+    </main>
 
-<script>
-document.getElementById("btnLong").addEventListener("click", () => {
-  document.getElementById("broadcastContainer").classList.remove("shorts-mode");
-  document.body.classList.add("clean-long");
-});
+    <script>
+        let imageFiles = [];
+        let currentImgIndex = 0;
+        let slideInterval = null;
+        let speechSynth = window.speechSynthesis;
 
-document.getElementById("btnRestore").addEventListener("click", () => {
-  document.body.classList.remove("clean-long");
-});
+        // مختلف زبانوں اور سائز کے لیے پری سیٹ اسکرپٹس
+        const scripts = {
+            'ur-PK': {
+                short: "السلام علیکم! لیٹسٹ کرکٹ نیوز اپڈیٹ میں خوش آمدید۔ آج کے اہم میچ میں شاندار کارکردگی دیکھنے کو ملی۔ کھلاڑیوں نے بہترین کھیل پیش کیا۔ مزید اپڈیٹس کے لیے جڑے رہیں۔",
+                long: "السلام علیکم ناظرین، لیٹسٹ کرکٹ نیوز اپڈیٹ میں آپ کا خیرمقدم ہے۔ آج کی اہم ترین کرکٹ خبروں میں پاکستان، انڈیا اور دیگر بین الاقوامی ٹیموں کے میچز کی تفصیلات شامل ہیں۔ کھلاڑیوں نے پچ پر شاندار کھیل کا مظاہرہ کیا اور شائقین کو بہترین تفریح فراہم کی۔ ریکارڈز اور اساتس کے لحاظ سے یہ سیزن انتہائی دلچسپ ثابت ہو رہا ہے۔ تمام تازہ ترین اپڈیٹس کے لیے ہمارے ساتھ رہیں۔"
+            },
+            'hi-IN': {
+                short: "नमस्कार! लेटेस्ट क्रिकेट न्यूज़ अपडेट में आपका स्वागत है। आज के मैच में खिलाड़ियों ने शानदार प्रदर्शन किया। अधिक अपडेट के लिए बने रहें।",
+                long: "नमस्कार दर्शकों, लेटेस्ट क्रिकेट न्यूज़ अपडेट में आपका स्वागत है। आज की सबसे महत्वपूर्ण क्रिकेट खबरों में भारत, पाकिस्तान और अन्य अंतरराष्ट्रीय टीमों के मैचों का रोमांचक प्रदर्शन शामिल है। खिलाड़ियों ने मैदान पर बेहतरीन खेल दिखाया है। सभी ताज़ा अपडेट के लिए बने रहें।"
+            },
+            'en-US': {
+                short: "Welcome to Latest Cricket News Update. Today's matches brought incredible performances and thrilling moments. Stay tuned for more updates.",
+                long: "Hello viewers, welcome to Latest Cricket News Update. In today's top cricket stories, we cover major match highlights, player statistics, and remarkable moments from international cricket. Stay tuned as we bring you all the latest updates live from the studio."
+            }
+        };
 
-document.getElementById("btnShorts").addEventListener("click", () => {
-  document.getElementById("broadcastContainer").classList.add("shorts-mode");
-  document.body.classList.remove("clean-long");
-});
+        function loadPresetScript() {
+            const lang = document.getElementById('lang-select').value;
+            const type = document.getElementById('script-type').value;
+            document.getElementById('user-script').value = scripts[lang][type];
+        }
 
-// Auto Speech and Content for IND vs AFG Series
-function autoSpeak(type) {
-  let scripts = {
-    ind_praise: "انڈیا نے اس پوری ٹی ٹوئنٹی سیریز میں ناقابل یقین کرکٹ کھیلی ہے! آخری میچ میں ابهيشیک شرما کی شاندار سنچری اور نیتیش کمار ریڈی کی زبردست بولنگ نے یہ ثابت کر دیا کہ ان کی ٹیم کتنی متوازن ہے۔ تگڑی فتح مبارک ہو!",
-    ind_mistakes: "البتہ اگر تجزیہ کیا جائے تو سیریز کے شروع کے میچوں میں انڈیا کی فیلڈنگ میں کچھ معمولی خامیاں نظر آئیں اور پاور پلے میں وکٹیں گنوانے کی جو غلطی ہوئی، کوچنگ اسٹاف کو اس پر ضرور نظرثانی کرنی چاہئے۔",
-    afg_mistakes: "جہاں تک افغانستان کا تعلق ہے، انہوں نے فائٹ کرنے کی کوشش کی لیکن آخری میچ میں ان کا بیٹنگ آرڈر بری طرح فلاپ ہو گیا۔ پریشر میں آ کر خراب شاٹ سلیکشن ان کی سب سے بڑی کمزوری بنی جس کی وجہ سے وہ بڑے مارجن سے ہار گئے۔",
-    player_review: "سیریز کے تمام کھلاڑیوں کی پرفارمنس کا جائزہ لیں تو ابهیشیک شرما سب سے نمایاں رہے، جب کہ راشد خان اور عمرزئی نے بھی فائٹ کی۔ آئیے دیکھتے ہیں کس نے کون سی بڑی غلطیاں کی اور کس نے دل جیتے۔"
-  };
+        // تصاویر اپ لوڈ کرنے کا فنکشن
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
 
-  let text = scripts[type] || "لائیو تجزیہ جاری ہے...";
-  document.getElementById("commText").textContent = text;
+            imageFiles = files.map(file => URL.createObjectURL(file));
+            currentImgIndex = 0;
+            
+            const container = document.getElementById('slideshow-container');
+            container.innerHTML = '';
+            
+            imageFiles.forEach((url, index) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = `slideshow-img ${index === 0 ? 'active' : ''}`;
+                container.appendChild(img);
+            });
 
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    let utterance = new SpeechSynthesisUtterance(text);
-    utter.lang = "ur-PK"; 
-    utter.rate = 0.9;     
-    utter.pitch = 1.1;    // زنانہ آواز کے لیے
-    window.speechSynthesis.speak(utter);
-  }
-}
+            document.getElementById('status-text').textContent = `${imageFiles.length} تصاویر کامیابی سے لوڈ ہو گئیں`;
+        });
 
-// Automatically start speaking when page loads
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    autoSpeak('ind_praise');
-  }, 1000);
-});
-</script>
+        document.getElementById('lang-select').addEventListener('change', loadPresetScript);
+        window.onload = loadPresetScript;
+
+        function startBroadcast() {
+            const scriptText = document.getElementById('user-script').value;
+            if (!scriptText.trim()) {
+                alert('براہ کرم پہلے اسکرپٹ درج کریں!');
+                return;
+            }
+
+            if (imageFiles.length === 0) {
+                alert('براہ کرم کم از کم کچھ کرکٹ تصاویر اپ لوڈ کریں!');
+                return;
+            }
+
+            document.getElementById('ticker-text').textContent = scriptText;
+            document.getElementById('live-badge').classList.remove('hidden');
+            document.getElementById('status-text').textContent = "براڈکاسٹ جاری ہے...";
+
+            // 2 سیکنڈ بعد تصویر تبدیل کرنے کا سلائیڈ شو شروع کریں
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                const imgs = document.querySelectorAll('.slideshow-img');
+                if (imgs.length === 0) return;
+                
+                imgs[currentImgIndex].classList.remove('active');
+                currentImgIndex = (currentImgIndex + 1) % imgs.length;
+                imgs[currentImgIndex].classList.add('active');
+            }, 2000);
+
+            // براؤزر کی وائس سے بولنا شروع کریں
+            if (speechSynth) {
+                speechSynth.cancel();
+                const utterance = new SpeechSynthesisUtterance(scriptText);
+                utterance.lang = document.getElementById('lang-select').value;
+                utterance.rate = 0.95;
+
+                utterance.onend = function() {
+                    stopBroadcast();
+                };
+
+                speechSynth.speak(utterance);
+            }
+        }
+
+        function stopBroadcast() {
+            if (speechSynth) speechSynth.cancel();
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
+            document.getElementById('live-badge').classList.add('hidden');
+            document.getElementById('status-text').textContent = "روک دیا گیا";
+        }
+    </script>
 </body>
 </html>
