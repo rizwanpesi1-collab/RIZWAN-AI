@@ -161,7 +161,7 @@ button,input{
     color:#ffe000;
 }
 
-/* ONLY THIS WAS REDUCED SLIGHTLY */
+/* SCORE — صرف تھوڑا چھوٹا */
 .team-score{
     font-size:clamp(29px,4.6vw,68px);
     line-height:1;
@@ -563,18 +563,37 @@ button,input{
     margin-bottom:10px;
 }
 
+/* اصل file input چھپا کر اپنا واضح button */
 .audio-file{
+    display:none;
+}
+
+/* نیا Choose MP3 button */
+.choose-mp3{
     width:100%;
-    padding:10px;
-    background:#020710;
-    border:1px solid #385d94;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+    background:linear-gradient(#173b6d,#07162e);
+    border:1px solid #477bb7;
     border-radius:7px;
     color:white;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    text-align:center;
+}
+
+.choose-mp3:active{
+    transform:scale(.99);
 }
 
 .audio-player{
+    display:block;
     width:100%;
     margin-top:10px;
+    min-height:45px;
 }
 
 .audio-status{
@@ -633,10 +652,6 @@ body.broadcast-fullscreen .stadium{
         min-width:80%;
     }
 
-    /*
-       Mobile score slightly smaller,
-       while preserving original layout.
-    */
     .team-score{
         font-size:clamp(26px,7.2vw,45px);
     }
@@ -1076,7 +1091,6 @@ onclick="setLastTwoOvers()">
 🔥 SETUP LAST 2 OVERS — 166/5 — NEED 24
 </button>
 
-<!-- Auto is intentionally disabled because score is manual -->
 <button
 class="auto-button"
 id="autoButton"
@@ -1119,16 +1133,28 @@ APPLY NAMES
 رنز کے بٹنوں کی الگ کوئی آواز نہیں ہوگی۔
 </div>
 
+<!--
+    اصل browser file input کو hide کیا گیا ہے
+    تاکہ موبائل پر واضح CHOOSE MP3 button نظر آئے
+-->
+
 <input
 class="audio-file"
 type="file"
 id="audioFile"
-accept="audio/mpeg,audio/mp3,audio/*">
+accept=".mp3,audio/mpeg,audio/mp3">
+
+<label
+for="audioFile"
+class="choose-mp3">
+📁 CHOOSE MP3 FILE
+</label>
 
 <audio
 class="audio-player"
 id="audioPlayer"
-controls>
+controls
+preload="metadata">
 </audio>
 
 <div
@@ -1295,31 +1321,4 @@ function addRecent(text,type){
 function strikerName(){
 
     return currentStriker===1
-    ? playerNames.batter1
-    : playerNames.batter2;
-
-}
-
-function updateStrikerStats(runs){
-
-    if(currentStriker===1){
-
-        match.runs1 += runs;
-        match.balls1++;
-
-        if(runs===4)
-            match.fours1++;
-
-        if(runs===6)
-            match.sixes1++;
-
-    }else{
-
-        match.runs2 += runs;
-        match.balls2++;
-
-        if(runs===4)
-            match.fours2++;
-
-        if(runs===6)
-        
+    ? playerNa
