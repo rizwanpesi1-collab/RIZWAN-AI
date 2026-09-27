@@ -98,6 +98,7 @@ button,input{
     padding:1%;
     overflow:hidden;
     border:2px solid;
+    min-width:0;
 }
 
 .pakistan{
@@ -121,6 +122,7 @@ button,input{
 
 .team-inner{
     width:100%;
+    min-width:0;
     display:flex;
     align-items:center;
     gap:1vw;
@@ -159,17 +161,20 @@ button,input{
     color:#ffe000;
 }
 
+/* ONLY THIS WAS REDUCED SLIGHTLY */
 .team-score{
-    font-size:clamp(35px,5.5vw,82px);
+    font-size:clamp(29px,4.6vw,68px);
     line-height:1;
     font-weight:1000;
     margin-top:2px;
+    white-space:nowrap;
 }
 
 .small-info{
     font-size:clamp(7px,1vw,16px);
     font-weight:bold;
     margin-top:4px;
+    white-space:nowrap;
 }
 
 /* ================= CENTER ================= */
@@ -187,6 +192,7 @@ button,input{
     justify-content:center;
     align-items:center;
     text-align:center;
+    min-width:0;
 }
 
 .center-title{
@@ -204,6 +210,7 @@ button,input{
     font-weight:1000;
     line-height:1;
     margin:2px 0;
+    white-space:nowrap;
 }
 
 .center-overs{
@@ -229,6 +236,8 @@ button,input{
     text-align:center;
     font-size:clamp(7px,1.05vw,17px);
     font-weight:bold;
+    min-width:0;
+    overflow:hidden;
 }
 
 .info-box strong{
@@ -315,6 +324,7 @@ button,input{
     );
     display:flex;
     flex-direction:column;
+    min-width:0;
 }
 
 .bowler-card{
@@ -621,6 +631,14 @@ body.broadcast-fullscreen .stadium{
 
     .wicket-alert{
         min-width:80%;
+    }
+
+    /*
+       Mobile score slightly smaller,
+       while preserving original layout.
+    */
+    .team-score{
+        font-size:clamp(26px,7.2vw,45px);
     }
 }
 
@@ -1058,11 +1076,12 @@ onclick="setLastTwoOvers()">
 🔥 SETUP LAST 2 OVERS — 166/5 — NEED 24
 </button>
 
+<!-- Auto is intentionally disabled because score is manual -->
 <button
 class="auto-button"
 id="autoButton"
 onclick="toggleLastTwoOvers()">
-▶ AUTO PLAY LAST 2 OVERS
+▶ AUTO PLAY DISABLED — MANUAL SCORE
 </button>
 
 <div class="name-edit">
@@ -1096,7 +1115,8 @@ APPLY NAMES
 </div>
 
 <div class="audio-note">
-11Labs سے بنائی ہوئی MP3 commentary یہاں upload کریں
+صرف ایک مکمل Commentary MP3 یہاں upload کریں۔
+رنز کے بٹنوں کی الگ کوئی آواز نہیں ہوگی۔
 </div>
 
 <input
@@ -1128,28 +1148,6 @@ No MP3 selected
 const TARGET = 190;
 const TOTAL_BALLS = 30;
 
-/*
-    START:
-    166/5 after 3 overs
-
-    OVER 4:
-    2, 4, 1, W, 6, W
-    = 13 runs
-    179/7
-
-    OVER 5:
-    1, W, 0, W, 2, W
-    = 3 runs
-    182/10
-
-    PAKISTAN WINS BY 7 RUNS
-*/
-
-const LAST_TWO_OVERS = [
-    2,4,1,"W",6,"W",
-    1,"W",0,"W",2,"W"
-];
-
 /* ================= PLAYERS ================= */
 
 let playerNames = {
@@ -1167,13 +1165,9 @@ let playerNames = {
 };
 
 let currentStriker = 1;
-
 let bowlerNumber = 1;
-
 let lastTwoIndex = 0;
-
 let autoTimer = null;
-
 let history = [];
 
 /* ================= MATCH STATE ================= */
@@ -1181,9 +1175,7 @@ let history = [];
 let match = {
 
     score:166,
-
     wickets:5,
-
     balls:18,
 
     runs1:82,
@@ -1216,88 +1208,6 @@ let match = {
 };
 
 /* =========================================================
-   COMMENTARY
-========================================================= */
-
-const synth =
-window.speechSynthesis;
-
-const commentaryDatabase = {
-
-dot:[
-"کوئی رن نہیں ملا جی، زبردست بالنگ!",
-"بہت شاندار ڈاٹ بال، پاکستان نے دباؤ برقرار رکھا۔"
-],
-
-run1:[
-"ایک رن حاصل کر لیا، اسٹرائیک روٹیٹ کر لی گئی۔",
-"سنگل مل گیا جی، ہانگ کانگ کو اب بھی تیز رنز درکار ہیں۔"
-],
-
-run2:[
-"دو رنز کے لیے بہترین شاٹ، دونوں بلے باز تیزی سے دوڑے۔",
-"گیپ میں کھیلا اور دو رنز مکمل کر لیے گئے۔"
-],
-
-run3:[
-"تین رنز! فیلڈرز کو سخت دوڑ لگانا پڑی۔"
-],
-
-four:[
-"چوکا! کیا زبردست شاٹ ہے جی، گیند باؤنڈری کے پار!",
-"چار رنز! ہانگ کانگ نے دباؤ کم کرنے کی کوشش کی ہے۔"
-],
-
-six:[
-"چھکا! زبردست ہٹ، گیند سیدھی تماشائیوں میں!",
-"کیا شاندار چھکا ہے جی!"
-],
-
-wicket:[
-"وکٹ! پاکستان کو بڑی کامیابی مل گئی!",
-"آؤٹ! زبردست بالنگ، ہانگ کانگ کا ایک اور بلے باز واپس پویلین!",
-"وکٹ گر گئی جی! پاکستان جیت کے قریب!"
-]
-
-};
-
-function speak(text){
-
-    if(!synth) return;
-
-    synth.cancel();
-
-    const u =
-    new SpeechSynthesisUtterance(text);
-
-    u.lang="ur-PK";
-    u.rate=1.02;
-    u.pitch=1.05;
-
-    synth.speak(u);
-}
-
-function triggerCommentary(type,extra=""){
-
-    const list =
-    commentaryDatabase[type];
-
-    if(!list) return;
-
-    let phrase =
-    list[
-        Math.floor(
-            Math.random()*list.length
-        )
-    ];
-
-    if(extra)
-        phrase += " " + extra;
-
-    speak(phrase);
-}
-
-/* =========================================================
    HELPERS
 ========================================================= */
 
@@ -1308,6 +1218,7 @@ function saveState(){
             JSON.stringify(match)
         )
     );
+
 }
 
 function getOvers(){
@@ -1330,4 +1241,85 @@ function getCRR(){
 
 }
 
-function ge
+function getSR(runs,balls){
+
+    if(balls===0)
+        return "0.00";
+
+    return (
+        runs/balls*100
+    ).toFixed(2);
+
+}
+
+function getBowlerOvers(){
+
+    return Math.floor(
+        match.bowlerBalls/6
+    )
+    + "."
+    + (
+        match.bowlerBalls%6
+    );
+
+}
+
+function getEconomy(){
+
+    if(match.bowlerBalls===0)
+        return "0.00";
+
+    return (
+        match.bowlerRuns /
+        (match.bowlerBalls/6)
+    ).toFixed(2);
+
+}
+
+function addRecent(text,type){
+
+    match.recent.push({
+        text:text,
+        type:type
+    });
+
+    if(match.recent.length>10)
+        match.recent.shift();
+
+}
+
+/* =========================================================
+   STRIKER
+========================================================= */
+
+function strikerName(){
+
+    return currentStriker===1
+    ? playerNames.batter1
+    : playerNames.batter2;
+
+}
+
+function updateStrikerStats(runs){
+
+    if(currentStriker===1){
+
+        match.runs1 += runs;
+        match.balls1++;
+
+        if(runs===4)
+            match.fours1++;
+
+        if(runs===6)
+            match.sixes1++;
+
+    }else{
+
+        match.runs2 += runs;
+        match.balls2++;
+
+        if(runs===4)
+            match.fours2++;
+
+        if(runs===6)
+        
