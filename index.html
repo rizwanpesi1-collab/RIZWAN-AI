@@ -15,9 +15,7 @@ body{
     overflow-x:hidden;
 }
 
-button,input,select{
-    font-family:inherit;
-}
+button,input,select{font-family:inherit}
 
 .top-controls{
     background:#050b16;
@@ -38,9 +36,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.match-setup,
-.control-panel,
-.audio-panel{
+.match-setup,.control-panel,.audio-panel{
     max-width:1100px;
     margin:10px auto;
     padding:12px;
@@ -49,9 +45,7 @@ button,input,select{
     border-radius:11px;
 }
 
-.setup-heading,
-.control-title,
-.audio-title{
+.setup-heading,.control-title,.audio-title{
     text-align:center;
     font-weight:1000;
     margin-bottom:10px;
@@ -78,8 +72,7 @@ button,input,select{
     margin-bottom:5px;
 }
 
-.setup-box select,
-.setup-box input{
+.setup-box select,.setup-box input{
     width:100%;
     padding:10px;
     color:#fff;
@@ -103,9 +96,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.overs-buttons button.active{
-    background:#0a9d4b;
-}
+.overs-buttons button.active{background:#0a9d4b}
 
 .setup-action{
     width:100%;
@@ -134,8 +125,7 @@ button,input,select{
     aspect-ratio:16/9;
     object-fit:cover;
     display:block;
-    background:
-    radial-gradient(circle,#355b42,#14251d 30%,#02040a 80%);
+    background:radial-gradient(circle,#355b42,#14251d 30%,#02040a 80%);
 }
 
 .score-overlay{
@@ -162,20 +152,12 @@ button,input,select{
 }
 
 .team1{
-    background:linear-gradient(
-        135deg,
-        rgba(0,105,65,.97),
-        rgba(0,25,16,.94)
-    );
+    background:linear-gradient(135deg,rgba(0,105,65,.97),rgba(0,25,16,.94));
     border-color:#00d084;
 }
 
 .team2{
-    background:linear-gradient(
-        135deg,
-        rgba(210,25,45,.96),
-        rgba(50,0,8,.94)
-    );
+    background:linear-gradient(135deg,rgba(210,25,45,.96),rgba(50,0,8,.94));
     border-color:#ff3038;
     justify-content:flex-end;
 }
@@ -187,9 +169,7 @@ button,input,select{
     gap:1vw;
 }
 
-.team2 .team-inner{
-    justify-content:flex-end;
-}
+.team2 .team-inner{justify-content:flex-end}
 
 .flag{
     width:17%;
@@ -213,9 +193,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.batting{
-    color:#ffe000;
-}
+.batting{color:#ffe000}
 
 .team-score{
     font-size:clamp(29px,4.6vw,68px);
@@ -231,11 +209,7 @@ button,input,select{
 .center-score{
     border:2px solid #00d084;
     border-radius:15px;
-    background:linear-gradient(
-        145deg,
-        rgba(4,42,31,.97),
-        rgba(0,3,12,.94)
-    );
+    background:linear-gradient(145deg,rgba(4,42,31,.97),rgba(0,3,12,.94));
     display:flex;
     justify-content:center;
     align-items:center;
@@ -247,9 +221,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.center-subtitle{
-    font-size:clamp(8px,1vw,16px);
-}
+.center-subtitle{font-size:clamp(8px,1vw,16px)}
 
 .center-main-score{
     font-size:clamp(34px,5vw,76px);
@@ -285,13 +257,8 @@ button,input,select{
     margin-left:4px;
 }
 
-.info-team1{
-    background:rgba(0,105,65,.92);
-}
-
-.info-team2{
-    background:rgba(160,8,20,.92);
-}
+.info-team1{background:rgba(0,105,65,.92)}
+.info-team2{background:rgba(160,8,20,.92)}
 
 .recent-row{
     display:flex;
@@ -302,10 +269,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.recent-balls{
-    display:flex;
-    gap:4px;
-}
+.recent-balls{display:flex;gap:4px}
 
 .ball{
     width:clamp(19px,2.5vw,42px);
@@ -338,22 +302,14 @@ button,input,select{
     border:2px solid #00a4ff;
     border-radius:13px;
     overflow:hidden;
-    background:linear-gradient(
-        145deg,
-        rgba(0,105,65,.95),
-        rgba(1,13,40,.96)
-    );
+    background:linear-gradient(145deg,rgba(0,105,65,.95),rgba(1,13,40,.96));
     display:flex;
     flex-direction:column;
 }
 
 .bowler-card{
     border-color:#ff292f;
-    background:linear-gradient(
-        145deg,
-        rgba(170,7,18,.94),
-        rgba(43,1,5,.96)
-    );
+    background:linear-gradient(145deg,rgba(170,7,18,.94),rgba(43,1,5,.96));
 }
 
 .card-role{
@@ -394,9 +350,7 @@ button,input,select{
     font-weight:1000;
 }
 
-.player-runs small{
-    color:#ffe000;
-}
+.player-runs small{color:#ffe000}
 
 .player-stats{
     display:flex;
@@ -407,9 +361,7 @@ button,input,select{
     font-weight:bold;
 }
 
-.player-stats b{
-    color:#ffe000;
-}
+.player-stats b{color:#ffe000}
 
 .wicket-alert{
     position:absolute;
@@ -443,70 +395,25 @@ button,input,select{
     font-weight:bold;
 }
 
-/* ================= BIG RUN ALERT ================= */
-
-.run-alert{
-    position:absolute;
-    left:50%;
-    top:18%;
-    transform:translate(-50%,-50%) scale(.5);
-    z-index:40;
-    min-width:28%;
-    padding:5px 25px 10px;
-    text-align:center;
-    background:rgba(0,0,0,.88);
-    border:4px solid #ffe000;
-    border-radius:18px;
-    box-shadow:0 0 30px rgba(255,224,0,.65);
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
-}
-
-.run-alert.show{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1);
-}
-
-.run-alert-main{
-    font-size:clamp(40px,8vw,125px);
-    line-height:.95;
-    font-weight:1000;
-    color:#ffe000;
-    text-shadow:0 4px 12px #000;
-}
-
-.run-alert-sub{
-    font-size:clamp(9px,1.5vw,23px);
-    font-weight:1000;
-    color:#fff;
-    letter-spacing:2px;
-}
-
-/* ================= LAYOUT 2 ================= */
+/* LAYOUT 2 */
 
 .layout2{
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
-    z-index:25;
-    overflow:hidden;
-    background:
-        radial-gradient(circle at center,#12345b 0%,#050d1b 45%,#010308 100%);
+    z-index:50;
     display:none;
+    aspect-ratio:16/9;
+    background:radial-gradient(circle at center,#123b61 0%,#061426 48%,#010307 100%);
+    overflow:hidden;
 }
 
-.layout2.active{
-    display:block;
-}
+.layout2.show{display:block}
 
 .layout2-bg{
     position:absolute;
     inset:0;
-    background:
-        linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.75)),
-        radial-gradient(circle at 50% 25%,#1d5680 0%,#071323 45%,#010308 100%);
+    background:linear-gradient(rgba(0,0,0,.20),rgba(0,0,0,.75)),
+    radial-gradient(circle at center,#174d78 0%,#07172a 48%,#010308 100%);
 }
 
 .layout2-header{
@@ -515,58 +422,46 @@ button,input,select{
     left:4%;
     right:4%;
     text-align:center;
-    z-index:5;
+    z-index:3;
 }
 
 .layout2-title{
-    font-size:clamp(20px,3.2vw,55px);
+    font-size:clamp(20px,3.3vw,60px);
     font-weight:1000;
-    letter-spacing:2px;
-    text-shadow:0 3px 8px #000;
+    text-shadow:0 3px 10px #000;
 }
 
 .layout2-subtitle{
-    margin-top:.4%;
+    margin-top:.5%;
     color:#ffe000;
-    font-size:clamp(10px,1.3vw,22px);
+    font-size:clamp(9px,1.3vw,23px);
     font-weight:bold;
 }
 
 .layout2-team{
     position:absolute;
+    top:15%;
     left:4%;
     right:4%;
-    top:16%;
     bottom:5%;
-    z-index:5;
-}
-
-.layout2-team-name{
-    text-align:center;
-    font-size:clamp(15px,2vw,34px);
-    font-weight:1000;
-    margin-bottom:1%;
+    z-index:3;
 }
 
 .layout2-xi{
-    height:86%;
+    height:87%;
     display:grid;
     grid-template-columns:repeat(4,1fr);
     grid-template-rows:repeat(3,1fr);
-    gap:.8%;
+    gap:1%;
 }
 
 .layout2-player{
-    background:linear-gradient(
-        145deg,
-        rgba(4,35,70,.96),
-        rgba(1,9,20,.96)
-    );
+    background:linear-gradient(145deg,rgba(4,35,70,.96),rgba(1,9,20,.97));
     border:1px solid #3978c0;
-    border-radius:9px;
+    border-radius:8px;
     display:flex;
     align-items:center;
-    padding:.8%;
+    padding:1%;
     overflow:hidden;
     box-shadow:0 4px 15px rgba(0,0,0,.5);
 }
@@ -579,15 +474,15 @@ button,input,select{
 
 .layout2-number{
     width:9%;
-    min-width:20px;
+    min-width:18px;
     text-align:center;
     color:#ffe000;
-    font-size:clamp(9px,1.2vw,20px);
+    font-size:clamp(9px,1.15vw,20px);
     font-weight:1000;
 }
 
 .layout2-photo{
-    width:21%;
+    width:22%;
     height:90%;
     object-fit:contain;
     margin-right:3%;
@@ -599,7 +494,7 @@ button,input,select{
 }
 
 .layout2-player-name{
-    font-size:clamp(8px,1.15vw,18px);
+    font-size:clamp(7px,1.1vw,18px);
     font-weight:1000;
     white-space:nowrap;
     overflow:hidden;
@@ -609,7 +504,7 @@ button,input,select{
 .layout2-player-role{
     color:#aebed4;
     margin-top:3px;
-    font-size:clamp(6px,.8vw,13px);
+    font-size:clamp(6px,.75vw,13px);
     font-weight:bold;
 }
 
@@ -624,38 +519,129 @@ button,input,select{
     font-weight:bold;
 }
 
+.layout2-hidden{display:none !important}
+
 .layout-switch{
-    position:absolute;
-    left:1%;
-    top:1%;
-    z-index:50;
+    max-width:1100px;
+    margin:10px auto;
+    padding:8px;
+    background:#070d18;
+    border:1px solid #315b8d;
+    border-radius:10px;
     display:flex;
-    gap:4px;
+    gap:7px;
 }
 
 .layout-switch button{
-    padding:6px 10px;
-    font-size:clamp(7px,1vw,13px);
-    background:rgba(2,10,25,.88);
+    flex:1;
+    padding:12px;
+    background:linear-gradient(#173b6d,#07162e);
     border:1px solid #477bb7;
+    border-radius:7px;
     color:#fff;
-    border-radius:5px;
     font-weight:1000;
 }
 
-.layout-switch button.active{
-    background:#087e3c;
-    border-color:#00d084;
+.layout-switch button.active{background:#087e3c}
+
+.score-buttons{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
 }
 
-body.broadcast-fullscreen{
-    overflow:hidden;
+.score-buttons button{
+    padding:13px 5px;
+    border:1px solid #5578ad;
+    border-radius:7px;
+    background:linear-gradient(#1b4078,#07152e);
+    color:#fff;
+    font-weight:1000;
 }
+
+.score-buttons button:nth-child(3){background:#0a9d4b}
+.score-buttons button:nth-child(4){background:#d8bc00;color:#111}
+.score-buttons button:nth-child(5){background:#e01820}
+.score-buttons button:nth-child(6){background:#444b55}
+.score-buttons button:nth-child(7){background:#76259b}
+
+.undo-button,.setup-button,.auto-button{
+    width:100%;
+    margin-top:7px;
+    padding:13px;
+    border:0;
+    border-radius:7px;
+    color:#fff;
+    font-weight:bold;
+}
+
+.undo-button{background:#70299b}
+.setup-button{background:#075f9d}
+.auto-button{background:#087e3c}
+
+.name-edit{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr auto;
+    gap:6px;
+    margin-top:8px;
+}
+
+.name-edit input{
+    width:100%;
+    padding:11px;
+    background:#020710;
+    border:1px solid #385d94;
+    border-radius:6px;
+    color:#fff;
+}
+
+.name-edit button{
+    padding:10px;
+    background:#0b2c5b;
+    border:1px solid #477bb7;
+    color:#fff;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.audio-note{
+    text-align:center;
+    color:#aebed4;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.audio-file{display:none}
+
+.choose-mp3{
+    display:block;
+    padding:12px;
+    text-align:center;
+    background:linear-gradient(#173b6d,#07162e);
+    border:1px solid #477bb7;
+    border-radius:7px;
+    font-weight:bold;
+}
+
+.audio-player{
+    width:100%;
+    margin-top:10px;
+}
+
+.audio-status{
+    text-align:center;
+    color:#ffe000;
+    font-size:12px;
+    margin-top:7px;
+}
+
+body.broadcast-fullscreen{overflow:hidden}
 
 body.broadcast-fullscreen .top-controls,
 body.broadcast-fullscreen .match-setup,
 body.broadcast-fullscreen .control-panel,
-body.broadcast-fullscreen .audio-panel{
+body.broadcast-fullscreen .audio-panel,
+body.broadcast-fullscreen .layout-switch{
     display:none;
 }
 
@@ -672,53 +658,17 @@ body.broadcast-fullscreen .stadium{
 }
 
 @media(max-width:700px){
-
-    .score-buttons{
-        grid-template-columns:repeat(4,1fr);
-    }
-
-    .setup-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .name-edit{
-        grid-template-columns:1fr;
-    }
-
-    .layout2-player-name{
-        font-size:7px;
-    }
-
-    .layout2-player-role{
-        font-size:5px;
-    }
-
-    .layout2-xi{
-        gap:.6%;
-    }
+    .score-buttons{grid-template-columns:repeat(4,1fr)}
+    .setup-grid{grid-template-columns:1fr 1fr}
+    .name-edit{grid-template-columns:1fr}
+    .layout2-player-name{font-size:7px}
+    .layout2-player-role{font-size:5px}
 }
 
 @media(max-width:450px){
-
-    .setup-grid{
-        grid-template-columns:1fr;
-    }
-
-    .player-card{
-        min-height:100px;
-    }
-
-    .layout2-player-name{
-        font-size:6px;
-    }
-
-    .layout2-player-role{
-        display:none;
-    }
-
-    .layout2-number{
-        min-width:14px;
-    }
+    .setup-grid{grid-template-columns:1fr}
+    .player-card{min-height:100px}
+    .layout2-xi{gap:.6%}
 }
 </style>
 </head>
@@ -726,29 +676,13 @@ body.broadcast-fullscreen .stadium{
 <body>
 
 <div class="top-controls">
-
-<button onclick="broadcastFullscreen()">
-⛶ BROADCAST FULLSCREEN
-</button>
-
-<button onclick="landscapeMode()">
-📱 LANDSCAPE
-</button>
-
-<button onclick="resetMatch()">
-🔄 RESET
-</button>
-
+<button onclick="broadcastFullscreen()">⛶ BROADCAST FULLSCREEN</button>
+<button onclick="landscapeMode()">📱 LANDSCAPE</button>
+<button onclick="resetMatch()">🔄 RESET</button>
 </div>
-
-
-<!-- MATCH SETUP -->
 
 <div class="match-setup">
-
-<div class="setup-heading">
-🏏 MATCH SETUP
-</div>
+<div class="setup-heading">🏏 MATCH SETUP</div>
 
 <div class="setup-grid">
 
@@ -759,530 +693,85 @@ body.broadcast-fullscreen .stadium{
 
 <div class="setup-box">
 <label>TEAM 1 SCORE</label>
-<input
-type="number"
-id="team1ScoreInput"
-value="0"
-min="0"
-oninput="previewTarget()">
+<input type="number" id="team1ScoreInput" value="0" min="0" oninput="previewTarget()">
 </div>
 
 <div class="setup-box">
 <label>TEAM 1 WICKETS</label>
-<input
-type="number"
-id="team1WicketsInput"
-value="0"
-min="0"
-max="10">
+<input type="number" id="team1WicketsInput" value="0" min="0" max="10">
 </div>
 
 <div class="setup-box">
 <label>TEAM 1 OVERS</label>
-<input
-type="text"
-id="team1OversInput"
-value="0.0"
-placeholder="50.0">
+<input type="text" id="team1OversInput" value="0.0" placeholder="50.0">
 </div>
 
 <div class="setup-box">
-<label>TEAM 2 — CHASING TEAM</label>
+<label>TEAM 2</label>
 <select id="team2Select"></select>
 </div>
 
 <div class="setup-box">
 <label>CURRENT SCORE</label>
-<input
-type="number"
-id="currentScoreInput"
-value="0"
-min="0">
+<input type="number" id="currentScoreInput" value="0" min="0">
 </div>
 
 <div class="setup-box">
 <label>CURRENT WICKETS</label>
-<input
-type="number"
-id="currentWicketsInput"
-value="0"
-min="0"
-max="10">
+<input type="number" id="currentWicketsInput" value="0" min="0" max="10">
 </div>
 
 <div class="setup-box">
 <label>CURRENT OVERS</label>
-<input
-type="text"
-id="currentOversInput"
-value="0.0"
-placeholder="0.0">
+<input type="text" id="currentOversInput" value="0.0" placeholder="0.0">
 </div>
 
 <div class="setup-box">
 <label>AUTO TARGET</label>
-<input
-type="text"
-id="autoTargetDisplay"
-value="1"
-readonly>
+<input type="text" id="autoTargetDisplay" value="0" readonly>
 </div>
 
 <div class="setup-box">
-
 <label>OVERS</label>
-
 <div class="overs-buttons">
-
 <button id="ov2" onclick="selectOvers(2)">2</button>
 <button id="ov5" onclick="selectOvers(5)">5</button>
 <button id="ov10" onclick="selectOvers(10)">10</button>
 <button id="ov20" onclick="selectOvers(20)">20</button>
 <button id="ov50" class="active" onclick="selectOvers(50)">50</button>
-
+</div>
 </div>
 
 </div>
 
+<button class="setup-action" onclick="applyMatchSetup()">✅ APPLY MATCH SETUP</button>
 </div>
 
-<button
-class="setup-action"
-onclick="applyMatchSetup()">
-
-✅ APPLY MATCH SETUP
-
-</button>
-
+<div class="layout-switch">
+<button id="layout1Button" class="active" onclick="showLayout1()">LAYOUT 1 — LIVE SCORE</button>
+<button id="layout2Button" onclick="showLayout2()">LAYOUT 2 — PLAYING XI</button>
 </div>
-
-
-<!-- BROADCAST -->
 
 <div class="broadcast" id="broadcast">
 
-<img
-class="stadium"
+<img class="stadium"
 src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=2000&q=90"
 alt="Cricket Stadium">
 
-
-<!-- BIG RUN ALERT -->
-
-<div class="run-alert" id="runAlert">
-
-<div class="run-alert-main" id="runAlertMain">
-4
-</div>
-
-<div class="run-alert-sub" id="runAlertSub">
-RUNS
-</div>
-
-</div>
-
-
-<div class="wicket-alert" id="wicketAlert">
-
-<div class="wicket-title">
-WICKET!
-</div>
-
-<div class="wicket-name" id="wicketAlertName">
-BATTER OUT
-</div>
-
-</div>
-
-
-<!-- LAYOUT SWITCH -->
-
-<div class="layout-switch">
-
-<button
-id="layout1Button"
-class="active"
-onclick="showLayout1()">
-L1
-</button>
-
-<button
-id="layout2Button"
-onclick="showLayout2()">
-L2 XI
-</button>
-
-</div>
-
-
-<div class="score-overlay" id="layout1">
-
-<div class="teams-row">
-
-
-<!-- TEAM 1 -->
-
-<div class="team team1">
-
-<div class="team-inner">
-
-<img
-class="flag"
-id="flag1"
-src="https://flagcdn.com/w320/pk.png">
-
-<div>
-
-<div class="team-name" id="team1Name">
-PAKISTAN
-</div>
-
-<div class="team-status" id="team1Status">
-🏏 0/0 • INNINGS 1
-</div>
-
-<div class="team-score" id="team1Score">
-0/0
-</div>
-
-<div class="small-info" id="team1Info">
-0.0 OVERS
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- CENTER -->
-
-<div class="center-score">
-
-<div>
-
-<div class="center-title" id="centerTitle">
-T50 • MATCH
-</div>
-
-<div class="center-subtitle" id="centerSubtitle">
-PAKISTAN VS INDIA
-</div>
-
-<div class="center-main-score" id="centerScore">
-0/0
-</div>
-
-<div class="center-overs">
-
-OVERS:
-<span id="overs">0.0</span>
-
-&nbsp; • &nbsp;
-
-CRR:
-<span id="crr">0.00</span>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- TEAM 2 -->
-
-<div class="team team2">
-
-<div class="team-inner">
-
-<div>
-
-<div class="team-name" id="team2Name">
-INDIA
-</div>
-
-<div class="team-status batting">
-🏏 BATTING
-</div>
-
-<div class="team-score" id="teamScore">
-0/0
-</div>
-
-<div class="small-info">
-
-TARGET
-<span id="targetDisplay">1</span>
-
-•
-NEED
-<span id="needRuns">1</span>
-
-</div>
-
-</div>
-
-<img
-class="flag"
-id="flag2"
-src="https://flagcdn.com/w320/in.png">
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- INFO -->
-
-<div class="info-row">
-
-<div class="info-box">
-
-CRR:
-<strong id="crr2">0.00</strong>
-
-</div>
-
-<div class="info-box">
-
-P'SHIP:
-<strong id="partnership">0 (0)</strong>
-
-</div>
-
-<div class="info-box info-team1" id="infoTeam1">
-PAK 0
-</div>
-
-<div class="info-box info-team2" id="infoTeam2">
-IND 0%
-</div>
-
-<div class="info-box">
-
-LAST WKT:
-<strong id="lastWicket">0 down</strong>
-
-</div>
-
-</div>
-
-
-<!-- RECENT -->
-
-<div class="recent-row">
-
-<span>🔴 RECENT BALLS:</span>
-
-<div class="recent-balls" id="recentBalls"></div>
-
-</div>
-
-
-<!-- PLAYERS -->
-
-<div class="players-row">
-
-<div class="player-card">
-
-<div class="card-role">
-BATTER
-</div>
-
-<div class="player-main">
-
-<img
-class="player-photo"
-id="photo1"
-src="https://ui-avatars.com/api/?name=Sahibzada+Farhan&background=1685ff&color=fff&size=512">
-
-<div class="player-information">
-
-<div class="player-name" id="batterName1">
-Sahibzada Farhan
-</div>
-
-<div class="player-runs">
-
-<span id="runs1">0</span>
-
-<small>
-(<span id="balls1">0</span>)
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="player-stats">
-
-<span>
-4s: <b id="fours1">0</b>
-</span>
-
-<span>
-6s: <b id="sixes1">0</b>
-</span>
-
-<span>
-SR: <b id="sr1">0.00</b>
-</span>
-
-</div>
-
-</div>
-
-
-<div class="player-card">
-
-<div class="card-role">
-BATTER
-</div>
-
-<div class="player-main">
-
-<img
-class="player-photo"
-id="photo2"
-src="https://ui-avatars.com/api/?name=Saim+Ayub&background=1685ff&color=fff&size=512">
-
-<div class="player-information">
-
-<div class="player-name" id="batterName2">
-Saim Ayub
-</div>
-
-<div class="player-runs">
-
-<span id="runs2">0</span>
-
-<small>
-(<span id="balls2">0</span>)
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="player-stats">
-
-<span>
-4s: <b id="fours2">0</b>
-</span>
-
-<span>
-6s: <b id="sixes2">0</b>
-</span>
-
-<span>
-SR: <b id="sr2">0.00</b>
-</span>
-
-</div>
-
-</div>
-
-
-<div class="player-card bowler-card">
-
-<div class="card-role">
-BOWLER
-</div>
-
-<div class="player-main">
-
-<img
-class="player-photo"
-id="bowlerPhoto"
-src="https://ui-avatars.com/api/?name=Jasprit+Bumrah&background=e01921&color=fff&size=512">
-
-<div class="player-information">
-
-<div class="player-name" id="bowlerName">
-Jasprit Bumrah
-</div>
-
-<div class="player-runs">
-
-<span id="bowlerRuns">0</span>
--
-<span id="bowlerWickets">0</span>
-
-<small>
-(<span id="bowlerOvers">0.0</span>)
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="player-stats">
-
-<span>
-ECON: <b id="economy">0.00</b>
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ================= LAYOUT 2 ================= -->
-
-<div
-class="layout2"
-id="layout2">
-
+<div class="layout2" id="layout2">
 <div class="layout2-bg"></div>
 
-
 <div class="layout2-header">
-
-<div
-class="layout2-title"
-id="layout2Title">
-PAKISTAN PLAYING XI
+<div class="layout2-title" id="layout2Title">PAKISTAN PLAYING XI</div>
+<div class="layout2-subtitle">PAKISTAN VS INDIA</div>
 </div>
 
-<div
-class="layout2-subtitle"
-id="layout2Subtitle">
-PAKISTAN VS INDIA
-</div>
-
-</div>
-
-
-<!-- PAKISTAN XI -->
-
-<div
-class="layout2-team"
-id="pakistanXI">
-
-<div class="layout2-team-name">
-🇵🇰 PAKISTAN PLAYING XI
-</div>
-
+<div class="layout2-team" id="pakistanXI">
 <div class="layout2-xi">
 
 <div class="layout2-player">
 <div class="layout2-number">1</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Sahibzada+Farhan&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Sahibzada+Farhan&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Sahibzada Farhan</div>
 <div class="layout2-player-role">BATTER</div>
@@ -1291,8 +780,7 @@ src="https://ui-avatars.com/api/?name=Sahibzada+Farhan&background=087e3c&color=f
 
 <div class="layout2-player">
 <div class="layout2-number">2</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Saim+Ayub&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Saim+Ayub&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Saim Ayub</div>
 <div class="layout2-player-role">BATTER</div>
@@ -1301,8 +789,7 @@ src="https://ui-avatars.com/api/?name=Saim+Ayub&background=087e3c&color=fff&size
 
 <div class="layout2-player">
 <div class="layout2-number">3</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Usman+Khan&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Usman+Khan&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Usman Khan</div>
 <div class="layout2-player-role">BATTER</div>
@@ -1311,8 +798,7 @@ src="https://ui-avatars.com/api/?name=Usman+Khan&background=087e3c&color=fff&siz
 
 <div class="layout2-player">
 <div class="layout2-number">4</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Maaz+Sadaqat&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Maaz+Sadaqat&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Maaz Sadaqat</div>
 <div class="layout2-player-role">ALL-ROUNDER</div>
@@ -1321,8 +807,7 @@ src="https://ui-avatars.com/api/?name=Maaz+Sadaqat&background=087e3c&color=fff&s
 
 <div class="layout2-player">
 <div class="layout2-number">5</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Hasan+Nawaz&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Hasan+Nawaz&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Hasan Nawaz</div>
 <div class="layout2-player-role">BATTER</div>
@@ -1331,8 +816,7 @@ src="https://ui-avatars.com/api/?name=Hasan+Nawaz&background=087e3c&color=fff&si
 
 <div class="layout2-player">
 <div class="layout2-number">6</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Abdul+Samad&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Abdul+Samad&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Abdul Samad</div>
 <div class="layout2-player-role">BATTER</div>
@@ -1341,8 +825,7 @@ src="https://ui-avatars.com/api/?name=Abdul+Samad&background=087e3c&color=fff&si
 
 <div class="layout2-player">
 <div class="layout2-number">7</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Arafat+Minhas&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Arafat+Minhas&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Arafat Minhas</div>
 <div class="layout2-player-role">ALL-ROUNDER</div>
@@ -1351,8 +834,7 @@ src="https://ui-avatars.com/api/?name=Arafat+Minhas&background=087e3c&color=fff&
 
 <div class="layout2-player">
 <div class="layout2-number">8</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Ahmed+Daniyal&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Ahmed+Daniyal&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Ahmed Daniyal</div>
 <div class="layout2-player-role">BOWLER</div>
@@ -1361,8 +843,7 @@ src="https://ui-avatars.com/api/?name=Ahmed+Daniyal&background=087e3c&color=fff&
 
 <div class="layout2-player">
 <div class="layout2-number">9</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Mohammad+Wasim&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Mohammad+Wasim&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Mohammad Wasim Jr</div>
 <div class="layout2-player-role">BOWLER</div>
@@ -1371,8 +852,7 @@ src="https://ui-avatars.com/api/?name=Mohammad+Wasim&background=087e3c&color=fff
 
 <div class="layout2-player">
 <div class="layout2-number">10</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Abrar+Ahmed&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Abrar+Ahmed&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Abrar Ahmed</div>
 <div class="layout2-player-role">BOWLER</div>
@@ -1381,8 +861,7 @@ src="https://ui-avatars.com/api/?name=Abrar+Ahmed&background=087e3c&color=fff&si
 
 <div class="layout2-player">
 <div class="layout2-number">11</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Sufyan+Moqim&background=087e3c&color=fff&size=256">
+<img class="layout2-photo" src="https://ui-avatars.com/api/?name=Sufyan+Moqim&background=087e3c&color=fff&size=256">
 <div class="layout2-player-info">
 <div class="layout2-player-name">Sufyan Moqim</div>
 <div class="layout2-player-role">BOWLER</div>
@@ -1392,153 +871,139 @@ src="https://ui-avatars.com/api/?name=Sufyan+Moqim&background=087e3c&color=fff&s
 </div>
 </div>
 
-
-<!-- INDIA XI -->
-
-<div
-class="layout2-team"
-id="indiaXI"
-style="display:none">
-
-<div class="layout2-team-name">
-🇮🇳 INDIA PLAYING XI
-</div>
-
+<div class="layout2-team layout2-hidden" id="indiaXI">
 <div class="layout2-xi">
 
-<div class="layout2-player">
-<div class="layout2-number">1</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Shreyas+Iyer&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Shreyas Iyer</div>
-<div class="layout2-player-role">BATTER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">2</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Abhishek+Sharma&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Abhishek Sharma</div>
-<div class="layout2-player-role">ALL-ROUNDER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">3</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Vaibhav+Sooryavanshi&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Vaibhav Sooryavanshi</div>
-<div class="layout2-player-role">BATTER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">4</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Sanju+Samson&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Sanju Samson</div>
-<div class="layout2-player-role">WICKETKEEPER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">5</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Ishan+Kishan&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Ishan Kishan</div>
-<div class="layout2-player-role">WICKETKEEPER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">6</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Tilak+Varma&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Tilak Varma</div>
-<div class="layout2-player-role">BATTER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">7</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Shivam+Dube&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Shivam Dube</div>
-<div class="layout2-player-role">ALL-ROUNDER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">8</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Axar+Patel&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Axar Patel</div>
-<div class="layout2-player-role">ALL-ROUNDER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">9</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Washington+Sundar&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Washington Sundar</div>
-<div class="layout2-player-role">ALL-ROUNDER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">10</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Ravi+Bishnoi&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Ravi Bishnoi</div>
-<div class="layout2-player-role">BOWLER</div>
-</div>
-</div>
-
-<div class="layout2-player">
-<div class="layout2-number">11</div>
-<img class="layout2-photo"
-src="https://ui-avatars.com/api/?name=Jasprit+Bumrah&background=d71920&color=fff&size=256">
-<div class="layout2-player-info">
-<div class="layout2-player-name">Jasprit Bumrah</div>
-<div class="layout2-player-role">BOWLER</div>
-</div>
-</div>
+<div class="layout2-player"><div class="layout2-number">1</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Shreyas+Iyer&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Shreyas Iyer</div><div class="layout2-player-role">BATTER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">2</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Abhishek+Sharma&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Abhishek Sharma</div><div class="layout2-player-role">ALL-ROUNDER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">3</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Vaibhav+Sooryavanshi&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Vaibhav Sooryavanshi</div><div class="layout2-player-role">BATTER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">4</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Sanju+Samson&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Sanju Samson</div><div class="layout2-player-role">WICKETKEEPER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">5</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Ishan+Kishan&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Ishan Kishan</div><div class="layout2-player-role">WICKETKEEPER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">6</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Tilak+Varma&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Tilak Varma</div><div class="layout2-player-role">BATTER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">7</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Shivam+Dube&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Shivam Dube</div><div class="layout2-player-role">ALL-ROUNDER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">8</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Axar+Patel&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Axar Patel</div><div class="layout2-player-role">ALL-ROUNDER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">9</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Washington+Sundar&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Washington Sundar</div><div class="layout2-player-role">ALL-ROUNDER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">10</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Ravi+Bishnoi&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Ravi Bishnoi</div><div class="layout2-player-role">BOWLER</div></div></div>
+<div class="layout2-player"><div class="layout2-number">11</div><img class="layout2-photo" src="https://ui-avatars.com/api/?name=Jasprit+Bumrah&background=d71920&color=fff&size=256"><div class="layout2-player-info"><div class="layout2-player-name">Jasprit Bumrah</div><div class="layout2-player-role">BOWLER</div></div></div>
 
 </div>
 </div>
 
+<div class="layout2-footer">PLAYING XI • LIVE BROADCAST</div>
+</div>
 
-<div class="layout2-footer">
-PLAYING XI • LIVE BROADCAST
+<div class="wicket-alert" id="wicketAlert">
+<div class="wicket-title">WICKET!</div>
+<div class="wicket-name" id="wicketAlertName">BATTER OUT</div>
+</div>
+
+<div class="score-overlay">
+
+<div class="teams-row">
+
+<div class="team team1">
+<div class="team-inner">
+<img class="flag" id="flag1" src="https://flagcdn.com/w320/pk.png">
+<div>
+<div class="team-name" id="team1Name">PAKISTAN</div>
+<div class="team-status" id="team1Status">🏏 0/0 • INNINGS 1</div>
+<div class="team-score" id="team1Score">0/0</div>
+<div class="small-info" id="team1Info">0.0 OVERS</div>
+</div>
+</div>
+</div>
+
+<div class="center-score">
+<div>
+<div class="center-title" id="centerTitle">T50 • MATCH</div>
+<div class="center-subtitle" id="centerSubtitle">PAKISTAN VS INDIA</div>
+<div class="center-main-score" id="centerScore">0/0</div>
+<div class="center-overs">OVERS: <span id="overs">0.0</span> &nbsp; • &nbsp; CRR: <span id="crr">0.00</span></div>
+</div>
+</div>
+
+<div class="team team2">
+<div class="team-inner">
+<div>
+<div class="team-name" id="team2Name">INDIA</div>
+<div class="team-status batting">🏏 BATTING</div>
+<div class="team-score" id="teamScore">0/0</div>
+<div class="small-info">TARGET <span id="targetDisplay">-</span> • NEED <span id="needRuns">-</span></div>
+</div>
+<img class="flag" id="flag2" src="https://flagcdn.com/w320/in.png">
+</div>
 </div>
 
 </div>
 
+<div class="info-row">
+<div class="info-box">CRR:<strong id="crr2">0.00</strong></div>
+<div class="info-box">P'SHIP:<strong id="partnership">0 (0)</strong></div>
+<div class="info-box info-team1" id="infoTeam1">PAK 0</div>
+<div class="info-box info-team2" id="infoTeam2">IND 0%</div>
+<div class="info-box">LAST WKT:<strong id="lastWicket">0 down</strong></div>
 </div>
 
+<div class="recent-row">
+<span>🔴 RECENT BALLS:</span>
+<div class="recent-balls" id="recentBalls"></div>
+</div>
 
-<!-- CONTROLS -->
+<div class="players-row">
+
+<div class="player-card">
+<div class="card-role">BATTER</div>
+<div class="player-main">
+<img class="player-photo" id="photo1" src="https://ui-avatars.com/api/?name=Sahibzada+Farhan&background=1685ff&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="batterName1">Sahibzada Farhan</div>
+<div class="player-runs"><span id="runs1">0</span> <small>(<span id="balls1">0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats">
+<span>4s: <b id="fours1">0</b></span>
+<span>6s: <b id="sixes1">0</b></span>
+<span>SR: <b id="sr1">0.00</b></span>
+</div>
+</div>
+
+<div class="player-card">
+<div class="card-role">BATTER</div>
+<div class="player-main">
+<img class="player-photo" id="photo2" src="https://ui-avatars.com/api/?name=Saim+Ayub&background=1685ff&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="batterName2">Saim Ayub</div>
+<div class="player-runs"><span id="runs2">0</span> <small>(<span id="balls2">0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats">
+<span>4s: <b id="fours2">0</b></span>
+<span>6s: <b id="sixes2">0</b></span>
+<span>SR: <b id="sr2">0.00</b></span>
+</div>
+</div>
+
+<div class="player-card bowler-card">
+<div class="card-role">BOWLER</div>
+<div class="player-main">
+<img class="player-photo" id="bowlerPhoto" src="https://ui-avatars.com/api/?name=BOWLER&background=e01921&color=fff&size=512">
+<div class="player-information">
+<div class="player-name" id="bowlerName">BOWLER</div>
+<div class="player-runs"><span id="bowlerRuns">0</span>-<span id="bowlerWickets">0</span> <small>(<span id="bowlerOvers">0.0</span>)</small></div>
+</div>
+</div>
+<div class="player-stats"><span>ECON: <b id="economy">0.00</b></span></div>
+</div>
+
+</div>
+</div>
+</div>
 
 <div class="control-panel">
 
-<div class="control-title" id="controlTitle">
-🏏 INDIA — SCORE CONTROL
-</div>
+<div class="control-title" id="controlTitle">🏏 INDIA — SCORE CONTROL</div>
 
 <div class="score-buttons">
-
 <button onclick="addRuns(1)">+1 RUN</button>
 <button onclick="addRuns(2)">+2 RUNS</button>
 <button onclick="addRuns(3)">+3 RUNS</button>
@@ -1546,159 +1011,65 @@ PLAYING XI • LIVE BROADCAST
 <button onclick="addRuns(6)">SIX</button>
 <button onclick="dotBall()">DOT</button>
 <button onclick="wicket()">WICKET</button>
-
 </div>
 
-<button
-class="undo-button"
-onclick="undoBall()">
-↩ UNDO LAST BALL
-</button>
+<button class="undo-button" onclick="undoBall()">↩ UNDO LAST BALL</button>
 
+<button class="setup-button" onclick="openLastTwoSetup()">🔥 SET LAST 2 OVERS MANUALLY</button>
 
-<button
-class="setup-button"
-onclick="openLastTwoSetup()">
-🔥 SET LAST 2 OVERS MANUALLY
-</button>
-
-
-<div
-id="lastTwoBox"
-style="display:none;margin-top:8px">
+<div id="lastTwoBox" style="display:none;margin-top:8px">
 
 <div class="setup-grid">
 
 <div class="setup-box">
-
 <label>START SCORE</label>
-
-<input
-type="number"
-id="startScore"
-value="0"
-min="0">
-
+<input type="number" id="startScore" value="0" min="0">
 </div>
 
 <div class="setup-box">
-
 <label>WICKETS</label>
-
-<input
-type="number"
-id="startWickets"
-value="0"
-min="0"
-max="10">
-
+<input type="number" id="startWickets" value="0" min="0" max="10">
 </div>
 
 <div class="setup-box">
-
 <label>TARGET</label>
-
-<input
-type="number"
-id="lastTwoTarget"
-value="1"
-min="1">
-
+<input type="number" id="lastTwoTarget" value="1" min="1">
 </div>
 
 <div class="setup-box">
-
 <label>OVERS BEFORE LAST 2</label>
-
-<input
-type="number"
-id="beforeLastTwo"
-value="0"
-min="0">
-
+<input type="number" id="beforeLastTwo" value="0" min="0">
 </div>
 
 </div>
 
-<button
-class="setup-action"
-onclick="applyLastTwoSetup()">
-
-🔥 START LAST 2 OVERS
-
-</button>
-
+<button class="setup-action" onclick="applyLastTwoSetup()">🔥 START LAST 2 OVERS</button>
 </div>
 
-
-<button
-class="auto-button"
-id="autoButton"
-onclick="toggleAuto()">
-
-▶ AUTO SIMULATION DISABLED
-
-</button>
-
+<button class="auto-button" id="autoButton" onclick="toggleAuto()">▶ AUTO SIMULATION DISABLED</button>
 
 <div class="name-edit">
-
-<input
-id="inputBatter1"
-placeholder="Batter 1">
-
-<input
-id="inputBatter2"
-placeholder="Batter 2">
-
-<input
-id="inputBowler"
-placeholder="Bowler">
-
-<button onclick="applyNames()">
-APPLY NAMES
-</button>
-
+<input id="inputBatter1" placeholder="Batter 1 Name">
+<input id="inputBatter2" placeholder="Batter 2 Name">
+<input id="inputBowler" placeholder="Bowler Name">
+<button onclick="applyNames()">APPLY NAMES</button>
 </div>
 
 </div>
-
-
-<!-- AUDIO -->
 
 <div class="audio-panel">
 
-<div class="audio-title">
-🎙️ COMMENTARY MP3
-</div>
+<div class="audio-title">🎙️ COMMENTARY MP3</div>
 
-<div class="audio-note">
-Select an MP3 commentary file.
-</div>
+<div class="audio-note">Select an MP3 commentary file.</div>
 
-<input
-class="audio-file"
-type="file"
-id="audioFile"
-accept=".mp3,audio/mpeg">
+<input class="audio-file" type="file" id="audioFile" accept=".mp3,audio/mpeg">
 
-<label
-for="audioFile"
-class="choose-mp3">
-📁 CHOOSE MP3 FILE
-</label>
+<label for="audioFile" class="choose-mp3">📁 CHOOSE MP3 FILE</label>
 
-<audio
-class="audio-player"
-id="audioPlayer"
-controls>
-</audio>
+<audio class="audio-player" id="audioPlayer" controls></audio>
 
-<div
-class="audio-status"
-id="audioStatus">
-No MP3 selected
-</div>
+<div class="audio-status" id="audioStatus">No MP3 selected</div>
 
 </div>
 
@@ -1707,8 +1078,7 @@ No MP3 selected
 
 /* ================= TEAM DATABASE ================= */
 
-const teams = {
-
+const teams={
 "Pakistan":"https://flagcdn.com/w320/pk.png",
 "India":"https://flagcdn.com/w320/in.png",
 "Afghanistan":"https://flagcdn.com/w320/af.png",
@@ -1729,77 +1099,82 @@ const teams = {
 "USA":"https://flagcdn.com/w320/us.png",
 "Canada":"https://flagcdn.com/w320/ca.png",
 "Netherlands":"https://flagcdn.com/w320/nl.png"
-
 };
+
+
+/* ================= PAKISTAN PLAYING XI ================= */
+
+const pakistanPlayingXI=[
+"Sahibzada Farhan",
+"Saim Ayub",
+"Usman Khan",
+"Maaz Sadaqat",
+"Hasan Nawaz",
+"Abdul Samad",
+"Arafat Minhas",
+"Ahmed Daniyal",
+"Mohammad Wasim Jr",
+"Abrar Ahmed",
+"Sufyan Moqim"
+];
 
 
 /* ================= SETTINGS ================= */
 
 let team1="Pakistan";
 let team2="India";
-
 let selectedOvers=50;
-
 let target=0;
 
-
-/* ================= FIRST INNINGS ================= */
-
 let firstInnings={
-    score:0,
-    wickets:0,
-    balls:0
+score:0,
+wickets:0,
+balls:0
 };
-
-
-/* ================= CURRENT INNINGS ================= */
 
 let match={
-    score:0,
-    wickets:0,
-    balls:0,
+score:0,
+wickets:0,
+balls:0,
 
-    runs1:0,
-    balls1:0,
-    fours1:0,
-    sixes1:0,
+runs1:0,
+balls1:0,
+fours1:0,
+sixes1:0,
 
-    runs2:0,
-    balls2:0,
-    fours2:0,
-    sixes2:0,
+runs2:0,
+balls2:0,
+fours2:0,
+sixes2:0,
 
-    partnershipRuns:0,
-    partnershipBalls:0,
+partnershipRuns:0,
+partnershipBalls:0,
 
-    bowlerRuns:0,
-    bowlerWickets:0,
-    bowlerBalls:0,
+bowlerRuns:0,
+bowlerWickets:0,
+bowlerBalls:0,
 
-    lastWicket:"0 down",
-
-    recent:[]
+lastWicket:"0 down",
+recent:[]
 };
 
-
-let initialFirstInnings =
-    JSON.parse(JSON.stringify(firstInnings));
-
-let initialMatchState =
-    JSON.parse(JSON.stringify(match));
-
 let currentStriker=1;
+
+/* موجودہ دونوں بیٹسمین */
+let batterSlot1Name="Sahibzada Farhan";
+let batterSlot2Name="Saim Ayub";
+
+/* اگلا آنے والا پاکستانی بیٹسمین نمبر */
+let nextBatterIndex=2;
+
+/* AUTO کے لیے timeout + interval */
 let autoTimer=null;
+let autoInterval=null;
+
 let undoStack=[];
-let runAlertTimer=null;
-
-
-/* ================= LAYOUT 2 TIMER ================= */
 
 let layout2Timer=null;
-
-
-/* ================= ELEMENTS ================= */
+let layout2Active=false;
 
 const team1Select=document.getElementById("team1Select");
 const team2Select=document.getElementById("team2Select");
@@ -1809,26 +1184,27 @@ const team2Select=document.getElementById("team2Select");
 
 function fillTeams(){
 
-    team1Select.innerHTML="";
-    team2Select.innerHTML="";
+team1Select.innerHTML="";
+team2Select.innerHTML="";
 
-    Object.keys(teams).forEach(name=>{
+Object.keys(teams).forEach(name=>{
 
-        const option1=document.createElement("option");
-        option1.value=name;
-        option1.textContent=name;
+const option1=document.createElement("option");
+option1.value=name;
+option1.textContent=name;
 
-        const option2=document.createElement("option");
-        option2.value=name;
-        option2.textContent=name;
+const option2=document.createElement("option");
+option2.value=name;
+option2.textContent=name;
 
-        team1Select.appendChild(option1);
-        team2Select.appendChild(option2);
+team1Select.appendChild(option1);
+team2Select.appendChild(option2);
 
-    });
+});
 
-    team1Select.value=team1;
-    team2Select.value=team2;
+team1Select.value=team1;
+team2Select.value=team2;
+
 }
 
 
@@ -1836,33 +1212,33 @@ function fillTeams(){
 
 function parseOversInput(value){
 
-    value=String(value).trim();
+value=String(value).trim();
 
-    if(!value) return 0;
+if(!value)return 0;
 
-    const parts=value.split(".");
+const parts=value.split(".");
 
-    let overs=parseInt(parts[0]) || 0;
-    let balls=0;
+let overs=parseInt(parts[0])||0;
+let balls=0;
 
-    if(parts.length>1){
+if(parts.length>1){
 
-        balls=parseInt(parts[1]) || 0;
+balls=parseInt(parts[1])||0;
 
-        if(balls>5) balls=5;
+if(balls>5)balls=5;
 
-    }
+}
 
-    return overs*6+balls;
+return overs*6+balls;
 
 }
 
 
 function ballsToOvers(balls){
 
-    balls=Math.max(0,balls);
+balls=Math.max(0,balls);
 
-    return Math.floor(balls/6)+"."+balls%6;
+return Math.floor(balls/6)+"."+balls%6;
 
 }
 
@@ -1871,12 +1247,11 @@ function ballsToOvers(balls){
 
 function previewTarget(){
 
-    const score=parseInt(
-        document.getElementById("team1ScoreInput").value
-    ) || 0;
+const score=
+parseInt(document.getElementById("team1ScoreInput").value)||0;
 
-    document.getElementById("autoTargetDisplay").value =
-        score>0 ? score+1 : 0;
+document.getElementById("autoTargetDisplay").value=
+score>0?score+1:0;
 
 }
 
@@ -1885,16 +1260,89 @@ function previewTarget(){
 
 function selectOvers(overs){
 
-    selectedOvers=overs;
+selectedOvers=overs;
 
-    document.querySelectorAll(".overs-buttons button")
-        .forEach(btn=>btn.classList.remove("active"));
+document.querySelectorAll(".overs-buttons button")
+.forEach(btn=>btn.classList.remove("active"));
 
-    const button=document.getElementById("ov"+overs);
+const button=document.getElementById("ov"+overs);
 
-    if(button){
-        button.classList.add("active");
-    }
+if(button)button.classList.add("active");
+
+}
+
+
+/* ================= SET BATTER ================= */
+
+function setBatterSlot(slot,name){
+
+if(!name)return;
+
+if(slot===1){
+
+batterSlot1Name=name;
+
+document.getElementById("batterName1").textContent=name;
+
+document.getElementById("photo1").src=
+"https://ui-avatars.com/api/?name="+
+encodeURIComponent(name)+
+"&background=1685ff&color=fff&size=512";
+
+}else{
+
+batterSlot2Name=name;
+
+document.getElementById("batterName2").textContent=name;
+
+document.getElementById("photo2").src=
+"https://ui-avatars.com/api/?name="+
+encodeURIComponent(name)+
+"&background=1685ff&color=fff&size=512";
+
+}
+
+}
+
+
+/* ================= NEXT PAKISTAN BATTER ================= */
+
+function bringNextPakistanBatter(outSlot){
+
+if(nextBatterIndex>=pakistanPlayingXI.length){
+return;
+}
+
+const newBatter=pakistanPlayingXI[nextBatterIndex];
+
+nextBatterIndex++;
+
+/*
+آؤٹ ہونے والے slot میں نیا بیٹسمین آئے گا۔
+دوسرا بیٹسمین اپنی جگہ رہے گا۔
+*/
+
+setBatterSlot(outSlot,newBatter);
+
+/* نئے بیٹسمین کے اعداد و شمار صفر */
+if(outSlot===1){
+
+match.runs1=0;
+match.balls1=0;
+match.fours1=0;
+match.sixes1=0;
+
+}else{
+
+match.runs2=0;
+match.balls2=0;
+match.fours2=0;
+match.sixes2=0;
+
+}
+
+/* نیا بیٹسمین ہی striker ہوگا */
+currentStriker=outSlot;
 
 }
 
@@ -1903,59 +1351,77 @@ function selectOvers(overs){
 
 function applyMatchSetup(){
 
-    team1=team1Select.value;
-    team2=team2Select.value;
+stopAuto();
 
-    const firstScore=
-        parseInt(document.getElementById("team1ScoreInput").value) || 0;
+team1=team1Select.value;
+team2=team2Select.value;
 
-    const firstWickets=
-        parseInt(document.getElementById("team1WicketsInput").value) || 0;
+const firstScore=
+parseInt(document.getElementById("team1ScoreInput").value)||0;
 
-    const firstBalls=
-        parseOversInput(
-            document.getElementById("team1OversInput").value
-        );
+const firstWickets=
+parseInt(document.getElementById("team1WicketsInput").value)||0;
 
-    const currentScore=
-        parseInt(document.getElementById("currentScoreInput").value) || 0;
+const firstBalls=
+parseOversInput(
+document.getElementById("team1OversInput").value
+);
 
-    const currentWickets=
-        parseInt(document.getElementById("currentWicketsInput").value) || 0;
+const currentScore=
+parseInt(document.getElementById("currentScoreInput").value)||0;
 
-    const currentBalls=
-        parseOversInput(
-            document.getElementById("currentOversInput").value
-        );
+const currentWickets=
+parseInt(document.getElementById("currentWicketsInput").value)||0;
 
-    target=firstScore>0 ? firstScore+1 : 0;
+const currentBalls=
+parseOversInput(
+document.getElementById("currentOversInput").value
+);
 
-    firstInnings={
-        score:firstScore,
-        wickets:firstWickets,
-        balls:firstBalls
-    };
+target=firstScore>0?firstScore+1:0;
 
-    match.score=currentScore;
-    match.wickets=currentWickets;
-    match.balls=currentBalls;
+firstInnings={
+score:firstScore,
+wickets:firstWickets,
+balls:firstBalls
+};
 
-    match.recent=[];
-    match.lastWicket=currentWickets+" down";
+match.score=currentScore;
+match.wickets=currentWickets;
+match.balls=currentBalls;
 
-    match.partnershipRuns=0;
-    match.partnershipBalls=0;
+match.runs1=0;
+match.balls1=0;
+match.fours1=0;
+match.sixes1=0;
 
-    undoStack=[];
+match.runs2=0;
+match.balls2=0;
+match.fours2=0;
+match.sixes2=0;
 
-    initialFirstInnings =
-        JSON.parse(JSON.stringify(firstInnings));
+match.bowlerRuns=0;
+match.bowlerWickets=0;
+match.bowlerBalls=0;
 
-    initialMatchState =
-        JSON.parse(JSON.stringify(match));
+match.recent=[];
+match.lastWicket=currentWickets+" down";
+match.partnershipRuns=0;
+match.partnershipBalls=0;
 
-    updateTeams();
-    updateUI();
+undoStack=[];
+
+currentStriker=1;
+
+batterSlot1Name=pakistanPlayingXI[0];
+batterSlot2Name=pakistanPlayingXI[1];
+nextBatterIndex=2;
+
+setBatterSlot(1,batterSlot1Name);
+setBatterSlot(2,batterSlot2Name);
+
+updateTeams();
+updateUI();
 
 }
 
@@ -1964,39 +1430,33 @@ function applyMatchSetup(){
 
 function updateTeams(){
 
-    document.getElementById("team1Name").textContent =
-        team1.toUpperCase();
+document.getElementById("team1Name").textContent=
+team1.toUpperCase();
 
-    document.getElementById("team2Name").textContent =
-        team2.toUpperCase();
+document.getElementById("team2Name").textContent=
+team2.toUpperCase();
 
-    document.getElementById("flag1").src =
-        teams[team1];
+document.getElementById("flag1").src=teams[team1];
+document.getElementById("flag2").src=teams[team2];
 
-    document.getElementById("flag2").src =
-        teams[team2];
+document.getElementById("team1Score").textContent=
+firstInnings.score+"/"+firstInnings.wickets;
 
-    document.getElementById("team1Score").textContent =
-        firstInnings.score+"/"+firstInnings.wickets;
+document.getElementById("team1Status").textContent=
+"🏏 "+firstInnings.score+"/"+firstInnings.wickets+
+" • INNINGS 1";
 
-    document.getElementById("team1Status").textContent =
-        "🏏 "+firstInnings.score+"/"+firstInnings.wickets+
-        " • INNINGS 1";
+document.getElementById("team1Info").textContent=
+ballsToOvers(firstInnings.balls)+" OVERS";
 
-    document.getElementById("team1Info").textContent =
-        ballsToOvers(firstInnings.balls)+
-        " OVERS";
+document.getElementById("teamScore").textContent=
+match.score+"/"+match.wickets;
 
-    document.getElementById("teamScore").textContent =
-        match.score+"/"+match.wickets;
+document.getElementById("targetDisplay").textContent=
+target||"-";
 
-    document.getElementById("targetDisplay").textContent =
-        target || "-";
-
-    document.getElementById("needRuns").textContent =
-        target>0
-        ? Math.max(0,target-match.score)
-        : "-";
+document.getElementById("needRuns").textContent=
+target>0?Math.max(0,target-match.score):"-";
 
 }
 
@@ -2005,86 +1465,79 @@ function updateTeams(){
 
 function updateUI(){
 
-    const overs=ballsToOvers(match.balls);
+const overs=ballsToOvers(match.balls);
 
-    const crr=
-        match.balls>0
-        ? (match.score/(match.balls/6)).toFixed(2)
-        : "0.00";
+const crr=
+match.balls>0
+?(match.score/(match.balls/6)).toFixed(2)
+:"0.00";
 
-    const need=
-        target>0
-        ? Math.max(0,target-match.score)
-        : 0;
+const need=
+target>0?Math.max(0,target-match.score):0;
 
-    document.getElementById("team1Name").textContent =
-        team1.toUpperCase();
+document.getElementById("team1Name").textContent=
+team1.toUpperCase();
 
-    document.getElementById("team2Name").textContent =
-        team2.toUpperCase();
+document.getElementById("team2Name").textContent=
+team2.toUpperCase();
 
-    document.getElementById("flag1").src=teams[team1];
-    document.getElementById("flag2").src=teams[team2];
+document.getElementById("flag1").src=teams[team1];
+document.getElementById("flag2").src=teams[team2];
 
-    document.getElementById("team1Score").textContent =
-        firstInnings.score+"/"+firstInnings.wickets;
+document.getElementById("team1Score").textContent=
+firstInnings.score+"/"+firstInnings.wickets;
 
-    document.getElementById("team1Status").textContent =
-        "🏏 "+firstInnings.score+"/"+firstInnings.wickets+
-        " • INNINGS 1";
+document.getElementById("team1Status").textContent=
+"🏏 "+firstInnings.score+"/"+firstInnings.wickets+
+" • INNINGS 1";
 
-    document.getElementById("team1Info").textContent =
-        ballsToOvers(firstInnings.balls)+
-        " OVERS";
+document.getElementById("team1Info").textContent=
+ballsToOvers(firstInnings.balls)+" OVERS";
 
-    document.getElementById("teamScore").textContent =
-        match.score+"/"+match.wickets;
+document.getElementById("teamScore").textContent=
+match.score+"/"+match.wickets;
 
-    document.getElementById("centerScore").textContent =
-        match.score+"/"+match.wickets;
+document.getElementById("centerScore").textContent=
+match.score+"/"+match.wickets;
 
-    document.getElementById("centerTitle").textContent =
-        "T"+selectedOvers+" • MATCH";
+document.getElementById("centerTitle").textContent=
+"T"+selectedOvers+" • MATCH";
 
-    document.getElementById("centerSubtitle").textContent =
-        team1.toUpperCase()+" VS "+team2.toUpperCase();
+document.getElementById("centerSubtitle").textContent=
+team1.toUpperCase()+" VS "+team2.toUpperCase();
 
-    document.getElementById("overs").textContent=overs;
+document.getElementById("overs").textContent=overs;
+document.getElementById("crr").textContent=crr;
+document.getElementById("crr2").textContent=crr;
 
-    document.getElementById("crr").textContent=crr;
+document.getElementById("targetDisplay").textContent=
+target||"-";
 
-    document.getElementById("crr2").textContent=crr;
+document.getElementById("needRuns").textContent=
+target>0?need:"-";
 
-    document.getElementById("targetDisplay").textContent =
-        target || "-";
+document.getElementById("infoTeam1").textContent=
+team1.substring(0,3).toUpperCase()+" "+firstInnings.score;
 
-    document.getElementById("needRuns").textContent =
-        target>0 ? need : "-";
+document.getElementById("infoTeam2").textContent=
+team2.substring(0,3).toUpperCase()+" "+
+(
+target>0
+?Math.round((match.score/target)*100)
+:0
+)+"%";
 
-    document.getElementById("infoTeam1").textContent =
-        team1.substring(0,3).toUpperCase()+" "+
-        firstInnings.score;
+document.getElementById("lastWicket").textContent=
+match.lastWicket;
 
-    document.getElementById("infoTeam2").textContent =
-        team2.substring(0,3).toUpperCase()+" "+
-        (target>0
-            ? Math.round((match.score/target)*100)
-            : 0)+"%";
+document.getElementById("partnership").textContent=
+match.partnershipRuns+" ("+match.partnershipBalls+")";
 
-    document.getElementById("lastWicket").textContent =
-        match.lastWicket;
+document.getElementById("controlTitle").textContent=
+"🏏 "+team2.toUpperCase()+" — SCORE CONTROL";
 
-    document.getElementById("partnership").textContent =
-        match.partnershipRuns+
-        " ("+
-        match.partnershipBalls+
-        ")";
-
-    document.getElementById("controlTitle").textContent =
-        "🏏 "+team2.toUpperCase()+" — SCORE CONTROL";
-
-    updateRecent();
-    updatePlayers();
+updateRecent();
+updatePlayers();
 
 }
 
@@ -2093,34 +1546,33 @@ function updateUI(){
 
 function updateRecent(){
 
-    const box=document.getElementById("recentBalls");
+const box=document.getElementById("recentBalls");
 
-    box.innerHTML="";
+box.innerHTML="";
 
-    match.recent.slice(-8).forEach(item=>{
+match.recent.slice(-8).forEach(item=>{
 
-        const ball=document.createElement("div");
+const ball=document.createElement("div");
 
-        ball.className="ball";
+ball.className="ball";
+ball.textContent=item.text;
 
-        ball.textContent=item.text;
+if(item.runs===4){
+ball.classList.add("ball-four");
+}
+else if(item.runs===6){
+ball.classList.add("ball-six");
+}
+else if(item.wicket){
+ball.classList.add("ball-wicket");
+}
+else if(item.runs>0){
+ball.classList.add("ball-run");
+}
 
-        if(item.runs===4){
-            ball.classList.add("ball-four");
-        }
-        else if(item.runs===6){
-            ball.classList.add("ball-six");
-        }
-        else if(item.wicket){
-            ball.classList.add("ball-wicket");
-        }
-        else if(item.runs>0){
-            ball.classList.add("ball-run");
-        }
+box.appendChild(ball);
 
-        box.appendChild(ball);
-
-    });
+});
 
 }
 
@@ -2129,81 +1581,43 @@ function updateRecent(){
 
 function updatePlayers(){
 
-    const sr1=
-        match.balls1>0
-        ? ((match.runs1/match.balls1)*100).toFixed(2)
-        : "0.00";
+const sr1=
+match.balls1>0
+?((match.runs1/match.balls1)*100).toFixed(2)
+:"0.00";
 
-    const sr2=
-        match.balls2>0
-        ? ((match.runs2/match.balls2)*100).toFixed(2)
-        : "0.00";
+const sr2=
+match.balls2>0
+?((match.runs2/match.balls2)*100).toFixed(2)
+:"0.00";
 
-    document.getElementById("runs1").textContent=match.runs1;
-    document.getElementById("balls1").textContent=match.balls1;
-    document.getElementById("fours1").textContent=match.fours1;
-    document.getElementById("sixes1").textContent=match.sixes1;
-    document.getElementById("sr1").textContent=sr1;
+document.getElementById("runs1").textContent=match.runs1;
+document.getElementById("balls1").textContent=match.balls1;
+document.getElementById("fours1").textContent=match.fours1;
+document.getElementById("sixes1").textContent=match.sixes1;
+document.getElementById("sr1").textContent=sr1;
 
-    document.getElementById("runs2").textContent=match.runs2;
-    document.getElementById("balls2").textContent=match.balls2;
-    document.getElementById("fours2").textContent=match.fours2;
-    document.getElementById("sixes2").textContent=match.sixes2;
-    document.getElementById("sr2").textContent=sr2;
+document.getElementById("runs2").textContent=match.runs2;
+document.getElementById("balls2").textContent=match.balls2;
+document.getElementById("fours2").textContent=match.fours2;
+document.getElementById("sixes2").textContent=match.sixes2;
+document.getElementById("sr2").textContent=sr2;
 
-    document.getElementById("bowlerRuns").textContent=
-        match.bowlerRuns;
+document.getElementById("bowlerRuns").textContent=
+match.bowlerRuns;
 
-    document.getElementById("bowlerWickets").textContent=
-        match.bowlerWickets;
+document.getElementById("bowlerWickets").textContent=
+match.bowlerWickets;
 
-    document.getElementById("bowlerOvers").textContent=
-        ballsToOvers(match.bowlerBalls);
+document.getElementById("bowlerOvers").textContent=
+ballsToOvers(match.bowlerBalls);
 
-    const economy=
-        match.bowlerBalls>0
-        ? (match.bowlerRuns/(match.bowlerBalls/6)).toFixed(2)
-        : "0.00";
+const economy=
+match.bowlerBalls>0
+?(match.bowlerRuns/(match.bowlerBalls/6)).toFixed(2)
+:"0.00";
 
-    document.getElementById("economy").textContent=economy;
-
-}
-
-
-/* ================= RUN ALERT ================= */
-
-function showRunAlert(runs){
-
-    const alert=document.getElementById("runAlert");
-    const main=document.getElementById("runAlertMain");
-    const sub=document.getElementById("runAlertSub");
-
-    main.textContent=runs;
-
-    if(runs===1){
-        sub.textContent="RUN";
-    }
-    else if(runs===4){
-        sub.textContent="FOUR";
-    }
-    else if(runs===6){
-        sub.textContent="SIX";
-    }
-    else{
-        sub.textContent="RUNS";
-    }
-
-    alert.classList.add("show");
-
-    if(runAlertTimer){
-        clearTimeout(runAlertTimer);
-    }
-
-    runAlertTimer=setTimeout(()=>{
-
-        alert.classList.remove("show");
-
-    },2000);
+document.getElementById("economy").textContent=economy;
 
 }
 
@@ -2212,13 +1626,17 @@ function showRunAlert(runs){
 
 function saveState(){
 
-    undoStack.push(
-        JSON.parse(JSON.stringify(match))
-    );
+undoStack.push({
+match:JSON.parse(JSON.stringify(match)),
+currentStriker:currentStriker,
+batterSlot1Name:batterSlot1Name,
+batterSlot2Name:batterSlot2Name,
+nextBatterIndex:nextBatterIndex
+});
 
-    if(undoStack.length>30){
-        undoStack.shift();
-    }
+if(undoStack.length>30){
+undoStack.shift();
+}
 
 }
 
@@ -2227,53 +1645,50 @@ function saveState(){
 
 function addRuns(runs){
 
-    if(target>0 && match.score>=target) return;
+saveState();
 
-    saveState();
+match.score+=runs;
+match.balls++;
 
-    match.score+=runs;
-    match.balls++;
+if(currentStriker===1){
 
-    if(currentStriker===1){
+match.runs1+=runs;
+match.balls1++;
 
-        match.runs1+=runs;
-        match.balls1++;
+if(runs===4)match.fours1++;
+if(runs===6)match.sixes1++;
 
-        if(runs===4) match.fours1++;
-        if(runs===6) match.sixes1++;
+}else{
 
-    }
-    else{
+match.runs2+=runs;
+match.balls2++;
 
-        match.runs2+=runs;
-        match.balls2++;
+if(runs===4)match.fours2++;
+if(runs===6)match.sixes2++;
 
-        if(runs===4) match.fours2++;
-        if(runs===6) match.sixes2++;
+}
 
-    }
+match.partnershipRuns+=runs;
+match.partnershipBalls++;
 
-    match.partnershipRuns+=runs;
-    match.partnershipBalls++;
+match.bowlerRuns+=runs;
+match.bowlerBalls++;
 
-    match.bowlerRuns+=runs;
-    match.bowlerBalls++;
+match.recent.push({
+text:runs,
+runs:runs,
+wicket:false
+});
 
-    match.recent.push({
-        text:runs,
-        runs:runs,
-        wicket:false
-    });
+if(runs%2===1){
 
-    if(runs%2===1){
-        currentStriker=currentStriker===1?2:1;
-    }
+currentStriker=
+currentStriker===1?2:1;
 
-    showRunAlert(runs);
+}
 
-    checkMatch();
-
-    updateUI();
+checkMatch();
+updateUI();
 
 }
 
@@ -2282,31 +1697,27 @@ function addRuns(runs){
 
 function dotBall(){
 
-    if(target>0 && match.score>=target) return;
+saveState();
 
-    saveState();
+match.balls++;
 
-    match.balls++;
+if(currentStriker===1){
+match.balls1++;
+}else{
+match.balls2++;
+}
 
-    if(currentStriker===1){
-        match.balls1++;
-    }
-    else{
-        match.balls2++;
-    }
+match.partnershipBalls++;
+match.bowlerBalls++;
 
-    match.partnershipBalls++;
-    match.bowlerBalls++;
+match.recent.push({
+text:"•",
+runs:0,
+wicket:false
+});
 
-    match.recent.push({
-        text:"•",
-        runs:0,
-        wicket:false
-    });
-
-    checkMatch();
-
-    updateUI();
+checkMatch();
+updateUI();
 
 }
 
@@ -2315,46 +1726,72 @@ function dotBall(){
 
 function wicket(){
 
-    if(match.wickets>=10) return;
+if(match.wickets>=10)return;
 
-    saveState();
+saveState();
 
-    match.wickets++;
+/*
+سب سے پہلے آؤٹ ہونے والے slot کو محفوظ کریں۔
+اس سے نیا بیٹسمین اسی جگہ آئے گا۔
+*/
 
-    match.balls++;
+const outSlot=currentStriker;
 
-    match.partnershipBalls=0;
-    match.partnershipRuns=0;
+let outName=
+outSlot===1
+?batterSlot1Name
+:batterSlot2Name;
 
-    match.bowlerWickets++;
-    match.bowlerBalls++;
+match.wickets++;
+match.balls++;
 
-    match.lastWicket=match.wickets+" down";
+match.partnershipBalls=0;
+match.partnershipRuns=0;
 
-    match.recent.push({
-        text:"W",
-        runs:0,
-        wicket:true
-    });
+match.bowlerWickets++;
+match.bowlerBalls++;
 
-    const alert=document.getElementById("wicketAlert");
+match.lastWicket=
+match.wickets+" down";
 
-    document.getElementById("wicketAlertName").textContent =
-        document.getElementById(
-            currentStriker===1
-            ? "batterName1"
-            : "batterName2"
-        ).textContent+" OUT";
+match.recent.push({
+text:"W",
+runs:0,
+wicket:true
+});
 
-    alert.classList.add("show");
+const alert=document.getElementById("wicketAlert");
 
-    setTimeout(()=>{
-        alert.classList.remove("show");
-    },1800);
+document.getElementById("wicketAlertName").textContent=
+outName+" OUT";
 
-    currentStriker=currentStriker===1?2:1;
+alert.classList.add("show");
 
-    updateUI();
+setTimeout(()=>{
+alert.classList.remove("show");
+},1800);
+
+/*
+اگلا پاکستانی بیٹسمین خودکار داخل ہوگا۔
+*/
+
+if(nextBatterIndex<pakistanPlayingXI.length){
+
+bringNextPakistanBatter(outSlot);
+
+}else{
+
+/*
+اگر تمام 11 پاکستانی کھلاڑی آ چکے ہوں
+تو مزید نیا بیٹسمین نہیں آئے گا۔
+*/
+
+currentStriker=
+outSlot===1?2:1;
+
+}
+
+updateUI();
 
 }
 
@@ -2363,34 +1800,16 @@ function wicket(){
 
 function checkMatch(){
 
-    if(target>0 && match.score>=target){
+const maxBalls=selectedOvers*6;
 
-        match.score=target;
+if(match.balls>=maxBalls){
 
-        document.getElementById("teamScore").textContent =
-            target+"/"+match.wickets;
+stopAuto();
 
-        document.getElementById("centerScore").textContent =
-            target+"/"+match.wickets;
+document.getElementById("controlTitle").textContent=
+"🏁 INNINGS COMPLETED";
 
-        document.getElementById("controlTitle").textContent =
-            "🏆 "+team2.toUpperCase()+" WON";
-
-        stopAuto();
-
-        return;
-    }
-
-    const maxBalls=selectedOvers*6;
-
-    if(match.balls>=maxBalls){
-
-        document.getElementById("controlTitle").textContent =
-            "🏁 INNINGS COMPLETED";
-
-        stopAuto();
-
-    }
+}
 
 }
 
@@ -2399,16 +1818,23 @@ function checkMatch(){
 
 function undoBall(){
 
-    if(!undoStack.length) return;
+if(!undoStack.length)return;
 
-    match=
-        JSON.parse(
-            JSON.stringify(
-                undoStack.pop()
-            )
-        );
+const state=undoStack.pop();
 
-    updateUI();
+match=JSON.parse(JSON.stringify(state.match));
+
+currentStriker=state.currentStriker;
+
+batterSlot1Name=state.batterSlot1Name;
+batterSlot2Name=state.batterSlot2Name;
+
+nextBatterIndex=state.nextBatterIndex;
+
+setBatterSlot(1,batterSlot1Name);
+setBatterSlot(2,batterSlot2Name);
+
+updateUI();
 
 }
 
@@ -2417,246 +1843,284 @@ function undoBall(){
 
 function openLastTwoSetup(){
 
-    document.getElementById("lastTwoBox").style.display="block";
+document.getElementById("lastTwoBox").style.display="block";
 
 }
 
 
 function applyLastTwoSetup(){
 
-    const score=
-        parseInt(document.getElementById("startScore").value) || 0;
+const score=
+parseInt(document.getElementById("startScore").value)||0;
 
-    const wickets=
-        parseInt(document.getElementById("startWickets").value) || 0;
+const wickets=
+parseInt(document.getElementById("startWickets").value)||0;
 
-    const lastTarget=
-        parseInt(document.getElementById("lastTwoTarget").value) || 1;
+const lastTarget=
+parseInt(document.getElementById("lastTwoTarget").value)||1;
 
-    const before=
-        parseInt(document.getElementById("beforeLastTwo").value) || 0;
+const before=
+parseInt(document.getElementById("beforeLastTwo").value)||0;
 
-    target=lastTarget;
+target=lastTarget;
 
-    match.score=score;
-    match.wickets=wickets;
-    match.balls=before*6;
+match.score=score;
+match.wickets=wickets;
+match.balls=before*6;
 
-    match.recent=[];
+match.recent=[];
+match.partnershipRuns=0;
+match.partnershipBalls=0;
 
-    match.partnershipRuns=0;
-    match.partnershipBalls=0;
+match.lastWicket=wickets+" down";
 
-    match.lastWicket=wickets+" down";
+undoStack=[];
 
-    undoStack=[];
+updateUI();
 
-    updateUI();
-
-    document.getElementById("lastTwoBox").style.display="none";
+document.getElementById("lastTwoBox").style.display="none";
 
 }
 
 
 /* ================= AUTO SIMULATION ================= */
 
-function toggleAuto(){
+function runAutoBall(){
 
-    if(autoTimer){
+if(match.balls>=selectedOvers*6){
 
-        stopAuto();
-
-        return;
-
-    }
-
-    document.getElementById("autoButton").textContent =
-        "⏸ AUTO SIMULATION ENABLED";
-
-    autoTimer=setInterval(()=>{
-
-        const random=Math.random();
-
-        if(random < 0.10){
-
-            wicket();
-
-        }
-        else if(random < 0.35){
-
-            dotBall();
-
-        }
-        else if(random < 0.55){
-
-            addRuns(1);
-
-        }
-        else if(random < 0.72){
-
-            addRuns(2);
-
-        }
-        else if(random < 0.78){
-
-            addRuns(3);
-
-        }
-        else if(random < 0.94){
-
-            addRuns(4);
-
-        }
-        else{
-
-            addRuns(6);
-
-        }
-
-    },60000);
+stopAuto();
+return;
 
 }
 
+const random=Math.random();
+
+if(random<0.10){
+wicket();
+}
+else if(random<0.35){
+dotBall();
+}
+else if(random<0.55){
+addRuns(1);
+}
+else if(random<0.72){
+addRuns(2);
+}
+else if(random<0.78){
+addRuns(3);
+}
+else if(random<0.94){
+addRuns(4);
+}
+else{
+addRuns(6);
+}
+
+}
+
+
+/*
+====================================================
+AUTO SIMULATION
+
+اہم:
+AUTO دبانے کے بعد پہلی بال فوراً نہیں آئے گی۔
+
+پہلے 60 سیکنڈ انتظار ہوگا،
+پھر ایک بال آئے گی،
+پھر ہر 60 سیکنڈ بعد ایک بال آئے گی۔
+====================================================
+*/
+
+function toggleAuto(){
+
+if(autoTimer || autoInterval){
+
+stopAuto();
+return;
+
+}
+
+document.getElementById("autoButton").textContent=
+"⏳ AUTO — NEXT BALL IN 60 SECONDS";
+
+/*
+پہلی بال کے لیے 60 سیکنڈ کا انتظار
+*/
+
+autoTimer=setTimeout(()=>{
+
+autoTimer=null;
+
+runAutoBall();
+
+if(
+match.balls<selectedOvers*6 &&
+!autoTimer &&
+!autoInterval
+){
+
+autoInterval=setInterval(()=>{
+
+runAutoBall();
+
+},60000);
+
+}
+
+},60000);
+
+}
+
+
+/* ================= STOP AUTO ================= */
 
 function stopAuto(){
 
-    if(autoTimer){
+if(autoTimer){
 
-        clearInterval(autoTimer);
+clearTimeout(autoTimer);
+autoTimer=null;
 
-        autoTimer=null;
+}
 
-    }
+if(autoInterval){
 
-    document.getElementById("autoButton").textContent =
-        "▶ AUTO SIMULATION DISABLED";
+clearInterval(autoInterval);
+autoInterval=null;
+
+}
+
+document.getElementById("autoButton").textContent=
+"▶ AUTO SIMULATION DISABLED";
 
 }
 
 
-/* ================= NAMES ================= */
+/* ================= PLAYER NAMES ================= */
 
 function applyNames(){
 
-    const b1=
-        document.getElementById("inputBatter1").value.trim();
+const b1=
+document.getElementById("inputBatter1")
+.value.trim();
 
-    const b2=
-        document.getElementById("inputBatter2").value.trim();
+const b2=
+document.getElementById("inputBatter2")
+.value.trim();
 
-    const bowler=
-        document.getElementById("inputBowler").value.trim();
+const bowler=
+document.getElementById("inputBowler")
+.value.trim();
 
-    if(b1){
-        document.getElementById("batterName1").textContent=b1;
+if(b1){
+setBatterSlot(1,b1);
+}
 
-        document.getElementById("photo1").src=
-            "https://ui-avatars.com/api/?name="+
-            encodeURIComponent(b1)+
-            "&background=1685ff&color=fff&size=512";
-    }
+if(b2){
+setBatterSlot(2,b2);
+}
 
-    if(b2){
-        document.getElementById("batterName2").textContent=b2;
+if(bowler){
 
-        document.getElementById("photo2").src=
-            "https://ui-avatars.com/api/?name="+
-            encodeURIComponent(b2)+
-            "&background=1685ff&color=fff&size=512";
-    }
+document.getElementById("bowlerName").textContent=bowler;
 
-    if(bowler){
-        document.getElementById("bowlerName").textContent=bowler;
+document.getElementById("bowlerPhoto").src=
+"https://ui-avatars.com/api/?name="+
+encodeURIComponent(bowler)+
+"&background=e01921&color=fff&size=512";
 
-        document.getElementById("bowlerPhoto").src=
-            "https://ui-avatars.com/api/?name="+
-            encodeURIComponent(bowler)+
-            "&background=e01921&color=fff&size=512";
-    }
+}
+
+}
+
+
+/* ================= LAYOUT 1 ================= */
+
+function showLayout1(){
+
+layout2Active=false;
+
+if(layout2Timer){
+
+clearTimeout(layout2Timer);
+layout2Timer=null;
+
+}
+
+document.getElementById("layout2").classList.remove("show");
+
+document.getElementById("layout1Button").classList.add("active");
+
+document.getElementById("layout2Button").classList.remove("active");
 
 }
 
 
 /* ================= LAYOUT 2 ================= */
 
-function showLayout1(){
-
-    const layout1=document.getElementById("layout1");
-    const layout2=document.getElementById("layout2");
-
-    layout1.style.display="grid";
-    layout2.classList.remove("active");
-
-    document.getElementById("layout1Button")
-        .classList.add("active");
-
-    document.getElementById("layout2Button")
-        .classList.remove("active");
-
-    stopLayout2Rotation();
-
-}
-
-
 function showLayout2(){
 
-    const layout1=document.getElementById("layout1");
-    const layout2=document.getElementById("layout2");
+layout2Active=true;
 
-    layout1.style.display="none";
-    layout2.classList.add("active");
+if(layout2Timer){
 
-    document.getElementById("layout1Button")
-        .classList.remove("active");
-
-    document.getElementById("layout2Button")
-        .classList.add("active");
-
-    startLayout2Rotation();
+clearTimeout(layout2Timer);
+layout2Timer=null;
 
 }
 
+document.getElementById("layout1Button").classList.remove("active");
+
+document.getElementById("layout2Button").classList.add("active");
+
+document.getElementById("layout2").classList.add("show");
+
+startLayout2Rotation();
+
+}
+
+
+/* ================= LAYOUT 2 ROTATION ================= */
 
 function startLayout2Rotation(){
 
-    stopLayout2Rotation();
+if(!layout2Active)return;
 
-    const pakistan=document.getElementById("pakistanXI");
-    const india=document.getElementById("indiaXI");
-    const title=document.getElementById("layout2Title");
+const pakistan=
+document.getElementById("pakistanXI");
 
-    pakistan.style.display="block";
-    india.style.display="none";
+const india=
+document.getElementById("indiaXI");
 
-    title.textContent="PAKISTAN PLAYING XI";
+const title=
+document.getElementById("layout2Title");
 
-    layout2Timer=setTimeout(()=>{
+pakistan.classList.remove("layout2-hidden");
+india.classList.add("layout2-hidden");
 
-        pakistan.style.display="none";
-        india.style.display="block";
+title.textContent="PAKISTAN PLAYING XI";
 
-        title.textContent="INDIA PLAYING XI";
+layout2Timer=setTimeout(()=>{
 
-        layout2Timer=setTimeout(()=>{
+if(!layout2Active)return;
 
-            startLayout2Rotation();
+pakistan.classList.add("layout2-hidden");
+india.classList.remove("layout2-hidden");
 
-        },180000);
+title.textContent="INDIA PLAYING XI";
 
-    },180000);
+layout2Timer=setTimeout(()=>{
 
-}
+if(!layout2Active)return;
 
+startLayout2Rotation();
 
-function stopLayout2Rotation(){
+},180000);
 
-    if(layout2Timer){
-
-        clearTimeout(layout2Timer);
-
-        layout2Timer=null;
-
-    }
+},180000);
 
 }
 
@@ -2665,86 +2129,84 @@ function stopLayout2Rotation(){
 
 function resetMatch(){
 
-    stopAuto();
-    stopLayout2Rotation();
+stopAuto();
+showLayout1();
 
-    showLayout1();
+team1="Pakistan";
+team2="India";
+target=0;
+selectedOvers=50;
 
-    team1="Pakistan";
-    team2="India";
+firstInnings={
+score:0,
+wickets:0,
+balls:0
+};
 
-    target=0;
-    selectedOvers=50;
+match={
+score:0,
+wickets:0,
+balls:0,
 
-    firstInnings={
-        score:0,
-        wickets:0,
-        balls:0
-    };
+runs1:0,
+balls1:0,
+fours1:0,
+sixes1:0,
 
-    match={
-        score:0,
-        wickets:0,
-        balls:0,
+runs2:0,
+balls2:0,
+fours2:0,
+sixes2:0,
 
-        runs1:0,
-        balls1:0,
-        fours1:0,
-        sixes1:0,
+partnershipRuns:0,
+partnershipBalls:0,
 
-        runs2:0,
-        balls2:0,
-        fours2:0,
-        sixes2:0,
+bowlerRuns:0,
+bowlerWickets:0,
+bowlerBalls:0,
 
-        partnershipRuns:0,
-        partnershipBalls:0,
+lastWicket:"0 down",
+recent:[]
+};
 
-        bowlerRuns:0,
-        bowlerWickets:0,
-        bowlerBalls:0,
+team1Select.value=team1;
+team2Select.value=team2;
 
-        lastWicket:"0 down",
+document.getElementById("team1ScoreInput").value=0;
+document.getElementById("team1WicketsInput").value=0;
+document.getElementById("team1OversInput").value="0.0";
 
-        recent:[]
-    };
+document.getElementById("currentScoreInput").value=0;
+document.getElementById("currentWicketsInput").value=0;
+document.getElementById("currentOversInput").value="0.0";
 
-    initialFirstInnings =
-        JSON.parse(JSON.stringify(firstInnings));
+document.getElementById("autoTargetDisplay").value=0;
 
-    initialMatchState =
-        JSON.parse(JSON.stringify(match));
+document.getElementById("startScore").value=0;
+document.getElementById("startWickets").value=0;
+document.getElementById("lastTwoTarget").value=1;
+document.getElementById("beforeLastTwo").value=0;
 
-    team1Select.value=team1;
-    team2Select.value=team2;
+document.getElementById("lastTwoBox").style.display="none";
 
-    document.getElementById("team1ScoreInput").value=0;
-    document.getElementById("team1WicketsInput").value=0;
-    document.getElementById("team1OversInput").value="0.0";
+undoStack=[];
 
-    document.getElementById("currentScoreInput").value=0;
-    document.getElementById("currentWicketsInput").value=0;
-    document.getElementById("currentOversInput").value="0.0";
+currentStriker=1;
 
-    document.getElementById("autoTargetDisplay").value=0;
+batterSlot1Name="Sahibzada Farhan";
+batterSlot2Name="Saim Ayub";
+nextBatterIndex=2;
 
-    document.getElementById("startScore").value=0;
-    document.getElementById("startWickets").value=0;
-    document.getElementById("lastTwoTarget").value=1;
-    document.getElementById("beforeLastTwo").value=0;
+setBatterSlot(1,batterSlot1Name);
+setBatterSlot(2,batterSlot2Name);
 
-    document.getElementById("lastTwoBox").style.display="none";
+document.getElementById("bowlerName").textContent="BOWLER";
 
-    document.getElementById("batterName1").textContent="Sahibzada Farhan";
-    document.getElementById("batterName2").textContent="Saim Ayub";
-    document.getElementById("bowlerName").textContent="Jasprit Bumrah";
+document.getElementById("bowlerPhoto").src=
+"https://ui-avatars.com/api/?name=BOWLER&background=e01921&color=fff&size=512";
 
-    undoStack=[];
-
-    currentStriker=1;
-
-    updateTeams();
-    updateUI();
+updateTeams();
+updateUI();
 
 }
 
@@ -2753,7 +2215,7 @@ function resetMatch(){
 
 function broadcastFullscreen(){
 
-    document.body.classList.toggle("broadcast-fullscreen");
+document.body.classList.toggle("broadcast-fullscreen");
 
 }
 
@@ -2762,36 +2224,33 @@ function broadcastFullscreen(){
 
 function landscapeMode(){
 
-    if(
-        screen.orientation &&
-        screen.orientation.lock
-    ){
+if(
+screen.orientation &&
+screen.orientation.lock
+){
 
-        screen.orientation.lock("landscape")
-        .catch(()=>{});
+screen.orientation.lock("landscape").catch(()=>{});
 
-    }
+}
 
 }
 
 
 /* ================= AUDIO ================= */
 
-document
-.getElementById("audioFile")
+document.getElementById("audioFile")
 .addEventListener("change",function(){
 
-    const file=this.files[0];
+const file=this.files[0];
 
-    if(!file) return;
+if(!file)return;
 
-    const player=
-        document.getElementById("audioPlayer");
+const player=document.getElementById("audioPlayer");
 
-    player.src=URL.createObjectURL(file);
+player.src=URL.createObjectURL(file);
 
-    document.getElementById("audioStatus").textContent =
-        file.name;
+document.getElementById("audioStatus").textContent=
+file.name;
 
 });
 
@@ -2800,20 +2259,20 @@ document
 
 team1Select.addEventListener("change",function(){
 
-    team1=this.value;
+team1=this.value;
 
-    updateTeams();
-    updateUI();
+updateTeams();
+updateUI();
 
 });
 
 
 team2Select.addEventListener("change",function(){
 
-    team2=this.value;
+team2=this.value;
 
-    updateTeams();
-    updateUI();
+updateTeams();
+updateUI();
 
 });
 
@@ -2828,6 +2287,9 @@ team2Select.value=team2;
 selectOvers(50);
 
 previewTarget();
+
+setBatterSlot(1,"Sahibzada Farhan");
+setBatterSlot(2,"Saim Ayub");
 
 updateTeams();
 updateUI();
