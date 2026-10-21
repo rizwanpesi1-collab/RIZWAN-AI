@@ -1,256 +1,123 @@
-<!DOCTYPE html>
-<html lang="ur" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>لائیو کرکٹ اسکور بورڈ اور کنٹرولر</title>
-    <style>
-        body { font-family: Tahoma, sans-serif; background: #222; color: #fff; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: #333; padding: 20px; border-radius: 10px; }
-        h2 { color: #4CAF50; text-align: center; }
-        
-        /* اوورلے کا ڈیزائن (تصویر کے مطابق) */
-        #overlay {
-            width: 100%;
-            background: linear-gradient(to right, #001f3f, #111, #001f3f);
-            border: 2px solid #ffd700;
-            border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .score-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .team-box { display: flex; align-items: center; gap: 10px; }
-        .match-status {
-            background: #28a745;
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 16px;
-            text-align: center;
-        }
-        .players-bar {
-            display: grid;
-            grid-template-columns: 2fr 2fr 2fr;
-            gap: 5px;
-            background: #111;
-            padding: 5px;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 14px;
-        }
-        .player-card { background: #222; padding: 5px; border-radius: 4px; border-top: 3px solid #ff9800; }
 
-        /* کنٹرول پینل کا ڈیزائن */
-        .control-panel {
-            margin-top: 30px;
-            background: #444;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .control-group { margin-bottom: 15px; }
-        button {
-            padding: 10px 15px;
-            margin: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #ff9800;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-        }
-        button:hover { background: #e68a00; }
-        input, select { padding: 8px; font-size: 16px; margin: 5px; border-radius: 4px; border: none; }
-    </style>
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rizwan Cricket Overlay</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:transparent;color:white;
+  font-family:Arial,sans-serif;overflow:hidden
+}
+.board{
+  width:100%;max-width:1000px;margin:15px auto;
+  padding:16px;border:2px solid #18e5b0;border-radius:18px;
+  background:linear-gradient(120deg,#06152bfa,#111827f5);
+  box-shadow:0 0 22px #00e5a455
+}
+.heading{
+  text-align:center;color:#18e5b0;font-size:clamp(14px,3vw,22px);
+  font-weight:bold;letter-spacing:2px;margin-bottom:14px
+}
+.teams{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:12px;text-align:center
+}
+.team{font-size:clamp(15px,3.5vw,25px);font-weight:bold}
+.flag{font-size:clamp(25px,5vw,42px)}
+.score{
+  font-size:clamp(30px,7vw,54px);font-weight:900;
+  color:#fff;text-shadow:0 0 14px #00d9ff
+}
+.middle{
+  font-size:clamp(11px,2.5vw,16px);color:#ffd166;
+  font-weight:bold;white-space:nowrap
+}
+.details{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;
+  margin-top:15px
+}
+.pill{
+  background:#ffffff12;border:1px solid #ffffff25;
+  padding:9px 13px;border-radius:9px;font-size:clamp(11px,2.5vw,15px)
+}
+.status{text-align:center;margin-top:12px;color:#9fb4d0;font-size:11px}
+@media(max-width:450px){
+ .board{padding:10px;margin:5px auto}
+ .teams{gap:5px}
+ .pill{padding:7px}
+}
+</style>
 </head>
 <body>
-
-<div class="container">
-    <h2>کرکٹ لائیو اسکور اوورلے اور کنٹرولر</h2>
-
-    <!-- لائیو اوورلے (جو سکرین پر دکھے گا) -->
-    <div id="overlay">
-        <div class="score-bar">
-            <div class="team-box">
-                <span id="t1Name">پاکستان</span>: <span id="t1Score">0-0</span> (<span id="t1Overs">0.0</span>)
-            </div>
-            <div id="targetDisplay" class="match-status">پہلی اننگز جاری ہے</div>
-            <div class="team-box">
-                <span id="t2Name">انڈیا</span>: <span id="t2Score">0-0</span> (<span id="t2Overs">0.0</span>)
-            </div>
-        </div>
-        
-        <div id="matchMsg" style="text-align: center; background: #0056b3; padding: 5px; border-radius: 4px; font-size: 15px;">
-            میچ شروع ہونے کا انتظار ہے...
-        </div>
-
-        <div class="players-bar">
-            <div class="player-card">
-                <div>بیٹسمین 1: <input type="text" id="b1NameDisplay" value="بیٹر 1" style="width:70px; background:transparent; color:#fff; border:none;" readonly></div>
-                <div>رنز: <span id="b1Runs">0</span> (<span id="b1Balls">0</span>)</div>
-            </div>
-            <div class="player-card">
-                <div>بیٹسمین 2: <input type="text" id="b2NameDisplay" value="بیٹر 2" style="width:70px; background:transparent; color:#fff; border:none;" readonly></div>
-                <div>رنز: <span id="b2Runs">0</span> (<span id="b2Balls">0</span>)</div>
-            </div>
-            <div class="player-card" style="border-top-color: #00bcd4;">
-                <div>بولر: <span id="bowlerNameDisplay">بولر</span></div>
-                <div>اسکور: <span id="bowlerWickets">0</span>-<span id="bowlerRunsConceded">0</span></div>
-            </div>
-        </div>
+<div class="board">
+  <div class="heading">🏏 RIZWAN CRICKET LIVE</div>
+  <div class="teams">
+    <div class="team">
+      <div class="flag" id="flagA">🇵🇰</div>
+      <div id="teamA">PAKISTAN</div>
+      <div class="score" id="scoreA">0/0</div>
     </div>
-
-    <!-- کنٹرول پینل (دوسرے موبائل پر استعمال کے لیے) -->
-    <div class="control-panel">
-        <h3>اسکور کنٹرول پینل (دوسرے موبائل سے چلائیں)</h3>
-        
-        <div class="control-group">
-            <label>موجودہ اننگز:</label>
-            <select id="currentInning" onchange="changeInningMode()">
-                <option value="1">پہلی اننگز (ٹیم 1 بیٹنگ)</option>
-                <option value="2">دوسری اننگز (ٹیم 2 تعاقب کر رہی ہے)</option>
-            </select>
-        </div>
-
-        <div class="control-group">
-            <button onclick="addRuns(0)">0 رن (ڈاٹ بال)</button>
-            <button onclick="addRuns(1)">1 رن</button>
-            <button onclick="addRuns(2)">2 رنز</button>
-            <button onclick="addRuns(4)">4 چوکا</button>
-            <button onclick="addRuns(6)">6 چھکا</button>
-            <button onclick="addWicket()">وکٹ گر گئی!</button>
-            <button onclick="undoLast()" style="background: #d9534f;">انڈو (Undo)</button>
-        </div>
-
-        <div class="control-group">
-            <h4>ٹیموں کے نام اور سیٹنگز</h4>
-            ٹیم 1: <input type="text" id="inputT1" value="پاکستان" onkeyup="updateTeamNames()">
-            ٹیم 2: <input type="text" id="inputT2" value="انڈیا" onkeyup="updateTeamNames()"><br>
-            ٹارگٹ (اگر دوسری اننگز ہے): <input type="number" id="inputTarget" value="0" placeholder="مثلاً 150">
-            <button onclick="setCustomTarget()">ٹارگٹ سیٹ کریں</button>
-        </div>
+    <div class="middle">
+      <div>VS</div>
+      <div id="oversA">0.0 OV</div>
+      <div style="margin-top:8px">TARGET</div>
+      <div id="target">—</div>
     </div>
+    <div class="team">
+      <div class="flag" id="flagB">🏴</div>
+      <div id="teamB">ENGLAND</div>
+      <div class="score" id="scoreB">0/0</div>
+    </div>
+  </div>
+  <div class="details">
+    <div class="pill">CRR: <b id="crr">0.00</b></div>
+    <div class="pill">RRR: <b id="rrr">—</b></div>
+    <div class="pill">MATCH: <b id="matchStatus">WAITING</b></div>
+  </div>
+  <div class="status" id="updated">اسکور ڈیٹا لوڈ ہو رہا ہے...</div>
 </div>
 
 <script>
-    // اسکور کا ڈیٹا
-    let state = {
-        t1Name: "پاکستان",
-        t2Name: "انڈیا",
-        t1Runs: 0, t1Wickets: 0, t1Overs: 0.0,
-        t2Runs: 0, t2Wickets: 0, t2Overs: 0.0,
-        inning: 1,
-        target: 0,
-        b1Runs: 0, b1Balls: 0,
-        b2Runs: 0, b2Balls: 0,
-        bowlerRuns: 0, bowlerWickets: 0
-    };
+const params = new URLSearchParams(location.search);
+const dataUrl = params.get("data") || "./score.json";
 
-    function updateTeamNames() {
-        state.t1Name = document.getElementById('inputT1').value;
-        state.t2Name = document.getElementById('inputT2').value;
-        document.getElementById('t1Name').innerText = state.t1Name;
-        document.getElementById('t2Name').innerText = state.t2Name;
-    }
+function setText(id, value) {
+  document.getElementById(id).textContent = value ?? "—";
+}
 
-    function changeInningMode() {
-        state.inning = parseInt(document.getElementById('currentInning').value);
-        if(state.inning === 2) {
-            // خودکار طور پر پہلی اننگز کا اسکور ٹارگٹ بنا دیں (پلس 1 رن)
-            state.target = state.t1Runs + 1;
-            document.getElementById('inputTarget').value = state.target;
-        }
-        updateDisplay();
-    }
+async function updateScore() {
+  try {
+    const response = await fetch(dataUrl + "?t=" + Date.now(), {
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error("Score file unavailable");
 
-    function setCustomTarget() {
-        state.target = parseInt(document.getElementById('inputTarget').value) || 0;
-        updateDisplay();
-    }
+    const d = await response.json();
 
-    function addRuns(runs) {
-        if(state.inning === 1) {
-            state.t1Runs += runs;
-            state.t1Overs = incrementOver(state.t1Overs);
-        } else {
-            state.t2Runs += runs;
-            state.t2Overs = incrementOver(state.t2Overs);
-        }
-        
-        state.b1Runs += runs;
-        state.b1Balls += 1;
-        state.bowlerRuns += runs;
-        updateDisplay();
-    }
+    setText("teamA", d.teamA || "PAKISTAN");
+    setText("teamB", d.teamB || "ENGLAND");
+    setText("flagA", d.flagA || "🇵🇰");
+    setText("flagB", d.flagB || "🏴");
+    setText("scoreA", `${d.runsA ?? 0}/${d.wicketsA ?? 0}`);
+    setText("scoreB", `${d.runsB ?? 0}/${d.wicketsB ?? 0}`);
+    setText("oversA", `${d.oversA ?? "0.0"} OV`);
+    setText("target", d.target ?? "—");
+    setText("crr", d.crr ?? "0.00");
+    setText("rrr", d.rrr ?? "—");
+    setText("matchStatus", d.status || "LIVE");
+    setText("updated", "آخری ڈیٹا: " +
+      new Date().toLocaleTimeString());
 
-    function addWicket() {
-        if(state.inning === 1) {
-            if(state.t1Wickets < 10) state.t1Wickets += 1;
-            state.t1Overs = incrementOver(state.t1Overs);
-        } else {
-            if(state.t2Wickets < 10) state.t2Wickets += 1;
-            state.t2Overs = incrementOver(state.t2Overs);
-        }
-        state.b1Balls += 1;
-        state.bowlerWickets += 1;
-        updateDisplay();
-    }
+  } catch (error) {
+    setText("updated", "ڈیٹا دستیاب نہیں — دوبارہ کوشش جاری ہے");
+  }
+}
 
-    function incrementOver(currentOvers) {
-        let ov = Math.floor(currentOvers);
-        let balls = Math.round((currentOvers - ov) * 10);
-        balls += 1;
-        if(balls === 6) {
-            ov += 1;
-            balls = 0;
-        }
-        return parseFloat(ov + "." + balls);
-    }
-
-    function updateDisplay() {
-        document.getElementById('t1Score').innerText = `${state.t1Runs}-${state.t1Wickets}`;
-        document.getElementById('t1Overs').innerText = `(${state.t1Overs.toFixed(1)})`;
-        
-        document.getElementById('t2Score').innerText = `${state.t2Runs}-${state.t2Wickets}`;
-        document.getElementById('t2Overs').innerText = `(${state.t2Overs.toFixed(1)})`;
-
-        let statusText = "";
-        let matchMsgText = "";
-
-        if(state.inning === 1) {
-            statusText = "پہلی اننگز جاری ہے";
-            matchMsgText = `${state.t1Name} بیٹنگ کر رہی ہے`;
-        } else {
-            let runsNeeded = state.target - state.t2Runs;
-            if(runsNeeded > 0) {
-                statusText = `ٹارگٹ: ${state.target}`;
-                matchMsgText = `${state.t2Name} کو جیتنے کے لیے ${runsNeeded} رنز درکار ہیں`;
-            } else {
-                statusText = "میچ ختم";
-                matchMsgText = `${state.t2Name} میچ جیت گئی ہے!`;
-            }
-        }
-
-        document.getElementById('targetDisplay').innerText = statusText;
-        document.getElementById('matchMsg').innerText = matchMsgText;
-
-        document.getElementById('b1Runs').innerText = state.b1Runs;
-        document.getElementById('b1Balls').innerText = state.b1Balls;
-        document.getElementById('bowlerRunsConceded').innerText = state.bowlerRuns;
-        document.getElementById('bowlerWickets').innerText = state.bowlerWickets;
-    }
+updateScore();
+setInterval(updateScore, 10000);
 </script>
-
 </body>
 </html>
