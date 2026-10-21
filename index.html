@@ -3,402 +3,226 @@
 <html lang="ur">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rizwan Cricket Live</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rizwan Cricket Overlay</title>
 <style>
-:root {
-  --bg:#07111f; --panel:#101e30; --line:#263951;
-  --text:#f2f7ff; --muted:#9db0c8; --green:#20e69a;
-}
-* {box-sizing:border-box}
-body {
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;
-}
-header {
-  padding:22px 14px;text-align:center;
-  background:linear-gradient(135deg,#063b31,#101e30,#15254a);
-  border-bottom:1px solid var(--line);
-}
-h1 {margin:0;font-size:27px}
-header p {color:#b9d1e8;font-size:13px}
-.live-dot {
-  display:inline-block;width:9px;height:9px;border-radius:50%;
-  background:#ff4242;animation:pulse 1s infinite;
-}
-@keyframes pulse {
-  50% {opacity:.25;box-shadow:0 0 12px red}
-}
-.container {max-width:900px;margin:auto;padding:14px}
-.toolbar {display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-button,input {
-  border:1px solid var(--line);border-radius:10px;
-  padding:11px;background:var(--panel);color:white;font-size:14px;
-}
-button {cursor:pointer}
-button.active {background:#087b59;border-color:var(--green)}
-input {width:100%;margin-bottom:12px}
-.info {color:var(--muted);font-size:12px;margin:12px 0}
-.card {
-  position:relative;overflow:hidden;
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:15px;padding:15px;margin-bottom:13px;
-}
-.card:before {
-  content:"";position:absolute;left:-50%;top:0;width:200%;height:3px;
-  background:linear-gradient(90deg,#00e5ff,#25ff86,#a855f7,#ffb52e,#00e5ff);
-  background-size:200% 100%;animation:rainbow 4s linear infinite;
-}
-@keyframes rainbow {to {background-position:200% 0}}
-.league {color:#a8bed8;font-size:12px;margin-bottom:13px}
-.teams {display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.team {text-align:center;min-width:0}
-.team img {
-  width:49px;height:49px;object-fit:contain;
-  display:block;margin:0 auto 8px;
-}
-.team-name {font-size:14px;font-weight:bold;overflow-wrap:anywhere}
-.score {font-size:20px;font-weight:bold;margin:9px 0}
-.status {text-align:center;font-size:12px;color:var(--green);margin:12px 0 5px}
-.match-time {text-align:center;color:var(--muted);font-size:12px}
-.details {
-  display:block;text-align:center;margin-top:12px;
-  padding:10px;border-radius:9px;background:#172a40;
-  color:#b8f5de;text-decoration:none;font-size:13px;
-}
-.empty {text-align:center;padding:30px;color:var(--muted)}
-.calculator {margin-top:24px}
-.calculator h2 {font-size:19px}
-.calc-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.calc-grid label {font-size:12px;color:var(--muted)}
-.calc-grid input {margin-top:6px}
-.result {
-  margin-top:12px;padding:14px;background:#0a3028;
-  border-radius:10px;line-height:1.9;
-}
-footer {
-  padding:25px 12px;text-align:center;
-  color:var(--muted);font-size:12px;
-}
-footer a {color:var(--green)}
-@media(max-width:420px) {
-  h1 {font-size:23px}
-  .container {padding:10px}
-  .card {padding:12px}
-}
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#07101d;color:white;font-family:Arial,sans-serif}
+body.overlay{background:transparent}
+button,select,input{padding:11px;border-radius:9px;border:1px solid #34506c;background:#14243a;color:white;font-size:15px}
+button{cursor:pointer;background:#087a55}
+.wrap{max-width:900px;margin:auto;padding:14px}
+h1{text-align:center;font-size:24px}
+.note{color:#b5c9dd;font-size:13px;line-height:1.7}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1;min-width:130px}
+.card{background:#102139;border:1px solid #304761;border-radius:12px;padding:13px;margin:10px 0}
+#matches{display:grid;gap:8px}
+.match{width:100%;text-align:left;background:#102139}
+.match b{display:block;margin-bottom:6px}
+.match small{color:#bbd2e7}
+a{color:#55efb3}
+.hidden{display:none!important}
+#scoreboard{width:100%;max-width:1100px;margin:auto}
+.top{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:center;gap:5px}
+.team{padding:12px 4px;text-align:center;font-weight:bold;font-size:clamp(12px,3vw,25px);border-radius:13px}
+.home{background:linear-gradient(110deg,#092bca,#0067bd);border:2px solid #29cfff}
+.away{background:linear-gradient(110deg,#006c38,#064a22);border:2px solid #29ed9d}
+.flag{font-size:clamp(22px,5vw,42px);display:block;margin-bottom:5px}
+.center{text-align:center;background:#090b10;border:2px solid #f9d34b;border-radius:12px;padding:9px 3px}
+#score{font-size:clamp(19px,5vw,36px);font-weight:bold}
+#overs{font-size:clamp(12px,2.5vw,19px);margin-top:5px}
+.bar{margin-top:7px;border-radius:18px;padding:10px;background:#071f7b;border:2px solid #39caff;font-weight:bold;font-size:clamp(12px,2.6vw,19px)}
+#status{color:#f6f7b1;font-size:12px;text-align:center;padding:7px}
+.players{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:150px}
+.player{background:linear-gradient(140deg,#034dbe,#06215c);border:2px solid #2ab5ff;border-radius:8px;min-width:0;overflow:hidden}
+.player h3{font-size:clamp(10px,2.5vw,17px);text-align:center;margin:0;padding:8px 2px;background:#071d74}
+.player div{padding:10px 5px;font-size:clamp(10px,2.5vw,16px);overflow-wrap:anywhere}
+.player footer{background:#ffd323;color:#111;font-weight:bold;padding:8px 3px;font-size:clamp(9px,2vw,14px)}
+#powered{font-size:10px;text-align:center;margin:8px;color:#fff}
+@media(max-width:500px){.players{margin-top:80px}.team{padding:8px 2px}}
 </style>
 </head>
 <body>
+<div id="control" class="wrap">
+<h1>🏏 Rizwan Cricket Overlay</h1>
+<div class="card">
+<b>مرحلہ 1: کرکٹ میچ لوڈ کریں</b>
+<p class="note">مفت SportScore ڈیٹا۔ میچ منتخب کرنے کے بعد اسی میچ کا اسکور اوورلے پر دکھانے کی کوشش ہوگی۔</p>
+<div class="row">
+<button id="load">میچوں کی فہرست لوڈ کریں</button>
+<button id="refresh">اسکور ریفریش کریں</button>
+</div>
+<p id="message" class="note">انٹرنیٹ سے میچوں کا ڈیٹا حاصل کرنے کے لیے بٹن دبائیں۔</p>
+<input id="search" placeholder="ٹیم یا ٹورنامنٹ تلاش کریں" style="width:100%">
+<div id="matches"></div>
+</div>
+<div class="card">
+<b>مرحلہ 2: اوورلے کھولیں</b>
+<p class="note">میچ منتخب کرنے کے بعد نیچے بٹن دبائیں۔ اوورلے کا لنک PRISM Live میں استعمال کریں۔</p>
+<button id="open" style="width:100%">منتخب میچ کا اوورلے کھولیں</button>
+<p class="note">PRISM میں Browser یا Web overlay کا آپشن ہو تو اپنے GitHub Pages URL کے آخر میں <b>?overlay=1</b> لگائیں۔</p>
+</div>
+</div>
 
-<header>
-  <h1>🏏 Rizwan Cricket Live</h1>
-  <p><span class="live-dot"></span> لائیو کرکٹ اسکور اور تمام دستیاب میچ</p>
-</header>
-
-<main class="container">
-  <div class="toolbar">
-    <button class="active" data-filter="all">تمام میچ</button>
-    <button data-filter="live">🔴 لائیو</button>
-    <button data-filter="upcoming">آنے والے</button>
-    <button data-filter="finished">مکمل</button>
-    <button id="refresh">↻ ریفریش</button>
-  </div>
-
-  <input id="search" type="search"
-    placeholder="ٹیم یا ٹورنامنٹ تلاش کریں...">
-
-  <div class="info" id="info">ڈیٹا لوڈ ہو رہا ہے...</div>
-  <section id="matches" aria-live="polite">
-    <div class="empty">کرکٹ میچ لوڈ ہو رہے ہیں...</div>
-  </section>
-
-  <section class="card calculator">
-    <h2>🎯 ٹارگٹ کیلکولیٹر</h2>
-    <p class="info">اگر API ٹارگٹ نہ دے تو یہاں خود درج کریں۔</p>
-    <div class="calc-grid">
-      <label>ہدف (Target)
-        <input id="target" type="number" min="1" placeholder="مثلاً 180">
-      </label>
-      <label>موجودہ رنز
-        <input id="runs" type="number" min="0" value="100">
-      </label>
-      <label>کھیلے گئے اوور
-        <input id="overs" type="number" min="0" max="50" step="0.1" value="10">
-      </label>
-      <label>کل اوور
-        <input id="totalOvers" type="number" min="1" max="100" value="20">
-      </label>
-    </div>
-    <button id="calculate" style="width:100%;margin-top:8px">
-      ٹارگٹ کا حساب کریں
-    </button>
-    <div class="result" id="result">
-      ٹارگٹ درج کرکے حساب کریں۔
-    </div>
-  </section>
-</main>
-
-<footer>
-  ڈیٹا فراہم کنندہ:
-  <a href="https://sportscore.com/" target="_blank" rel="noopener">
-    Powered by SportScore
-  </a>
-  <p>اسکور کی دستیابی اور درستگی ڈیٹا فراہم کنندہ پر منحصر ہے۔</p>
-</footer>
+<div id="view" class="hidden">
+<div id="scoreboard">
+<div class="top">
+<div class="team home"><span class="flag" id="flag1">🏴</span><span id="team1">TEAM A</span></div>
+<div class="center"><div id="score">— / —</div><div id="overs">— overs</div></div>
+<div class="team away"><span class="flag" id="flag2">🏏</span><span id="team2">TEAM B</span></div>
+</div>
+<div class="bar">CRR: <span id="crr">—</span>　 |　 RRR: <span id="rrr">—</span></div>
+<div id="status">اسکور ڈیٹا لوڈ ہو رہا ہے...</div>
+<div class="players">
+<div class="player"><h3>🏏 BATSMAN 1</h3><div id="batter1">نام: —<br>رنز: —</div><footer>4s: —　6s: —</footer></div>
+<div class="player"><h3>🏏 BATSMAN 2</h3><div id="batter2">نام: —<br>رنز: —</div><footer>4s: —　6s: —</footer></div>
+<div class="player"><h3>🎯 BOWLER</h3><div id="bowler">نام: —<br>اوور: —</div><footer>ECON: —</footer></div>
+</div>
+<div id="powered"><a href="https://sportscore.com/" target="_blank">Powered by SportScore</a></div>
+</div>
+</div>
 
 <script>
-"use strict";
+const API="https://sportscore.com/api/widget/";
+const KEY="rizwan_selected_cricket_match";
+const $=id=>document.getElementById(id);
+let games=[],selected=null,detail=null,busy=false;
 
-const API =
- "https://sportscore.com/api/widget/matches/?sport=cricket&limit=50";
-
-const $ = id => document.getElementById(id);
-
-let allMatches = [];
-let currentFilter = "all";
-let lastUpdated = null;
-let loading = false;
-
-function safeText(value, fallback = "") {
-  return value == null || value === "" ? fallback : String(value);
+function text(v,f="—"){
+ if(v===null||v===undefined||v==="")return f;
+ if(typeof v==="object")return f;
+ return String(v);
 }
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, ch => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  })[ch]);
+function slugOf(m){
+ if(m.slug)return m.slug;
+ if(m.url){
+  let p=m.url.match(/\/cricket\/match\/([^/?#]+)/i);
+  if(p)return p[1];
+ }
+ return "";
 }
-
-function getStatus(match) {
-  const status = safeText(match.status).toLowerCase();
-  if (status === "live" || status === "in_progress")
-    return "live";
-  if (status === "finished" || status === "completed")
-    return "finished";
-  if (status === "upcoming" || status === "not_started")
-    return "upcoming";
-
-  const label = safeText(match.status_text).toLowerCase();
-  if (/not started|upcoming|scheduled/.test(label))
-    return "upcoming";
-  if (/finished|complete|result|ended/.test(label))
-    return "finished";
-  if (/innings|live|in progress/.test(label))
-    return "live";
-  return "other";
+async function getJSON(url){
+ const r=await fetch(url,{cache:"no-store"});
+ if(!r.ok)throw Error("HTTP "+r.status);
+ return r.json();
 }
-
-function formatTime(value) {
-  if (!value) return "وقت دستیاب نہیں";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "وقت دستیاب نہیں";
-  return date.toLocaleString("ur-PK", {
-    timeZone:"Asia/Karachi",
-    dateStyle:"medium",
-    timeStyle:"short"
-  }) + " (پاکستان)";
+function setMessage(s){$("message").textContent=s}
+function searchList(){
+ let q=$("search").value.toLowerCase();
+ $("matches").innerHTML="";
+ games.filter(m=>(text(m.home)+" "+text(m.away)+" "+text(m.competition)).toLowerCase().includes(q))
+ .forEach(m=>{
+  let b=document.createElement("button");
+  b.className="match";
+  b.innerHTML="<b></b><small></small>";
+  b.children[0].textContent=text(m.home)+" vs "+text(m.away);
+  b.children[1].textContent=text(m.competition)+" · "+text(m.status_text,m.status||"");
+  b.onclick=()=>choose(m);
+  $("matches").appendChild(b);
+ });
+ if(!$("matches").children.length)$("matches").textContent="کوئی میچ نہیں ملا۔";
 }
-
-function scoreText(value) {
-  if (value === null || value === undefined || value === "")
-    return "اسکور دستیاب نہیں";
-  if (value === "-") return "اسکور ابھی نہیں";
-  return safeText(value, "اسکور دستیاب نہیں");
+async function loadGames(){
+ try{
+  setMessage("میچوں کی فہرست حاصل ہو رہی ہے...");
+  let d=await getJSON(API+"matches/?sport=cricket&limit=50");
+  games=Array.isArray(d.matches)?d.matches:[];
+  searchList();
+  setMessage("میچ دستیاب: "+games.length+"۔ جس میچ کا اوورلے چاہیے اسے منتخب کریں۔");
+ }catch(e){setMessage("فہرست نہیں ملی۔ انٹرنیٹ/API چیک کریں: "+e.message)}
 }
-
-function teamHTML(name, logo, score) {
-  const teamName = escapeHTML(safeText(name, "نام دستیاب نہیں"));
-  const scoreValue = escapeHTML(scoreText(score));
-  const logoURL = safeText(logo);
-
-  const image = /^https:\/\//i.test(logoURL)
-    ? `<img src="${escapeHTML(logoURL)}"
-         alt="${teamName}" loading="lazy"
-         referrerpolicy="no-referrer"
-         onerror="this.style.display='none'">`
-    : `<div style="font-size:35px">🏏</div>`;
-
-  return `<div class="team">
-    ${image}
-    <div class="team-name">${teamName}</div>
-    <div class="score">${scoreValue}</div>
-  </div>`;
+function choose(m){
+ selected=m;
+ localStorage.setItem(KEY,JSON.stringify({
+  slug:slugOf(m),home:m.home,away:m.away,
+  home_logo:m.home_logo,away_logo:m.away_logo
+ }));
+ setMessage("منتخب میچ: "+m.home+" vs "+m.away+"۔ اسکور حاصل کیا جا رہا ہے۔");
+ loadDetail();
 }
-
-function matchHTML(match) {
-  const home = safeText(match.home, "Home");
-  const away = safeText(match.away, "Away");
-  const status = getStatus(match);
-
-  const statusLabel = status === "live" ? "🔴 LIVE" :
-    status === "upcoming" ? "⏳ آنے والا میچ" :
-    status === "finished" ? "مکمل" :
-    safeText(match.status_text, "حالت دستیاب نہیں");
-
-  const detailPath = safeText(match.url);
-  const detailURL = /^\/cricket\/match\/[a-z0-9/-]+\/?$/i.test(detailPath)
-    ? "https://sportscore.com" + detailPath
-    : "";
-
-  return `<article class="card">
-    <div class="league">
-      🏆 ${escapeHTML(safeText(match.competition, "کرکٹ"))}
-    </div>
-    <div class="teams">
-      ${teamHTML(home, match.home_logo, match.home_score)}
-      ${teamHTML(away, match.away_logo, match.away_score)}
-    </div>
-    <div class="status">${escapeHTML(statusLabel)}</div>
-    <div class="match-time">
-      ${escapeHTML(safeText(match.status_text, ""))}
-      ${match.time ? " · " + escapeHTML(formatTime(match.time)) : ""}
-    </div>
-    ${detailURL
-      ? `<a class="details" href="${escapeHTML(detailURL)}"
-           target="_blank" rel="noopener">میچ کی تفصیل ↗</a>`
-      : ""}
-  </article>`;
-}
-
-function renderMatches() {
-  const query = $("search").value.trim().toLowerCase();
-
-  const filtered = allMatches.filter(match => {
-    const status = getStatus(match);
-    const matchesFilter =
-      currentFilter === "all" ||
-      status === currentFilter;
-
-    const searchText = [
-      match.home, match.away, match.competition, match.status_text
-    ].map(x => safeText(x)).join(" ").toLowerCase();
-
-    return matchesFilter && searchText.includes(query);
-  });
-
-  $("matches").innerHTML = filtered.length
-    ? filtered.map(matchHTML).join("")
-    : '<div class="empty">اس انتخاب کے مطابق کوئی میچ نہیں ملا۔</div>';
-
-  $("info").textContent =
-    `دستیاب میچ: ${allMatches.length} | دکھائے جا رہے ہیں: ${filtered.length}` +
-    (lastUpdated ? ` | آخری اپڈیٹ: ${lastUpdated.toLocaleTimeString("ur-PK", {
-      timeZone:"Asia/Karachi"
-    })}` : "");
-}
-
-async function loadMatches() {
-  if (loading) return;
-  loading = true;
-  $("refresh").disabled = true;
-  $("refresh").textContent = "لوڈ ہو رہا ہے...";
-
-  try {
-    const response = await fetch(API, {
-      method:"GET",
-      cache:"no-store",
-      headers:{"Accept":"application/json"}
-    });
-
-    if (!response.ok)
-      throw new Error("HTTP " + response.status);
-
-    const data = await response.json();
-
-    if (!data || !Array.isArray(data.matches))
-      throw new Error("ڈیٹا کا فارمیٹ درست نہیں");
-
-    allMatches = data.matches;
-    lastUpdated = new Date();
-    renderMatches();
-  } catch (error) {
-    $("info").textContent =
-      "ڈیٹا حاصل نہیں ہوا۔ انٹرنیٹ یا API کی دستیابی چیک کریں۔";
-
-    if (!allMatches.length) {
-      $("matches").innerHTML =
-        `<div class="empty">
-          کرکٹ ڈیٹا لوڈ نہیں ہو سکا۔<br><br>
-          ممکن ہے API عارضی طور پر بند ہو یا درخواست محدود ہو۔
-          <br>ریفریش کرکے دوبارہ کوشش کریں۔
-        </div>`;
-    }
-  } finally {
-    loading = false;
-    $("refresh").disabled = false;
-    $("refresh").textContent = "↻ ریفریش";
+function findValue(obj,keys,depth=0){
+ if(!obj||typeof obj!=="object"||depth>5)return undefined;
+ for(let k of keys)if(obj[k]!==undefined&&obj[k]!==null&&obj[k]!=="")return obj[k];
+ for(let v of Object.values(obj)){
+  if(v&&typeof v==="object"){
+   let x=findValue(v,keys,depth+1);
+   if(x!==undefined)return x;
   }
+ }
+ return undefined;
 }
-
-document.querySelectorAll("[data-filter]").forEach(button => {
-  button.addEventListener("click", () => {
-    currentFilter = button.dataset.filter;
-    document.querySelectorAll("[data-filter]").forEach(btn =>
-      btn.classList.toggle("active", btn === button)
-    );
-    renderMatches();
-  });
-});
-
-$("search").addEventListener("input", renderMatches);
-$("refresh").addEventListener("click", loadMatches);
-
-function calculateTarget() {
-  const target = Number($("target").value);
-  const runs = Number($("runs").value);
-  const overs = Number($("overs").value);
-  const totalOvers = Number($("totalOvers").value);
-  const result = $("result");
-
-  if (
-    $("target").value === "" ||
-    $("runs").value === "" ||
-    $("overs").value === "" ||
-    $("totalOvers").value === "" ||
-    !Number.isFinite(target) || target < 1 ||
-    !Number.isFinite(runs) || runs < 0 ||
-    !Number.isFinite(overs) || overs < 0 ||
-    !Number.isFinite(totalOvers) || totalOvers <= 0 ||
-    overs > totalOvers
-  ) {
-    result.textContent = "براہ کرم درست ہدف، رنز اور اوور درج کریں۔";
-    return;
-  }
-
-  const balls = Math.round(overs) * 6 +
-    Math.round((overs % 1) * 10);
-
-  const totalBalls = Math.round(totalOvers * 6);
-
-  if (balls > totalBalls || balls < 0) {
-    result.textContent = "اوور کی تعداد درست درج کریں۔";
-    return;
-  }
-
-  const remaining = Math.max(0, target - runs);
-  const ballsLeft = Math.max(0, totalBalls - balls);
-  const oversLeft = Math.floor(ballsLeft / 6) +
-    (ballsLeft % 6) / 10;
-
-  let rrr = "—";
-  if (ballsLeft > 0)
-    rrr = (remaining / (ballsLeft / 6)).toFixed(2);
-
-  result.innerHTML =
-    `باقی رنز: <strong>${remaining}</strong><br>` +
-    `باقی گیندیں: <strong>${ballsLeft}</strong><br>` +
-    `باقی اوور: <strong>${oversLeft.toFixed(1)}</strong><br>` +
-    `درکار رن ریٹ: <strong>${rrr}</strong>` +
-    (remaining === 0 ? "<br>🏆 ہدف حاصل ہو گیا!" :
-      ballsLeft === 0 ? "<br>اننگز کے اوور مکمل ہیں۔" : "");
+function display(id,value){$(id).textContent=text(value)}
+async function loadDetail(){
+ if(busy)return;
+ let raw=localStorage.getItem(KEY);
+ if(!raw)return;
+ try{selected=selected||JSON.parse(raw)}catch(e){}
+ if(!selected||!selected.slug){
+  $("status").textContent="اس میچ کا slug نہیں ملا؛ دوسرا میچ منتخب کریں۔";
+  return;
+ }
+ busy=true;
+ try{
+  let url=API+"match/?sport=cricket&slug="+encodeURIComponent(selected.slug);
+  detail=await getJSON(url);
+  let m=detail.match||detail.data||detail;
+  display("team1",findValue(m,["home","home_name","homeTeamName","home_team_name"])||selected.home);
+  display("team2",findValue(m,["away","away_name","awayTeamName","away_team_name"])||selected.away);
+  const s1=findValue(m,["home_score","homeScore"]);
+  const s2=findValue(m,["away_score","awayScore"]);
+  const score=findValue(m,["score","score_text","scoreText","current_score"]);
+  display("score",score!==undefined?score:
+    (s1!==undefined||s2!==undefined)?text(s1,"0")+" / "+text(s2,"0"):"— / —");
+  display("overs",findValue(m,["overs","overs_text","over","current_over","oversText"]));
+  display("crr",findValue(m,["crr","current_run_rate","run_rate"]));
+  display("rrr",findValue(m,["rrr","required_run_rate"]));
+  display("status",findValue(m,["status_text","status","match_status"]));
+  const b1=findValue(m,["batsman1","batter1","striker"]);
+  const b2=findValue(m,["batsman2","batter2","non_striker"]);
+  const bw=findValue(m,["bowler","current_bowler"]);
+  $("batter1").textContent=typeof b1==="object"&&b1?text(b1.name)+" · "+text(b1.runs)+" runs":text(b1);
+  $("batter2").textContent=typeof b2==="object"&&b2?text(b2.name)+" · "+text(b2.runs)+" runs":text(b2);
+  $("bowler").textContent=typeof bw==="object"&&bw?text(bw.name)+" · "+text(bw.overs)+" ov":text(bw);
+ }catch(e){
+  $("status").textContent="میچ کی تفصیل نہیں ملی۔ API کی ساخت یا slug چیک کریں۔";
+ }finally{busy=false}
 }
-
-$("calculate").addEventListener("click", calculateTarget);
-
-// پہلی مرتبہ لوڈ کریں، پھر ہر 30 سیکنڈ بعد تازہ ڈیٹا لیں۔
-loadMatches();
-setInterval(loadMatches, 30000);
+$("load").onclick=loadGames;
+$("refresh").onclick=loadDetail;
+$("search").oninput=searchList;
+$("open").onclick=()=>{
+ if(!localStorage.getItem(KEY)){setMessage("پہلے میچ منتخب کریں۔");return}
+ let u=new URL(location.href);u.searchParams.set("overlay","1");
+ window.open(u.href,"_blank");
+};
+function initOverlay(){
+ $("control").classList.add("hidden");
+ $("view").classList.remove("hidden");
+ document.body.classList.add("overlay");
+ try{selected=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+ if(selected){
+  display("team1",selected.home);display("team2",selected.away);
+  $("flag1").textContent="🏴";$("flag2").textContent="🏏";
+  loadDetail();
+ }else $("status").textContent="پہلے مرکزی ویب سائٹ پر میچ منتخب کریں۔";
+ setInterval(()=>{
+  try{
+   let s=JSON.parse(localStorage.getItem(KEY)||"null");
+   if(s&&(!selected||s.slug!==selected.slug)){
+    selected=s;
+    display("team1",s.home);display("team2",s.away);
+    loadDetail();
+   }else loadDetail();
+  }catch(e){}
+ },30000);
+}
+if(new URLSearchParams(location.search).get("overlay")==="1"){
+ initOverlay();
+}else{
+ loadGames();
+}
 </script>
 </body>
 </html>
