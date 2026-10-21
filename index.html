@@ -4,120 +4,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rizwan Cricket Overlay</title>
+<title>Rizwan Cricket Live</title>
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;background:transparent;color:white;
-  font-family:Arial,sans-serif;overflow:hidden
+:root {
+  --bg:#07111f; --panel:#101e30; --line:#263951;
+  --text:#f2f7ff; --muted:#9db0c8; --green:#20e69a;
 }
-.board{
-  width:100%;max-width:1000px;margin:15px auto;
-  padding:16px;border:2px solid #18e5b0;border-radius:18px;
-  background:linear-gradient(120deg,#06152bfa,#111827f5);
-  box-shadow:0 0 22px #00e5a455
+* {box-sizing:border-box}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;
 }
-.heading{
-  text-align:center;color:#18e5b0;font-size:clamp(14px,3vw,22px);
-  font-weight:bold;letter-spacing:2px;margin-bottom:14px
+header {
+  padding:22px 14px;text-align:center;
+  background:linear-gradient(135deg,#063b31,#101e30,#15254a);
+  border-bottom:1px solid var(--line);
 }
-.teams{
-  display:grid;grid-template-columns:1fr auto 1fr;
-  align-items:center;gap:12px;text-align:center
+h1 {margin:0;font-size:27px}
+header p {color:#b9d1e8;font-size:13px}
+.live-dot {
+  display:inline-block;width:9px;height:9px;border-radius:50%;
+  background:#ff4242;animation:pulse 1s infinite;
 }
-.team{font-size:clamp(15px,3.5vw,25px);font-weight:bold}
-.flag{font-size:clamp(25px,5vw,42px)}
-.score{
-  font-size:clamp(30px,7vw,54px);font-weight:900;
-  color:#fff;text-shadow:0 0 14px #00d9ff
+@keyframes pulse {
+  50% {opacity:.25;box-shadow:0 0 12px red}
 }
-.middle{
-  font-size:clamp(11px,2.5vw,16px);color:#ffd166;
-  font-weight:bold;white-space:nowrap
+.container {max-width:900px;margin:auto;padding:14px}
+.toolbar {display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+button,input {
+  border:1px solid var(--line);border-radius:10px;
+  padding:11px;background:var(--panel);color:white;font-size:14px;
 }
-.details{
-  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;
-  margin-top:15px
+button {cursor:pointer}
+button.active {background:#087b59;border-color:var(--green)}
+input {width:100%;margin-bottom:12px}
+.info {color:var(--muted);font-size:12px;margin:12px 0}
+.card {
+  position:relative;overflow:hidden;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:15px;padding:15px;margin-bottom:13px;
 }
-.pill{
-  background:#ffffff12;border:1px solid #ffffff25;
-  padding:9px 13px;border-radius:9px;font-size:clamp(11px,2.5vw,15px)
+.card:before {
+  content:"";position:absolute;left:-50%;top:0;width:200%;height:3px;
+  background:linear-gradient(90deg,#00e5ff,#25ff86,#a855f7,#ffb52e,#00e5ff);
+  background-size:200% 100%;animation:rainbow 4s linear infinite;
 }
-.status{text-align:center;margin-top:12px;color:#9fb4d0;font-size:11px}
-@media(max-width:450px){
- .board{padding:10px;margin:5px auto}
- .teams{gap:5px}
- .pill{padding:7px}
+@keyframes rainbow {to {background-position:200% 0}}
+.league {color:#a8bed8;font-size:12px;margin-bottom:13px}
+.teams {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.team {text-align:center;min-width:0}
+.team img {
+  width:49px;height:49px;object-fit:contain;
+  display:block;margin:0 auto 8px;
+}
+.team-name {font-size:14px;font-weight:bold;overflow-wrap:anywhere}
+.score {font-size:20px;font-weight:bold;margin:9px 0}
+.status {text-align:center;font-size:12px;color:var(--green);margin:12px 0 5px}
+.match-time {text-align:center;color:var(--muted);font-size:12px}
+.details {
+  display:block;text-align:center;margin-top:12px;
+  padding:10px;border-radius:9px;background:#172a40;
+  color:#b8f5de;text-decoration:none;font-size:13px;
+}
+.empty {text-align:center;padding:30px;color:var(--muted)}
+.calculator {margin-top:24px}
+.calculator h2 {font-size:19px}
+.calc-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.calc-grid label {font-size:12px;color:var(--muted)}
+.calc-grid input {margin-top:6px}
+.result {
+  margin-top:12px;padding:14px;background:#0a3028;
+  border-radius:10px;line-height:1.9;
+}
+footer {
+  padding:25px 12px;text-align:center;
+  color:var(--muted);font-size:12px;
+}
+footer a {color:var(--green)}
+@media(max-width:420px) {
+  h1 {font-size:23px}
+  .container {padding:10px}
+  .card {padding:12px}
 }
 </style>
 </head>
 <body>
-<div class="board">
-  <div class="heading">🏏 RIZWAN CRICKET LIVE</div>
-  <div class="teams">
-    <div class="team">
-      <div class="flag" id="flagA">🇵🇰</div>
-      <div id="teamA">PAKISTAN</div>
-      <div class="score" id="scoreA">0/0</div>
-    </div>
-    <div class="middle">
-      <div>VS</div>
-      <div id="oversA">0.0 OV</div>
-      <div style="margin-top:8px">TARGET</div>
-      <div id="target">—</div>
-    </div>
-    <div class="team">
-      <div class="flag" id="flagB">🏴</div>
-      <div id="teamB">ENGLAND</div>
-      <div class="score" id="scoreB">0/0</div>
-    </div>
+
+<header>
+  <h1>🏏 Rizwan Cricket Live</h1>
+  <p><span class="live-dot"></span> لائیو کرکٹ اسکور اور تمام دستیاب میچ</p>
+</header>
+
+<main class="container">
+  <div class="toolbar">
+    <button class="active" data-filter="all">تمام میچ</button>
+    <button data-filter="live">🔴 لائیو</button>
+    <button data-filter="upcoming">آنے والے</button>
+    <button data-filter="finished">مکمل</button>
+    <button id="refresh">↻ ریفریش</button>
   </div>
-  <div class="details">
-    <div class="pill">CRR: <b id="crr">0.00</b></div>
-    <div class="pill">RRR: <b id="rrr">—</b></div>
-    <div class="pill">MATCH: <b id="matchStatus">WAITING</b></div>
-  </div>
-  <div class="status" id="updated">اسکور ڈیٹا لوڈ ہو رہا ہے...</div>
-</div>
+
+  <input id="search" type="search"
+    placeholder="ٹیم یا ٹورنامنٹ تلاش کریں...">
+
+  <div class="info" id="info">ڈیٹا لوڈ ہو رہا ہے...</div>
+  <section id="matches" aria-live="polite">
+    <div class="empty">کرکٹ میچ لوڈ ہو رہے ہیں...</div>
+  </section>
+
+  <section class="card calculator">
+    <h2>🎯 ٹارگٹ کیلکولیٹر</h2>
+    <p class="info">اگر API ٹارگٹ نہ دے تو یہاں خود درج کریں۔</p>
+    <div class="calc-grid">
+      <label>ہدف (Target)
+        <input id="target" type="number" min="1" placeholder="مثلاً 180">
+      </label>
+      <label>موجودہ رنز
+        <input id="runs" type="number" min="0" value="100">
+      </label>
+      <label>کھیلے گئے اوور
+        <input id="overs" type="number" min="0" max="50" step="0.1" value="10">
+      </label>
+      <label>کل اوور
+        <input id="totalOvers" type="number" min="1" max="100" value="20">
+      </label>
+    </div>
+    <button id="calculate" style="width:100%;margin-top:8px">
+      ٹارگٹ کا حساب کریں
+    </button>
+    <div class="result" id="result">
+      ٹارگٹ درج کرکے حساب کریں۔
+    </div>
+  </section>
+</main>
+
+<footer>
+  ڈیٹا فراہم کنندہ:
+  <a href="https://sportscore.com/" target="_blank" rel="noopener">
+    Powered by SportScore
+  </a>
+  <p>اسکور کی دستیابی اور درستگی ڈیٹا فراہم کنندہ پر منحصر ہے۔</p>
+</footer>
 
 <script>
-const params = new URLSearchParams(location.search);
-const dataUrl = params.get("data") || "./score.json";
+"use strict";
 
-function setText(id, value) {
-  document.getElementById(id).textContent = value ?? "—";
+const API =
+ "https://sportscore.com/api/widget/matches/?sport=cricket&limit=50";
+
+const $ = id => document.getElementById(id);
+
+let allMatches = [];
+let currentFilter = "all";
+let lastUpdated = null;
+let loading = false;
+
+function safeText(value, fallback = "") {
+  return value == null || value === "" ? fallback : String(value);
 }
 
-async function updateScore() {
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[ch]);
+}
+
+function getStatus(match) {
+  const status = safeText(match.status).toLowerCase();
+  if (status === "live" || status === "in_progress")
+    return "live";
+  if (status === "finished" || status === "completed")
+    return "finished";
+  if (status === "upcoming" || status === "not_started")
+    return "upcoming";
+
+  const label = safeText(match.status_text).toLowerCase();
+  if (/not started|upcoming|scheduled/.test(label))
+    return "upcoming";
+  if (/finished|complete|result|ended/.test(label))
+    return "finished";
+  if (/innings|live|in progress/.test(label))
+    return "live";
+  return "other";
+}
+
+function formatTime(value) {
+  if (!value) return "وقت دستیاب نہیں";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "وقت دستیاب نہیں";
+  return date.toLocaleString("ur-PK", {
+    timeZone:"Asia/Karachi",
+    dateStyle:"medium",
+    timeStyle:"short"
+  }) + " (پاکستان)";
+}
+
+function scoreText(value) {
+  if (value === null || value === undefined || value === "")
+    return "اسکور دستیاب نہیں";
+  if (value === "-") return "اسکور ابھی نہیں";
+  return safeText(value, "اسکور دستیاب نہیں");
+}
+
+function teamHTML(name, logo, score) {
+  const teamName = escapeHTML(safeText(name, "نام دستیاب نہیں"));
+  const scoreValue = escapeHTML(scoreText(score));
+  const logoURL = safeText(logo);
+
+  const image = /^https:\/\//i.test(logoURL)
+    ? `<img src="${escapeHTML(logoURL)}"
+         alt="${teamName}" loading="lazy"
+         referrerpolicy="no-referrer"
+         onerror="this.style.display='none'">`
+    : `<div style="font-size:35px">🏏</div>`;
+
+  return `<div class="team">
+    ${image}
+    <div class="team-name">${teamName}</div>
+    <div class="score">${scoreValue}</div>
+  </div>`;
+}
+
+function matchHTML(match) {
+  const home = safeText(match.home, "Home");
+  const away = safeText(match.away, "Away");
+  const status = getStatus(match);
+
+  const statusLabel = status === "live" ? "🔴 LIVE" :
+    status === "upcoming" ? "⏳ آنے والا میچ" :
+    status === "finished" ? "مکمل" :
+    safeText(match.status_text, "حالت دستیاب نہیں");
+
+  const detailPath = safeText(match.url);
+  const detailURL = /^\/cricket\/match\/[a-z0-9/-]+\/?$/i.test(detailPath)
+    ? "https://sportscore.com" + detailPath
+    : "";
+
+  return `<article class="card">
+    <div class="league">
+      🏆 ${escapeHTML(safeText(match.competition, "کرکٹ"))}
+    </div>
+    <div class="teams">
+      ${teamHTML(home, match.home_logo, match.home_score)}
+      ${teamHTML(away, match.away_logo, match.away_score)}
+    </div>
+    <div class="status">${escapeHTML(statusLabel)}</div>
+    <div class="match-time">
+      ${escapeHTML(safeText(match.status_text, ""))}
+      ${match.time ? " · " + escapeHTML(formatTime(match.time)) : ""}
+    </div>
+    ${detailURL
+      ? `<a class="details" href="${escapeHTML(detailURL)}"
+           target="_blank" rel="noopener">میچ کی تفصیل ↗</a>`
+      : ""}
+  </article>`;
+}
+
+function renderMatches() {
+  const query = $("search").value.trim().toLowerCase();
+
+  const filtered = allMatches.filter(match => {
+    const status = getStatus(match);
+    const matchesFilter =
+      currentFilter === "all" ||
+      status === currentFilter;
+
+    const searchText = [
+      match.home, match.away, match.competition, match.status_text
+    ].map(x => safeText(x)).join(" ").toLowerCase();
+
+    return matchesFilter && searchText.includes(query);
+  });
+
+  $("matches").innerHTML = filtered.length
+    ? filtered.map(matchHTML).join("")
+    : '<div class="empty">اس انتخاب کے مطابق کوئی میچ نہیں ملا۔</div>';
+
+  $("info").textContent =
+    `دستیاب میچ: ${allMatches.length} | دکھائے جا رہے ہیں: ${filtered.length}` +
+    (lastUpdated ? ` | آخری اپڈیٹ: ${lastUpdated.toLocaleTimeString("ur-PK", {
+      timeZone:"Asia/Karachi"
+    })}` : "");
+}
+
+async function loadMatches() {
+  if (loading) return;
+  loading = true;
+  $("refresh").disabled = true;
+  $("refresh").textContent = "لوڈ ہو رہا ہے...";
+
   try {
-    const response = await fetch(dataUrl + "?t=" + Date.now(), {
-      cache: "no-store"
+    const response = await fetch(API, {
+      method:"GET",
+      cache:"no-store",
+      headers:{"Accept":"application/json"}
     });
-    if (!response.ok) throw new Error("Score file unavailable");
 
-    const d = await response.json();
+    if (!response.ok)
+      throw new Error("HTTP " + response.status);
 
-    setText("teamA", d.teamA || "PAKISTAN");
-    setText("teamB", d.teamB || "ENGLAND");
-    setText("flagA", d.flagA || "🇵🇰");
-    setText("flagB", d.flagB || "🏴");
-    setText("scoreA", `${d.runsA ?? 0}/${d.wicketsA ?? 0}`);
-    setText("scoreB", `${d.runsB ?? 0}/${d.wicketsB ?? 0}`);
-    setText("oversA", `${d.oversA ?? "0.0"} OV`);
-    setText("target", d.target ?? "—");
-    setText("crr", d.crr ?? "0.00");
-    setText("rrr", d.rrr ?? "—");
-    setText("matchStatus", d.status || "LIVE");
-    setText("updated", "آخری ڈیٹا: " +
-      new Date().toLocaleTimeString());
+    const data = await response.json();
 
+    if (!data || !Array.isArray(data.matches))
+      throw new Error("ڈیٹا کا فارمیٹ درست نہیں");
+
+    allMatches = data.matches;
+    lastUpdated = new Date();
+    renderMatches();
   } catch (error) {
-    setText("updated", "ڈیٹا دستیاب نہیں — دوبارہ کوشش جاری ہے");
+    $("info").textContent =
+      "ڈیٹا حاصل نہیں ہوا۔ انٹرنیٹ یا API کی دستیابی چیک کریں۔";
+
+    if (!allMatches.length) {
+      $("matches").innerHTML =
+        `<div class="empty">
+          کرکٹ ڈیٹا لوڈ نہیں ہو سکا۔<br><br>
+          ممکن ہے API عارضی طور پر بند ہو یا درخواست محدود ہو۔
+          <br>ریفریش کرکے دوبارہ کوشش کریں۔
+        </div>`;
+    }
+  } finally {
+    loading = false;
+    $("refresh").disabled = false;
+    $("refresh").textContent = "↻ ریفریش";
   }
 }
 
-updateScore();
-setInterval(updateScore, 10000);
+document.querySelectorAll("[data-filter]").forEach(button => {
+  button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach(btn =>
+      btn.classList.toggle("active", btn === button)
+    );
+    renderMatches();
+  });
+});
+
+$("search").addEventListener("input", renderMatches);
+$("refresh").addEventListener("click", loadMatches);
+
+function calculateTarget() {
+  const target = Number($("target").value);
+  const runs = Number($("runs").value);
+  const overs = Number($("overs").value);
+  const totalOvers = Number($("totalOvers").value);
+  const result = $("result");
+
+  if (
+    $("target").value === "" ||
+    $("runs").value === "" ||
+    $("overs").value === "" ||
+    $("totalOvers").value === "" ||
+    !Number.isFinite(target) || target < 1 ||
+    !Number.isFinite(runs) || runs < 0 ||
+    !Number.isFinite(overs) || overs < 0 ||
+    !Number.isFinite(totalOvers) || totalOvers <= 0 ||
+    overs > totalOvers
+  ) {
+    result.textContent = "براہ کرم درست ہدف، رنز اور اوور درج کریں۔";
+    return;
+  }
+
+  const balls = Math.round(overs) * 6 +
+    Math.round((overs % 1) * 10);
+
+  const totalBalls = Math.round(totalOvers * 6);
+
+  if (balls > totalBalls || balls < 0) {
+    result.textContent = "اوور کی تعداد درست درج کریں۔";
+    return;
+  }
+
+  const remaining = Math.max(0, target - runs);
+  const ballsLeft = Math.max(0, totalBalls - balls);
+  const oversLeft = Math.floor(ballsLeft / 6) +
+    (ballsLeft % 6) / 10;
+
+  let rrr = "—";
+  if (ballsLeft > 0)
+    rrr = (remaining / (ballsLeft / 6)).toFixed(2);
+
+  result.innerHTML =
+    `باقی رنز: <strong>${remaining}</strong><br>` +
+    `باقی گیندیں: <strong>${ballsLeft}</strong><br>` +
+    `باقی اوور: <strong>${oversLeft.toFixed(1)}</strong><br>` +
+    `درکار رن ریٹ: <strong>${rrr}</strong>` +
+    (remaining === 0 ? "<br>🏆 ہدف حاصل ہو گیا!" :
+      ballsLeft === 0 ? "<br>اننگز کے اوور مکمل ہیں۔" : "");
+}
+
+$("calculate").addEventListener("click", calculateTarget);
+
+// پہلی مرتبہ لوڈ کریں، پھر ہر 30 سیکنڈ بعد تازہ ڈیٹا لیں۔
+loadMatches();
+setInterval(loadMatches, 30000);
 </script>
 </body>
 </html>
