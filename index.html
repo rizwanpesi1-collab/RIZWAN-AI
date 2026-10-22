@@ -3,203 +3,372 @@
 <html lang="ur">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rizwan Cricket Overlay</title>
-
 <style>
+:root{color-scheme:dark}
 *{box-sizing:border-box}
-body{
-  margin:0;background:#080d17;color:#fff;
-  font-family:Arial,sans-serif;padding:16px
-}
-.container{max-width:900px;margin:auto}
-h1{text-align:center;color:#22e6a8;font-size:26px}
-.panel{
-  background:#131d2c;border:1px solid #29394d;
-  border-radius:14px;padding:16px;margin:14px 0
-}
-input,button{
-  width:100%;padding:12px;margin:6px 0;
-  border-radius:8px;border:1px solid #42536b;
-  font-size:15px
-}
-input{background:#080d17;color:#fff}
-button{
-  background:#16c79a;color:#04130f;
-  font-weight:bold;cursor:pointer;border:0
-}
-button.secondary{background:#30435c;color:white}
-.status{color:#f7d774;overflow-wrap:anywhere}
-.scoreboard{
-  background:linear-gradient(135deg,#0b1726,#1a3043);
-  border:2px solid #20e6aa;border-radius:18px;
-  padding:20px;text-align:center
-}
-.teams{
-  display:flex;align-items:center;justify-content:space-around;
-  gap:10px
-}
-.team{width:40%;font-weight:bold;font-size:18px}
-.flag{font-size:42px;display:block;margin-bottom:8px}
-.team-score{font-size:24px;color:#26e8b1;margin-top:8px}
-.middle{font-size:22px;color:#ffd66b;font-weight:bold}
-.small{font-size:13px;color:#c5d2df}
-#output{white-space:pre-wrap;overflow-wrap:anywhere;
-background:#080d17;padding:12px;border-radius:8px}
-.overlay-page{max-width:750px;margin:30px auto}
-a{color:#51d9ff}
+body{margin:0;background:#07101d;color:white;font-family:Arial,sans-serif}
+body.overlay{background:transparent}
+button,input{padding:11px;border-radius:9px;border:1px solid #34506c;background:#14243a;color:white;font-size:14px}
+button{cursor:pointer;background:#087a55}
+.wrap{max-width:900px;margin:auto;padding:14px}
+h1{text-align:center;font-size:23px}
+.note{color:#b5c9dd;font-size:13px;line-height:1.7}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1;min-width:130px}
+.card{background:#102139;border:1px solid #304761;border-radius:12px;padding:13px;margin:10px 0}
+#matches{display:grid;gap:8px;margin-top:10px}
+.match{width:100%;text-align:left;background:#102139}
+.match b{display:block;margin-bottom:6px}
+.match small{color:#bbd2e7}
+a{color:#55efb3}
+.hidden{display:none!important}
+#scoreboard{width:100%;max-width:1100px;margin:auto}
+.top{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:center;gap:5px}
+.team{padding:12px 4px;text-align:center;font-weight:bold;font-size:clamp(12px,3vw,25px);border-radius:13px;overflow-wrap:anywhere}
+.home{background:linear-gradient(110deg,#092bca,#0067bd);border:2px solid #29cfff}
+.away{background:linear-gradient(110deg,#006c38,#064a22);border:2px solid #29ed9d}
+.flag{font-size:clamp(22px,5vw,42px);display:block;margin-bottom:5px}
+.center{text-align:center;background:#090b10;border:2px solid #f9d34b;border-radius:12px;padding:9px 3px}
+#score{font-size:clamp(19px,5vw,36px);font-weight:bold}
+#overs{font-size:clamp(12px,2.5vw,19px);margin-top:5px}
+.bar{margin-top:7px;border-radius:18px;padding:10px;background:#071f7b;border:2px solid #39caff;font-weight:bold;font-size:clamp(12px,2.6vw,19px);text-align:center}
+#status{color:#f6f7b1;font-size:12px;text-align:center;padding:7px}
+.players{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:100px}
+.player{background:linear-gradient(140deg,#034dbe,#06215c);border:2px solid #2ab5ff;border-radius:8px;min-width:0;overflow:hidden}
+.player h3{font-size:clamp(10px,2.5vw,17px);text-align:center;margin:0;padding:8px 2px;background:#071d74}
+.player div{padding:10px 5px;font-size:clamp(10px,2.5vw,16px);overflow-wrap:anywhere}
+.player footer{background:#ffd323;color:#111;font-weight:bold;padding:8px 3px;font-size:clamp(9px,2vw,14px)}
+#powered{font-size:10px;text-align:center;margin:8px;color:#fff}
+#crexFrame{width:100%;height:420px;border:1px solid #34506c;border-radius:10px}
+@media(max-width:500px){.players{margin-top:55px}.team{padding:8px 2px}}
 </style>
 </head>
-
 <body>
-<div class="container" id="app">
-  <h1>🏏 Rizwan Cricket Overlay</h1>
 
-  <div class="panel">
-    <b>1۔ CREX میچ کا لنک</b>
-    <input id="crexUrl" value="https://crex.com/cricket-live-score/eng-vs-sl-3rd-odi-odi-tri-series-in-pakistan-2026-match-updates-13ND">
-    <button onclick="testCrex()">CREX ڈیٹا چیک کریں</button>
-    <div id="status" class="status">ٹیسٹ ابھی شروع نہیں ہوا۔</div>
-  </div>
+<div id="control" class="wrap">
+<h1>🏏 Rizwan Cricket Overlay</h1>
 
-  <div class="panel">
-    <b>2۔ ٹیموں کے نام اور جھنڈے</b>
-    <input id="team1" value="England" placeholder="پہلی ٹیم">
-    <input id="flag1" value="🏴" placeholder="پہلی ٹیم کا جھنڈا">
-    <input id="score1" value="—" placeholder="پہلی ٹیم کا اسکور">
-    <input id="team2" value="Sri Lanka" placeholder="دوسری ٹیم">
-    <input id="flag2" value="🇱🇰" placeholder="دوسری ٹیم کا جھنڈا">
-    <input id="score2" value="—" placeholder="دوسری ٹیم کا اسکور">
-    <input id="overs" value="—" placeholder="اوورز">
-    <input id="details" value="CREX سے ڈیٹا دستیاب ہونے کا انتظار ہے" placeholder="اضافی معلومات">
-    <button onclick="updateBoard()">اسکور بورڈ اپڈیٹ کریں</button>
-    <button class="secondary" onclick="makeOverlayLink()">اوورلے لنک بنائیں</button>
-    <div id="overlayLink"></div>
-  </div>
+<div class="card">
+<b>مرحلہ 1: لائیو میچ منتخب کریں</b>
+<p class="note">
+یہ اسکور بورڈ SportScore کی عوامی API سے ڈیٹا لینے کی کوشش کرتا ہے۔
+CREX کا صفحہ الگ ہے؛ اگر میچ API میں موجود نہ ہو تو اس کا اسکور یہاں خودکار طور پر نہیں آئے گا۔
+</p>
+<div class="row">
+<button id="load">میچوں کی فہرست لوڈ کریں</button>
+<button id="refresh">اسکور ریفریش کریں</button>
+</div>
+<p id="message" class="note">انٹرنیٹ کنکشن کے ساتھ میچوں کی فہرست لوڈ کریں۔</p>
+<input id="search" placeholder="ٹیم یا ٹورنامنٹ تلاش کریں" style="width:100%">
+<div id="matches"></div>
+</div>
 
-  <div class="panel">
-    <b>3۔ لائیو اوورلے کا پری ویو</b>
-    <div class="scoreboard" id="board">
-      <div class="teams">
-        <div class="team">
-          <span class="flag" id="showFlag1">🏴</span>
-          <span id="showTeam1">England</span>
-          <div class="team-score" id="showScore1">—</div>
-        </div>
-        <div class="middle">VS</div>
-        <div class="team">
-          <span class="flag" id="showFlag2">🇱🇰</span>
-          <span id="showTeam2">Sri Lanka</span>
-          <div class="team-score" id="showScore2">—</div>
-        </div>
-      </div>
-      <hr style="border-color:#34485d">
-      <div id="showOvers">اوورز: —</div>
-      <p id="showDetails" class="small">اسکور کی معلومات</p>
-      <div class="small">Rizwan Cricket Overlay</div>
-    </div>
-  </div>
+<div class="card">
+<b>مرحلہ 2: آپ کا CREX میچ</b>
+<p class="note">England vs Sri Lanka — 3rd ODI</p>
+<button id="crex" style="width:100%">CREX پر میچ کھولیں</button>
+<p class="note">
+CREX کا اصل صفحہ الگ ٹیب میں کھلے گا۔ اس بٹن سے اسکور بورڈ میں CREX کا ڈیٹا خود بخود منتقل نہیں ہوتا۔
+</p>
+</div>
 
-  <div class="panel">
-    <b>4۔ CREX رسائی ٹیسٹ کا نتیجہ</b>
-    <pre id="output">ابھی کوئی ٹیسٹ نہیں ہوا۔</pre>
-  </div>
+<div class="card">
+<b>مرحلہ 3: اوورلے کھولیں</b>
+<button id="open" style="width:100%">منتخب میچ کا اوورلے کھولیں</button>
+<p class="note">GitHub Pages لنک کے آخر میں ?overlay=1 والا لنک بھی PRISM Live میں استعمال کر سکتے ہیں۔</p>
+</div>
+</div>
+
+<div id="view" class="hidden">
+<div id="scoreboard">
+<div class="top">
+<div class="team home"><span class="flag" id="flag1">🇵🇰</span><span id="team1">TEAM A</span></div>
+<div class="center">
+<div id="score">—</div>
+<div id="overs">اوورز: —</div>
+</div>
+<div class="team away"><span class="flag" id="flag2">🏏</span><span id="team2">TEAM B</span></div>
+</div>
+
+<div class="bar">
+CRR: <span id="crr">—</span> |
+RRR: <span id="rrr">—</span>
+</div>
+<div id="status">اسکور ڈیٹا لوڈ ہو رہا ہے...</div>
+
+<div class="players">
+<div class="player">
+<h3>🏏 BATSMAN 1</h3>
+<div id="batter1">نام: —<br>رنز: —</div>
+<footer id="bat1extra">4s: — | 6s: —</footer>
+</div>
+<div class="player">
+<h3>🏏 BATSMAN 2</h3>
+<div id="batter2">نام: —<br>رنز: —</div>
+<footer id="bat2extra">4s: — | 6s: —</footer>
+</div>
+<div class="player">
+<h3>🎯 BOWLER</h3>
+<div id="bowler">نام: —<br>اوور: —</div>
+<footer id="bowlExtra">ECON: —</footer>
+</div>
+</div>
+
+<div id="powered">
+<a href="https://sportscore.com/" target="_blank" rel="noopener">Powered by SportScore</a>
+</div>
+</div>
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
+"use strict";
 
-function updateBoard(){
-  $("showTeam1").textContent = $("team1").value || "Team 1";
-  $("showTeam2").textContent = $("team2").value || "Team 2";
-  $("showFlag1").textContent = $("flag1").value || "🏏";
-  $("showFlag2").textContent = $("flag2").value || "🏏";
-  $("showScore1").textContent = $("score1").value || "—";
-  $("showScore2").textContent = $("score2").value || "—";
-  $("showOvers").textContent = "اوورز: " + ($("overs").value || "—");
-  $("showDetails").textContent = $("details").value || "";
+const API="https://sportscore.com/api/widget/";
+const KEY="rizwan_selected_cricket_match";
+const CREX_URL="https://crex.com/cricket-live-score/eng-vs-sl-3rd-odi-odi-tri-series-in-pakistan-2026-match-updates-13ND";
+const $=id=>document.getElementById(id);
+
+let games=[];
+let selected=null;
+let busy=false;
+let timer=null;
+
+function txt(v,f="—"){
+ if(v===null||v===undefined||v==="")return f;
+ if(typeof v==="object")return f;
+ return String(v);
 }
 
-async function testCrex(){
-  const url = $("crexUrl").value.trim();
-  $("status").textContent = "CREX صفحے تک رسائی چیک ہو رہی ہے...";
-  $("output").textContent = "براہِ راست رسائی کی کوشش جاری ہے...";
+function setMessage(s){$("message").textContent=s}
+function show(id,v){$(id).textContent=txt(v)}
 
+async function getJSON(url){
+ const r=await fetch(url,{cache:"no-store"});
+ if(!r.ok)throw Error("HTTP "+r.status);
+ return r.json();
+}
+
+function getSlug(m){
+ if(m.slug)return m.slug;
+ if(m.url){
+  const p=m.url.match(/\/cricket\/match\/([^/?#]+)/i);
+  if(p)return p[1];
+ }
+ return "";
+}
+
+function saveSelection(m){
+ selected={
+  slug:getSlug(m),
+  home:m.home||m.home_name||"England",
+  away:m.away||m.away_name||"Sri Lanka"
+ };
+ localStorage.setItem(KEY,JSON.stringify(selected));
+}
+
+function searchList(){
+ const q=$("search").value.trim().toLowerCase();
+ const box=$("matches");
+ box.replaceChildren();
+
+ games.filter(m=>{
+  const s=[m.home,m.away,m.competition,m.status_text]
+   .map(v=>txt(v,"")).join(" ").toLowerCase();
+  return s.includes(q);
+ }).forEach(m=>{
+  const b=document.createElement("button");
+  b.className="match";
+
+  const title=document.createElement("b");
+  title.textContent=txt(m.home)+" vs "+txt(m.away);
+
+  const small=document.createElement("small");
+  small.textContent=txt(m.competition,"Cricket")+" · "+txt(m.status_text,m.status||"");
+
+  b.append(title,small);
+  b.onclick=()=>{
+   saveSelection(m);
+   show("team1",selected.home);
+   show("team2",selected.away);
+   setMessage("منتخب: "+selected.home+" vs "+selected.away);
+   loadDetail();
+  };
+  box.appendChild(b);
+ });
+
+ if(!box.children.length)box.textContent="کوئی میچ نہیں ملا۔";
+}
+
+async function loadGames(){
+ try{
+  setMessage("میچوں کی فہرست حاصل ہو رہی ہے...");
+  const d=await getJSON(API+"matches/?sport=cricket&limit=50");
+  games=Array.isArray(d.matches)?d.matches:[];
+  searchList();
+  setMessage("API سے میچ دستیاب: "+games.length);
+  if(!games.length){
+   setMessage("API نے میچ نہیں دیے۔ بعد میں دوبارہ کوشش کریں۔");
+  }
+ }catch(e){
+  setMessage("میچ لوڈ نہیں ہوئے: "+e.message);
+ }
+}
+
+function findValue(obj,keys,depth=0){
+ if(!obj||typeof obj!=="object"||depth>5)return undefined;
+
+ for(const k of keys){
+  if(obj[k]!==undefined&&obj[k]!==null&&obj[k]!=="")return obj[k];
+ }
+
+ for(const v of Object.values(obj)){
+  if(v&&typeof v==="object"){
+   const x=findValue(v,keys,depth+1);
+   if(x!==undefined)return x;
+  }
+ }
+ return undefined;
+}
+
+function playerText(v){
+ if(!v)return "نام: —";
+ if(typeof v==="string")return "نام: "+v;
+ if(typeof v!=="object")return "نام: —";
+
+ const name=txt(v.name||v.player_name||v.full_name);
+ const runs=txt(v.runs??v.score);
+ const balls=txt(v.balls??v.balls_faced);
+ return "نام: "+name+"\nرنز: "+runs+" ("+balls+" گیندیں)";
+}
+
+function renderDetail(detail){
+ const m=detail.match||detail.data||detail;
+
+ show("team1",findValue(m,["home","home_name","homeTeamName","home_team_name"])||selected.home);
+ show("team2",findValue(m,["away","away_name","awayTeamName","away_team_name"])||selected.away);
+
+ const score=findValue(m,["score_text","scoreText","current_score","score"]);
+ const homeScore=findValue(m,["home_score","homeScore"]);
+ const awayScore=findValue(m,["away_score","awayScore"]);
+
+ if(score!==undefined){
+  show("score",score);
+ }else if(homeScore!==undefined||awayScore!==undefined){
+  show("score",txt(homeScore,"0")+" / "+txt(awayScore,"0"));
+ }else{
+  show("score","اسکور دستیاب نہیں");
+ }
+
+ show("overs",findValue(m,["overs_text","oversText","overs","current_over","over"]));
+ show("crr",findValue(m,["crr","current_run_rate","run_rate"]));
+ show("rrr",findValue(m,["rrr","required_run_rate"]));
+ show("status",findValue(m,["status_text","match_status","status"]));
+
+ const b1=findValue(m,["batsman1","batter1","striker"]);
+ const b2=findValue(m,["batsman2","batter2","non_striker"]);
+ const bw=findValue(m,["bowler","current_bowler"]);
+
+ $("batter1").textContent=playerText(b1);
+ $("batter2").textContent=playerText(b2);
+
+ if(bw&&typeof bw==="object"){
+  $("bowler").textContent="نام: "+txt(bw.name||bw.player_name)+"\nاوور: "+txt(bw.overs)+"\nرنز: "+txt(bw.runs);
+  show("bowlExtra","ECON: "+txt(bw.economy||bw.econ));
+ }else{
+  $("bowler").textContent="نام: "+txt(bw);
+  show("bowlExtra","ECON: —");
+ }
+
+ if(b1&&typeof b1==="object"){
+  show("bat1extra","4s: "+txt(b1.fours)+" | 6s: "+txt(b1.sixes));
+ }
+ if(b2&&typeof b2==="object"){
+  show("bat2extra","4s: "+txt(b2.fours)+" | 6s: "+txt(b2.sixes));
+ }
+}
+
+async function loadDetail(){
+ if(busy)return;
+
+ try{
+  if(!selected){
+   selected=JSON.parse(localStorage.getItem(KEY)||"null");
+  }
+ }catch(e){selected=null}
+
+ if(!selected||!selected.slug){
+  show("status","پہلے API کی فہرست سے میچ منتخب کریں۔");
+  return;
+ }
+
+ busy=true;
+ try{
+  const url=API+"match/?sport=cricket&slug="+encodeURIComponent(selected.slug);
+  const d=await getJSON(url);
+  renderDetail(d);
+ }catch(e){
+  show("status","اسکور API سے نہیں ملا۔ میچ کی دستیابی یا API چیک کریں۔");
+ }finally{
+  busy=false;
+ }
+}
+
+function initOverlay(){
+ $("control").classList.add("hidden");
+ $("view").classList.remove("hidden");
+ document.body.classList.add("overlay");
+
+ try{
+  selected=JSON.parse(localStorage.getItem(KEY)||"null");
+ }catch(e){selected=null}
+
+ if(selected){
+  show("team1",selected.home);
+  show("team2",selected.away);
+  loadDetail();
+ }else{
+  show("status","مین ویب سائٹ پر پہلے میچ منتخب کریں۔");
+ }
+
+ if(timer)clearInterval(timer);
+ timer=setInterval(()=>{
   try{
-    const response = await fetch(url, {
-      method:"GET",
-      mode:"cors",
-      credentials:"omit"
-    });
-
-    const html = await response.text();
-    const plain = html.replace(/<script[\s\S]*?<\/script>/gi," ")
-                      .replace(/<style[\s\S]*?<\/style>/gi," ")
-                      .replace(/<[^>]+>/g," ")
-                      .replace(/\s+/g," ");
-
-    $("status").textContent =
-      "صفحہ ملا۔ HTTP Status: " + response.status +
-      " — لیکن اس سے لائیو اسکور ملنے کی تصدیق نہیں ہوتی۔";
-
-    $("output").textContent =
-      "HTTP Status: " + response.status +
-      "\nHTML Length: " + html.length +
-      "\nEngland موجود: " + /england/i.test(plain) +
-      "\nSri Lanka موجود: " + /sri lanka/i.test(plain) +
-      "\n\nصفحے کے متن کا ابتدائی حصہ:\n" + plain.slice(0,1500);
-
-  }catch(error){
-    $("status").textContent =
-      "براہِ راست رسائی ناکام۔ CORS یا نیٹ ورک کی پابندی ممکن ہے۔";
-    $("output").textContent =
-      "Error: " + error.message +
-      "\n\nیہ ٹیسٹ CREX سے ڈیٹا حاصل نہیں کر سکا۔" +
-      "\nPython سرور یا مجاز ڈیٹا فیڈ کی ضرورت پڑ سکتی ہے۔";
-  }
+   const latest=JSON.parse(localStorage.getItem(KEY)||"null");
+   if(latest&&(!selected||latest.slug!==selected.slug)){
+    selected=latest;
+    show("team1",latest.home);
+    show("team2",latest.away);
+   }
+   loadDetail();
+  }catch(e){}
+ },30000);
 }
 
-function makeOverlayLink(){
-  const url = new URL(window.location.href);
-  url.searchParams.set("overlay","1");
-  $("overlayLink").innerHTML =
-    '<a href="' + url.href + '" target="_blank">' +
-    "اوورلے کھولیں</a><br><span class='small'>" +
-    url.href + "</span>";
+$("load").onclick=loadGames;
+$("refresh").onclick=loadDetail;
+$("search").oninput=searchList;
+
+$("crex").onclick=()=>{
+ window.open(CREX_URL,"_blank","noopener");
+};
+
+$("open").onclick=()=>{
+ if(!localStorage.getItem(KEY)){
+  setMessage("پہلے API کی فہرست سے میچ منتخب کریں۔");
+  return;
+ }
+ const u=new URL(location.href);
+ u.searchParams.set("overlay","1");
+ window.open(u.href,"_blank");
+};
+
+if(new URLSearchParams(location.search).get("overlay")==="1"){
+ initOverlay();
+}else{
+ loadGames();
 }
-
-function showOverlayIfRequested(){
-  const params = new URLSearchParams(window.location.search);
-  if(params.get("overlay") === "1"){
-    $("app").innerHTML = `
-      <div class="overlay-page">
-        <div class="scoreboard">
-          <div class="teams">
-            <div class="team">
-              <span class="flag" id="oFlag1">🏴</span>
-              <span id="oTeam1">England</span>
-              <div class="team-score" id="oScore1">—</div>
-            </div>
-            <div class="middle">VS</div>
-            <div class="team">
-              <span class="flag" id="oFlag2">🇱🇰</span>
-              <span id="oTeam2">Sri Lanka</span>
-              <div class="team-score" id="oScore2">—</div>
-            </div>
-          </div>
-          <hr>
-          <div id="oOvers">اوورز: —</div>
-          <p id="oDetails">Rizwan Cricket Overlay</p>
-        </div>
-      </div>`;
-
-    // یہ مقامی اسکور بورڈ کا ڈھانچہ ہے؛
-    // اسے اصل ڈیٹا سے جوڑنے کے لیے فیڈ درکار ہے۔
-  }
-}
-
-updateBoard();
-showOverlayIfRequested();
 </script>
 </body>
 </html>
